@@ -17,7 +17,7 @@ import {
 import { getModelInfo } from "@/lib/models"
 import { isSupabaseEnabled } from "@/lib/supabase/config"
 import { cn } from "@/lib/utils"
-import { FileArrowUp, Paperclip } from "@phosphor-icons/react"
+import { FileArrowUp, Plus  } from "@phosphor-icons/react"
 import React from "react"
 import { PopoverContentAuth } from "./popover-content-auth"
 
@@ -51,7 +51,7 @@ export function ButtonFileUpload({
                 type="button"
                 aria-label="Add files"
               >
-                <Paperclip className="size-4" />
+                <Plus  className="size-4" />
               </Button>
             </PopoverTrigger>
           </TooltipTrigger>
@@ -81,7 +81,7 @@ export function ButtonFileUpload({
                 type="button"
                 aria-label="Add files"
               >
-                <Paperclip className="size-4" />
+                <Plus className="size-4" />
               </Button>
             </PopoverTrigger>
           </TooltipTrigger>
@@ -113,7 +113,7 @@ export function ButtonFileUpload({
               disabled={!isUserAuthenticated}
               aria-label="Add files"
             >
-              <Paperclip className="size-4" />
+              <Plus className="size-4" />
             </Button>
           </FileUploadTrigger>
         </TooltipTrigger>
