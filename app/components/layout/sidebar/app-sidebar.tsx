@@ -109,26 +109,23 @@ export function AppSidebar() {
           )}
         </ScrollArea>
       </SidebarContent>
-      <SidebarFooter className="mb-2 p-3">
-        <a
-          href="https://github.com/ibelick/zola"
-          className="hover:bg-muted flex items-center gap-2 rounded-md p-2"
-          target="_blank"
-          aria-label="Star the repo on GitHub"
-        >
-          <div className="rounded-full border p-1">
-            <GithubLogo className="size-4" />
-          </div>
-          <div className="flex flex-col">
-            <div className="text-sidebar-foreground text-sm font-medium">
-              Zola is open source
-            </div>
-            <div className="text-sidebar-foreground/70 text-xs">
-              Star the repo on GitHub!
-            </div>
-          </div>
-        </a>
-      </SidebarFooter>
+    <SidebarFooter className="mb-2 p-3">
+  <a
+    href="https://nexiloop.com"
+    className="hover:bg-muted flex flex-col gap-1 rounded-md p-2 transition-colors text-left"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Visit Nexiloop official site"
+  >
+    <div className="text-sidebar-foreground text-sm font-medium">
+      Thanks for using this app (｡•́‿•̀｡)♡
+    </div>
+    <div className="text-sidebar-foreground/70 text-xs">
+      Made with love by Nexiloop
+    </div>
+  </a>
+</SidebarFooter>
+
     </Sidebar>
   )
 }
