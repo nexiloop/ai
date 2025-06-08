@@ -73,8 +73,8 @@ export default async function RootLayout({
       {!isDev ? (
         <Script
           async
-          src="https://analytics.umami.is/script.js"
-          data-website-id="42e5b68c-5478-41a6-bc68-088d029cee52"
+          src="https://cloud.umami.is/script.js"
+          data-website-id="c53ba79c-39f3-406e-a57e-5c732df61710"
         />
       ) : null}
       <body
