@@ -156,6 +156,16 @@ code {
   font-variation-settings: var(--default-mono-font-variation-settings);
 }
 
+/* Hide scrollbars globally */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
 /* sonner toast */
 [data-sonner-toaster] > li {
   width: 100%;
