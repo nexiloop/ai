@@ -48,10 +48,10 @@ export default function LoginPage() {
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
             <h1 className="text-foreground text-3xl font-medium tracking-tight sm:text-4xl">
-              Welcome to Zola
+              Welcome to Nexiloop
             </h1>
             <p className="text-muted-foreground mt-3">
-              Sign in below to increase your message limits.
+              Sign in to unlock your full potential with higher message limits.
             </p>
           </div>
           {error && (
@@ -82,19 +82,30 @@ export default function LoginPage() {
         </div>
       </main>
 
-      <footer className="text-muted-foreground py-6 text-center text-sm">
-        {/* @todo */}
-        <p>
-          By continuing, you agree to our{" "}
-          <Link href="/" className="text-foreground hover:underline">
-            Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link href="/" className="text-foreground hover:underline">
-            Privacy Policy
-          </Link>
-        </p>
-      </footer>
+    <footer className="text-muted-foreground py-6 text-center text-sm">
+  <p>
+    By signing in, you agree to the{" "}
+    <Link
+      href="https://www.nexiloop.com/docs/legal/terms-conditions"
+      className="text-foreground hover:underline"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Terms & Conditions
+    </Link>{" "}
+    and{" "}
+    <Link
+      href="https://www.nexiloop.com/docs/legal/privacy-policy"
+      className="text-foreground hover:underline"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Privacy Policy
+    </Link>
+    .
+  </p>
+</footer>
+
     </div>
   )
 }

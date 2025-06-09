@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#373737' }
+    { media: '(prefers-color-scheme: dark)', color: '#363636' }
   ],
   appleWebApp: {
     capable: true,

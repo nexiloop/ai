@@ -5,20 +5,22 @@ export function AppInfoContent() {
   return (
     <div className="space-y-4">
       <p className="text-foreground leading-relaxed">
-        {APP_DESCRIPTION} Built with Vercel&apos;s AI SDK, Supabase, and prompt-kit
-        components.
+        {APP_DESCRIPTION}
       </p>
       <p className="text-foreground leading-relaxed">
-        The code is available on{" "}
+        Made by <span className="font-semibold">Nexiloop</span>.{" "}
         <a
-          href="https://github.com/ibelick/zola"
+          href="https://nexiloop.com"
           target="_blank"
           rel="noopener noreferrer"
           className="underline"
         >
-          GitHub
+          Learn more
         </a>
         .
+      </p>
+      <p className="text-foreground leading-relaxed">
+        Thank you for using it (｡•́‿•̀｡)♡
       </p>
     </div>
   )
