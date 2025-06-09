@@ -7,7 +7,7 @@ import {
 import { useUserPreferences } from "@/lib/user-preference-store/provider"
 import { cn } from "@/lib/utils"
 import type { Message as MessageAISDK } from "@ai-sdk/react"
-import { ArrowClockwise, Check, Copy } from "@phosphor-icons/react"
+import { ArrowClockwise, Check, Copy, ThumbsDown, ThumbsUp } from "@phosphor-icons/react"
 import { getSources } from "./get-sources"
 import { Reasoning } from "./reasoning"
 import { SearchImages } from "./search-images"
@@ -128,6 +128,26 @@ export function MessageAssistant({
                 type="button"
               >
                 <ArrowClockwise className="size-4" />
+              </button>
+            </MessageAction>
+            <MessageAction tooltip="Good response" side="bottom" delayDuration={0}>
+              <button
+                className="hover:bg-accent/60 text-muted-foreground hover:text-green-600 flex size-7.5 items-center justify-center rounded-full bg-transparent transition"
+                aria-label="Good response"
+                onClick={() => {/* TODO: Handle thumbs up */}}
+                type="button"
+              >
+                <ThumbsUp className="size-4" />
+              </button>
+            </MessageAction>
+            <MessageAction tooltip="Bad response" side="bottom" delayDuration={0}>
+              <button
+                className="hover:bg-accent/60 text-muted-foreground hover:text-red-600 flex size-7.5 items-center justify-center rounded-full bg-transparent transition"
+                aria-label="Bad response"
+                onClick={() => {/* TODO: Handle thumbs down */}}
+                type="button"
+              >
+                <ThumbsDown className="size-4" />
               </button>
             </MessageAction>
           </MessageActions>
