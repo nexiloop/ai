@@ -388,11 +388,11 @@ export function Chat() {
             }}
           >
             {user?.display_name && (
-              <p className="mb-2 text-sm text-muted-foreground">
+              <p className="mb-2 text-center text-md text-muted-foreground">
                 Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user.display_name.split(' ')[0]}
               </p>
             )}
-            <h1 className="mb-6 text-3xl font-medium tracking-tight">
+            <h1 className="mb-6 text-center text-3xl font-medium tracking-tight">
 How can I help you today?
 
             </h1>
