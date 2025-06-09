@@ -4,6 +4,7 @@ import { HistoryTrigger } from "@/app/components/history/history-trigger"
 import { AppInfoTrigger } from "@/app/components/layout/app-info/app-info-trigger"
 import { ButtonNewChat } from "@/app/components/layout/button-new-chat"
 import { UserMenu } from "@/app/components/layout/user-menu"
+import { Logo } from "@/app/components/logo"
 import { useBreakpoint } from "@/app/hooks/use-breakpoint"
 import type { Agent } from "@/app/types/agent"
 import { Button } from "@/components/ui/button"
@@ -38,8 +39,9 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
               <div className="flex-1">
                 <Link
                   href="/"
-                  className="pointer-events-auto text-xl font-medium tracking-tight"
+                  className="pointer-events-auto flex items-center gap-2 text-xl font-medium tracking-tight"
                 >
+                  <Logo className="h-6 w-6" />
                   {APP_NAME}
                 </Link>
               </div>
