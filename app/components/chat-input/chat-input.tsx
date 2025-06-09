@@ -261,7 +261,7 @@ export function ChatInput({
                 className="size-9 rounded-full transition-all duration-300 ease-out"
                 disabled={!value || isSubmitting || isOnlyWhitespace(value)}
                 type="button"
-                variant="outline"
+                variant="secondary"
                 onClick={handleSend}
                 aria-label={status === "streaming" ? "Stop" : "Send message"}
               >
