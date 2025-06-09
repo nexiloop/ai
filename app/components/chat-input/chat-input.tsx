@@ -11,8 +11,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { useAgent } from "@/lib/agent-store/provider"
 import { getModelInfo } from "@/lib/models"
-import { ArrowUp, Stop, Warning } from "@phosphor-icons/react"
-import React, { useCallback, useEffect } from "react"
+import { ArrowUp, Lightbulb, Stop, Warning } from "@phosphor-icons/react"
+import React, { useCallback, useEffect, useState } from "react"
 import { PromptSystem } from "../suggestions/prompt-system"
 import { AgentCommand } from "./agent-command"
 import { ButtonFileUpload } from "./button-file-upload"
@@ -58,6 +58,7 @@ export function ChatInput({
   onSearchToggle,
 }: ChatInputProps) {
   const { currentAgent, curatedAgents, userAgents } = useAgent()
+  const [isThinkMode, setIsThinkMode] = useState(false)
   const {
     isSearchEnabled,
     toggleSearch,
@@ -226,6 +227,20 @@ export function ChatInput({
                 isUserAuthenticated={isUserAuthenticated}
                 className="rounded-full"
               />
+              <Button
+                size="sm"
+                variant={isThinkMode ? "default" : "outline"}
+                className={`size-9 rounded-full transition-all duration-300 ${
+                  isThinkMode
+                    ? "bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
+                    : "hover:bg-muted"
+                }`}
+                onClick={() => setIsThinkMode(!isThinkMode)}
+                aria-label="Think mode"
+                title="Think mode"
+              >
+                <Lightbulb className="size-4" />
+              </Button>
               <ButtonSearch
                 isSelected={isSearchEnabled}
                 onToggle={handleSearchToggle}
