@@ -26,7 +26,7 @@ export function ButtonSearch({
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            variant="secondary"
+            variant="outline"
             className="border-border dark:bg-secondary rounded-full border bg-transparent"
           >
             <GlobeIcon className="size-5" />
@@ -40,7 +40,7 @@ export function ButtonSearch({
 
   return (
     <Button
-      variant="outline"
+      variant="secondary"
       className={cn(
         "border-border dark:bg-secondary rounded-full border bg-transparent transition-all duration-150 has-[>svg]:px-1.75 md:has-[>svg]:px-3",
         isSelected &&
