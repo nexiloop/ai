@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { PWAInstaller } from "@/app/components/pwa-installer"
+import { ThemeBackground } from "@/app/components/theme-background"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#363636' }
+    { media: '(prefers-color-scheme: dark)', color: '#151515' }
   ],
   appleWebApp: {
     capable: true,
@@ -97,6 +98,7 @@ export default async function RootLayout({
                       enableSystem
                       disableTransitionOnChange
                     >
+                      <ThemeBackground />
                       <SidebarProvider defaultOpen>
                         <Toaster position="top-center" />
                         {children}
