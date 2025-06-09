@@ -221,18 +221,13 @@ export function ChatInput({
                 isUserAuthenticated={isUserAuthenticated}
                 model={selectedModel}
               />
-              <ModelSelector
-                selectedModelId={selectedModel}
-                setSelectedModelId={onSelectModel}
-                isUserAuthenticated={isUserAuthenticated}
-                className="rounded-full"
-              />
+    
               <Button
                 size="sm"
                 variant={isThinkMode ? "default" : "outline"}
-                className={`size-9 rounded-full transition-all duration-300 ${
+                className={`rounded-full transition-all duration-300 flex items-center gap-1 px-3 h-9 ${
                   isThinkMode
-                    ? "bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
+                    ? "bg-pink-500/20 border-pink-500 text-pink-700 hover:bg-pink-500/30"
                     : "hover:bg-muted"
                 }`}
                 onClick={() => setIsThinkMode(!isThinkMode)}
@@ -240,6 +235,7 @@ export function ChatInput({
                 title="Think mode"
               >
                 <Lightbulb className="size-4" />
+                <span className="text-sm">Think</span>
               </Button>
               <ButtonSearch
                 isSelected={isSearchEnabled}
