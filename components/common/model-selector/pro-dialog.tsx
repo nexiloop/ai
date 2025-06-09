@@ -65,20 +65,21 @@ export function ProModelDialog({
         />
       </div>
 
-      <div className="px-6 pt-4 text-center text-lg leading-tight font-medium">
-        This model is Pro-only on Zola
-      </div>
+<div className="px-6 pt-4 text-center text-lg leading-tight font-medium">
+  This feature is part of <span className="text-primary">Nexiloop Pro</span> — coming soon.
+</div>
+
 
       <div className="flex-grow overflow-y-auto">
         <div className="px-6 py-4">
-          <p className="text-muted-foreground text-sm">
-            Zola is free and open-source. Some models require self-hosted
-            access.
-          </p>
-          <p className="text-muted-foreground mt-1 text-sm">
-            If you want to use this model, you can fork Zola and add your own
-            key. Or let us know you want access.
-          </p>
+<p className="text-muted-foreground text-sm">
+  Nexiloop is free to use. Pro features will unlock more advanced models and tools.
+</p>
+
+     <p className="text-muted-foreground mt-1 text-sm">
+  Want early access? Let us know and we’ll notify you once Nexiloop Pro drops.
+</p>
+
 
           <div className="mt-5 flex justify-center gap-3">
             {submitted ? (
@@ -87,22 +88,23 @@ export function ProModelDialog({
               </Badge>
             ) : (
               <>
-                <Button
-                  onClick={handleSubmitInterest}
-                  className="flex-1"
-                  variant="default"
-                >
-                  I want this model
-                </Button>
-                <Button variant="outline" className="flex-1" asChild>
-                  <a
-                    href="https://github.com/ibelick/zola"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View setup
-                  </a>
-                </Button>
+               <Button
+  onClick={handleSubmitInterest}
+  className="flex-1"
+  variant="default"
+>
+  I want this model
+</Button>
+<Button variant="outline" className="flex-1" asChild>
+  <a
+    href="https://www.nexiloop.com/docs/products/bignova"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Stay tuned on Nexiloop
+  </a>
+</Button>
+
               </>
             )}
           </div>
