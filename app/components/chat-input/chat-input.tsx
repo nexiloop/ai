@@ -60,6 +60,7 @@ export function ChatInput({
 }: ChatInputProps) {
   const { currentAgent, curatedAgents, userAgents } = useAgent()
   const [isThinkMode, setIsThinkMode] = useState(false)
+  const [hydrated, setHydrated] = useState(false)
   const {
     isSearchEnabled,
     toggleSearch,
@@ -174,6 +175,10 @@ export function ChatInput({
     return () => el.removeEventListener("paste", handlePaste)
   }, [agentCommand.textareaRef, handlePaste])
 
+  useEffect(() => {
+    setHydrated(true)
+  }, [])
+
   return (
     <div className="relative flex w-full flex-col gap-4">
       {hasSuggestions && (
@@ -259,7 +264,7 @@ export function ChatInput({
               <Button
                 size="sm"
                 className="size-9 rounded-full transition-all duration-300 ease-out"
-                disabled={!value || isSubmitting || isOnlyWhitespace(value)}
+                disabled={hydrated ? (!value || isSubmitting || isOnlyWhitespace(value)) : true}
                 type="button"
                 variant="secondary"
                 onClick={handleSend}

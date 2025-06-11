@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Chats } from "@/lib/chat-store/types"
+import { useChatRoute } from "@/lib/chat-routes"
 import {
   Check,
   MagnifyingGlass,
@@ -42,6 +43,7 @@ export function DrawerHistory({
   const [editTitle, setEditTitle] = useState("")
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const params = useParams<{ chatId: string }>()
+  const { getChatRoute } = useChatRoute()
 
   const handleOpenChange = useCallback((open: boolean) => {
     setIsOpen(open)
@@ -207,7 +209,7 @@ export function DrawerHistory({
               }}
             >
               <Link
-                href={`/c/${chat.id}`}
+                href={getChatRoute(chat.id)}
                 key={chat.id}
                 className="flex flex-1 flex-col items-start"
                 prefetch

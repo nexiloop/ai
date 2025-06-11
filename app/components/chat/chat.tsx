@@ -387,7 +387,7 @@ export function Chat() {
               },
             }}
           >
-            {user?.display_name && (
+            {user?.display_name && hydrated && (
               <p className="mb-2 text-center text-md text-muted-foreground">
                 Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user.display_name.split(' ')[0]}
               </p>

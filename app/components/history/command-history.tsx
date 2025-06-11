@@ -28,6 +28,7 @@ import { useChatSession } from "@/lib/chat-store/session/provider"
 import type { Chats } from "@/lib/chat-store/types"
 import { useChatPreview } from "@/lib/hooks/use-chat-preview"
 import { useUserPreferences } from "@/lib/user-preference-store/provider"
+import { useChatRoute } from "@/lib/chat-routes"
 import { cn } from "@/lib/utils"
 import { Check, PencilSimple, TrashSimple, X } from "@phosphor-icons/react"
 import { useRouter } from "next/navigation"
@@ -316,6 +317,7 @@ export function CommandHistory({
   const [isPreviewPanelHovered, setIsPreviewPanelHovered] = useState(false)
   const { messages, isLoading, error, fetchPreview, clearPreview } =
     useChatPreview()
+  const { getChatRoute } = useChatRoute()
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open)
@@ -432,7 +434,7 @@ export function CommandHistory({
               return
             }
             if (!editingId && !deletingId) {
-              router.push(`/c/${chat.id}`)
+              router.push(getChatRoute(chat.id))
             }
           }}
           className={cn(
@@ -500,7 +502,7 @@ export function CommandHistory({
       // Prefetch the most recent chat routes
       const recentChats = chatHistory.slice(0, 10)
       recentChats.forEach((chat) => {
-        router.prefetch(`/c/${chat.id}`)
+        router.prefetch(getChatRoute(chat.id))
       })
     }
   }, [isOpen, chatHistory, router])

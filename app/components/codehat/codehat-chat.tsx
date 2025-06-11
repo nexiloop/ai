@@ -28,7 +28,7 @@ import { redirect, useSearchParams } from "next/navigation"
 import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { Code, Eye, FolderOpen } from "@phosphor-icons/react"
 import { useChatHandlers } from "../chat/use-chat-handlers"
-import { useChatUtils } from "../chat/use-chat-utils"
+import { useCodeHatChatUtils } from "./use-codehat-chat-utils"
 import { useFileUpload } from "../chat/use-file-upload"
 
 const FeedbackWidget = dynamic(
@@ -122,10 +122,23 @@ export function CodeHatChat() {
       
       // Process the message for file generation
       await processCodeHatMessage(message.content)
+      
+      // Replace code-heavy responses with friendly message
+      if (message.content && /```[\s\S]*?```/.test(message.content)) {
+        const simplifiedMessage = {
+          ...message,
+          content: "🚀 I am building your application! Check the code panel on the right to see all the generated files and preview your app."
+        }
+        
+        // Update the message in the UI
+        setMessages(prev => prev.map(msg => 
+          msg.id === message.id ? simplifiedMessage : msg
+        ))
+      }
     },
   })
 
-  const { checkLimitsAndNotify, ensureChatExists } = useChatUtils({
+  const { checkLimitsAndNotify, ensureChatExists } = useCodeHatChatUtils({
     isAuthenticated,
     chatId,
     messages,
@@ -206,7 +219,7 @@ export function CodeHatChat() {
     const files: any[] = []
     
     // Enhanced patterns for file detection
-    const filePathRegex = /(?:File:|Create file|Update file|Save as|Filename:|File name:)\s*[`"]?([^`"\n]+\.[a-zA-Z0-9]+)[`"]?/gi
+    const filePathRegex = /(?:File:|Create file|Update file|Save as|Filename:|File name:|```[\w]*\s*\/\/\s*|```[\w]*\s*\/\*\s*|```[\w]*\s*#\s*)\s*[`"]?([^`"\n]+\.[a-zA-Z0-9]+)[`"]?/gi
     const codeBlockRegex = /```(\w+)?\s*(?:\/\/\s*([^\n]+)|\/\*\s*([^\n]+)\s*\*\/|#\s*([^\n]+))?\n([\s\S]*?)```/g
     
     let match
@@ -240,8 +253,45 @@ export function CodeHatChat() {
       if (!filePath) {
         // Generate a smart filename based on language and content
         const extension = getExtensionForLanguage(block.language)
-        const contentPreview = block.code.split('\n')[0].substring(0, 20).replace(/[^a-zA-Z0-9]/g, '')
-        filePath = contentPreview ? `${contentPreview}.${extension}` : `generated_${index + 1}.${extension}`
+        
+        // Try to detect common patterns for file naming
+        const lines = block.code.split('\n')
+        let suggestedName = ''
+        
+        // Check for component names, class names, etc.
+        for (const line of lines) {
+          const componentMatch = line.match(/(?:function|class|const|export)\s+([A-Z][a-zA-Z0-9]*)/);
+          const fileMatch = line.match(/\/\/\s*([a-zA-Z0-9-_.]+\.[a-zA-Z]+)/);
+          
+          if (componentMatch) {
+            suggestedName = componentMatch[1].toLowerCase();
+            break;
+          } else if (fileMatch) {
+            suggestedName = fileMatch[1];
+            break;
+          }
+        }
+        
+        if (!suggestedName) {
+          // Fallback names based on language
+          const fallbackNames: Record<string, string> = {
+            'html': 'index.html',
+            'css': 'styles.css',
+            'javascript': 'script.js',
+            'js': 'script.js',
+            'typescript': 'main.ts',
+            'ts': 'main.ts',
+            'jsx': 'App.jsx',
+            'tsx': 'App.tsx',
+            'python': 'main.py',
+            'json': 'package.json'
+          }
+          suggestedName = fallbackNames[block.language] || `file${index + 1}.${extension}`
+        } else if (!suggestedName.includes('.')) {
+          suggestedName += `.${extension}`
+        }
+        
+        filePath = suggestedName
       }
       
       // Clean up file path
@@ -257,7 +307,48 @@ export function CodeHatChat() {
       })
     })
     
+    // Add a default HTML file if we have CSS/JS but no HTML
+    const hasHtml = files.some(f => f.name.endsWith('.html'))
+    const hasCss = files.some(f => f.name.endsWith('.css'))
+    const hasJs = files.some(f => f.name.endsWith('.js') || f.name.endsWith('.jsx') || f.name.endsWith('.tsx'))
+    
+    if (!hasHtml && (hasCss || hasJs)) {
+      const htmlContent = generateIndexHtml(files)
+      files.unshift({
+        id: `file-${Date.now()}-html`,
+        name: 'index.html',
+        path: 'index.html',
+        content: htmlContent,
+        language: 'html',
+        type: 'file' as const
+      })
+    }
+    
     return files
+  }
+
+  // Generate a basic HTML file that includes CSS and JS files
+  const generateIndexHtml = (files: any[]) => {
+    const cssFiles = files.filter(f => f.name.endsWith('.css'))
+    const jsFiles = files.filter(f => f.name.endsWith('.js') || f.name.endsWith('.jsx'))
+    
+    const cssLinks = cssFiles.map(f => `    <link rel="stylesheet" href="${f.name}">`).join('\n')
+    const jsScripts = jsFiles.map(f => `    <script src="${f.name}"></script>`).join('\n')
+    
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeHat Generated App</title>
+${cssLinks}
+</head>
+<body>
+    <div id="root"></div>
+    <div id="app"></div>
+${jsScripts}
+</body>
+</html>`
   }
 
   const getExtensionForLanguage = (language: string): string => {
@@ -546,7 +637,7 @@ export function CodeHatChat() {
               },
             }}
           >
-            {user?.display_name && (
+            {user?.display_name && hydrated && (
               <p className="mb-2 text-center text-md text-muted-foreground">
                 Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user.display_name.split(' ')[0]}
               </p>

@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { getModelInfo } from "@/lib/models"
 import { cn } from "@/lib/utils"
 import { ArrowUp, Stop, Code } from "@phosphor-icons/react"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { CodeHatPromptSystem } from "./codehat-prompt-system"
 import { ButtonFileUpload } from "../chat-input/button-file-upload"
 import { FileList } from "../chat-input/file-list"
@@ -52,6 +52,7 @@ export function CodeHatChatInput({
   status = "ready",
 }: CodeHatChatInputProps) {
   const [isHovering, setIsHovering] = useState(false)
+  const [hydrated, setHydrated] = useState(false)
   
   const isStreaming = status === "streaming"
   const hasFiles = files.length > 0
@@ -86,6 +87,10 @@ export function CodeHatChatInput({
   }, [isSubmitting, onSend, status, stop])
 
   const modelInfo = getModelInfo(selectedModel)
+
+  useEffect(() => {
+    setHydrated(true)
+  }, [])
 
   return (
     <div className="relative flex w-full flex-col gap-4">
@@ -142,7 +147,7 @@ export function CodeHatChatInput({
               <Button
                 size="sm"
                 className="size-9 rounded-full transition-all duration-300 ease-out"
-                disabled={!value || isSubmitting || isOnlyWhitespace(value)}
+                disabled={hydrated ? (!value || isSubmitting || isOnlyWhitespace(value)) : true}
                 type="button"
                 variant="secondary"
                 onClick={handleSend}

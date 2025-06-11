@@ -3,23 +3,85 @@
 import { useCodeHatStore } from "@/lib/codehat-store/store"
 import { Button } from "@/components/ui/button"
 import { Eye, ArrowSquareOut, ArrowsClockwise } from "@phosphor-icons/react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 
 export function AppPreview() {
   const { currentProject, previewUrl, files } = useCodeHatStore()
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [previewContent, setPreviewContent] = useState<string | null>(null)
 
   const handleRefresh = () => {
     setIsRefreshing(true)
-    // Simulate refresh delay
+    generatePreview()
     setTimeout(() => setIsRefreshing(false), 1000)
   }
 
-  const hasHtmlFiles = files.some(file => 
+  // Generate live preview from files
+  const generatePreview = () => {
+    const htmlFile = files.find(file => file.name.endsWith('.html'))
+    const cssFiles = files.filter(file => file.name.endsWith('.css'))
+    const jsFiles = files.filter(file => file.name.endsWith('.js') || file.name.endsWith('.jsx'))
+    
+    if (htmlFile) {
+      let html = htmlFile.content
+      
+      // Inject CSS content directly into HTML
+      cssFiles.forEach(cssFile => {
+        const cssTag = `<style>\n${cssFile.content}\n</style>`
+        html = html.replace('</head>', `${cssTag}\n</head>`)
+      })
+      
+      // Inject JS content directly into HTML
+      jsFiles.forEach(jsFile => {
+        const jsTag = `<script>\n${jsFile.content}\n</script>`
+        html = html.replace('</body>', `${jsTag}\n</body>`)
+      })
+      
+      setPreviewContent(html)
+    } else if (cssFiles.length > 0 || jsFiles.length > 0) {
+      // Generate basic HTML structure
+      const css = cssFiles.map(f => f.content).join('\n')
+      const js = jsFiles.map(f => f.content).join('\n')
+      
+      const generatedHtml = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeHat Preview</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        ${css}
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <div id="app"></div>
+    <script>
+        ${js}
+    </script>
+</body>
+</html>`
+      
+      setPreviewContent(generatedHtml)
+    }
+  }
+
+  // Auto-generate preview when files change
+  useEffect(() => {
+    if (files.length > 0) {
+      generatePreview()
+    }
+  }, [files])
+
+  const hasWebFiles = files.some(file => 
     file.name.endsWith('.html') || 
-    file.name.endsWith('.tsx') || 
-    file.name.endsWith('.jsx')
+    file.name.endsWith('.css') ||
+    file.name.endsWith('.js') ||
+    file.name.endsWith('.jsx') ||
+    file.name.endsWith('.tsx')
   )
 
   if (!currentProject && files.length === 0) {
@@ -53,7 +115,7 @@ export function AppPreview() {
     )
   }
 
-  if (!hasHtmlFiles && !previewUrl) {
+  if (!hasWebFiles && !previewUrl && !previewContent) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -141,24 +203,69 @@ export function AppPreview() {
 
       {/* Preview Content */}
       <div className="flex-1 bg-white">
-        {previewUrl ? (
-          <iframe
-            src={previewUrl}
-            className="h-full w-full border-0"
-            title="App Preview"
-            sandbox="allow-scripts allow-same-origin"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center">
-            <div className="bg-card rounded-lg p-8 text-center shadow-sm">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950 dark:to-indigo-900 mb-4 h-32 w-48 rounded-lg"></div>
-              <h3 className="mb-2 font-medium">Preview Placeholder</h3>
-              <p className="text-muted-foreground text-sm">
-                Your app preview will appear here once it's built
-              </p>
-            </div>
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          {previewContent ? (
+            <motion.div
+              key="preview-content"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="h-full w-full"
+            >
+              <iframe
+                srcDoc={previewContent}
+                className="h-full w-full border-0"
+                title="App Preview"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              />
+            </motion.div>
+          ) : previewUrl ? (
+            <motion.div
+              key="preview-url"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="h-full w-full"
+            >
+              <iframe
+                src={previewUrl}
+                className="h-full w-full border-0"
+                title="App Preview"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="preview-placeholder"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
+              className="flex h-full items-center justify-center"
+            >
+              <div className="bg-card rounded-lg p-8 text-center shadow-sm">
+                <motion.div
+                  animate={{ 
+                    background: [
+                      "linear-gradient(45deg, #3b82f6, #8b5cf6)",
+                      "linear-gradient(45deg, #8b5cf6, #ec4899)",
+                      "linear-gradient(45deg, #ec4899, #f59e0b)",
+                      "linear-gradient(45deg, #f59e0b, #3b82f6)"
+                    ]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="mb-4 h-32 w-48 rounded-lg"
+                />
+                <h3 className="mb-2 font-medium">Preview Placeholder</h3>
+                <p className="text-muted-foreground text-sm">
+                  Your app preview will appear here once it's built
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   )

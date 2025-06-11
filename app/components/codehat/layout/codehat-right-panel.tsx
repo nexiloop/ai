@@ -51,21 +51,7 @@ export function CodeHatRightPanel() {
           transition={{ delay: 0.2, duration: 0.3 }}
           className="border-b border-border flex items-center justify-between p-4 bg-gradient-to-r from-background to-muted/30"
         >
-          <div className="flex items-center gap-2">
-            <motion.div
-              initial={{ rotate: -180, scale: 0 }}
-              animate={{ rotate: 0, scale: 1 }}
-              transition={{ delay: 0.3, duration: 0.4, type: "spring" }}
-            >
-              <Code className="h-5 w-5 text-primary" />
-            </motion.div>
-            <h2 className="font-semibold">
-              {currentProject?.title || "CodeHat"}
-            </h2>
-            <Badge variant="secondary" className="text-xs animate-pulse">
-              Beta
-            </Badge>
-          </div>
+
           
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
@@ -99,14 +85,7 @@ export function CodeHatRightPanel() {
               </Badge>
             </Button>
             
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={togglePanel}
-              className="hover:scale-110 transition-transform"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+
           </motion.div>
         </motion.div>
 
@@ -134,10 +113,10 @@ export function CodeHatRightPanel() {
             onValueChange={(value) => setActiveTab(value as "code" | "preview")}
             className="flex h-full flex-col"
           >
-            <TabsList className="w-full justify-start rounded-none border-b border-border bg-transparent p-0">
+            <TabsList className="w-full justify-center rounded-none border-b border-border bg-transparent p-0">
               <TabsTrigger 
                 value="code" 
-                className="gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent hover:bg-muted/50 transition-all duration-200"
+                className="gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent hover:bg-muted/50 transition-all duration-200 px-6 py-3"
               >
                 <motion.div
                   whileHover={{ scale: 1.1 }}
@@ -145,7 +124,7 @@ export function CodeHatRightPanel() {
                   className="flex items-center gap-2"
                 >
                   <Code className="h-4 w-4" />
-                  Code
+                  <span className="font-medium">Code</span>
                   {files.length > 0 && (
                     <motion.div
                       initial={{ scale: 0 }}
@@ -161,7 +140,7 @@ export function CodeHatRightPanel() {
               </TabsTrigger>
               <TabsTrigger 
                 value="preview" 
-                className="gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent hover:bg-muted/50 transition-all duration-200"
+                className="gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent hover:bg-muted/50 transition-all duration-200 px-6 py-3"
               >
                 <motion.div
                   whileHover={{ scale: 1.1 }}
@@ -169,7 +148,7 @@ export function CodeHatRightPanel() {
                   className="flex items-center gap-2"
                 >
                   <Eye className="h-4 w-4" />
-                  Preview
+                  <span className="font-medium">Preview</span>
                 </motion.div>
               </TabsTrigger>
             </TabsList>
