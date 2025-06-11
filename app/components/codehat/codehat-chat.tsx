@@ -179,9 +179,26 @@ export function CodeHatChat() {
     const fileUpdates = extractFilesFromMessage(content)
     
     if (fileUpdates.length > 0) {
+      // Update files with smooth animation
       updateFiles(fileUpdates)
+      
+      // Auto-open the right panel if it's closed
+      const { isPanelOpen, setIsPanelOpen, setActiveTab } = useCodeHatStore.getState()
+      if (!isPanelOpen) {
+        setTimeout(() => {
+          setIsPanelOpen(true)
+          setActiveTab('code')
+        }, 500) // Small delay for smooth transition
+      }
+      
+      // Show success notification
+      toast({
+        title: `Generated ${fileUpdates.length} file${fileUpdates.length > 1 ? 's' : ''}`,
+        description: "Your code is ready in the editor!",
+        status: "success"
+      })
     }
-  }, [chatId, user?.id, currentProject, createProject])
+  }, [chatId, user?.id, currentProject, createProject, updateFiles])
 
   // Extract files from AI message content
   const extractFilesFromMessage = (content: string) => {
@@ -514,9 +531,6 @@ export function CodeHatChat() {
             <h1 className="mb-6 text-center text-3xl font-medium tracking-tight">
               What would you like me to build today?
             </h1>
-            <p className="text-center text-muted-foreground">
-              I'm CodeHat, your AI coding assistant. I can help you build complete applications from scratch.
-            </p>
           </motion.div>
         ) : (
           <Conversation

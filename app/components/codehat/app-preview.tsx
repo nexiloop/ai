@@ -4,6 +4,7 @@ import { useCodeHatStore } from "@/lib/codehat-store/store"
 import { Button } from "@/components/ui/button"
 import { Eye, ArrowSquareOut, ArrowsClockwise } from "@phosphor-icons/react"
 import { useState } from "react"
+import { motion, AnimatePresence } from "motion/react"
 
 export function AppPreview() {
   const { currentProject, previewUrl, files } = useCodeHatStore()
@@ -23,42 +24,83 @@ export function AppPreview() {
 
   if (!currentProject && files.length === 0) {
     return (
-      <div className="flex h-full items-center justify-center p-8">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+        className="flex h-full items-center justify-center p-8"
+      >
         <div className="text-center">
-          <Eye className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+          <motion.div
+            animate={{ 
+              y: [0, -10, 0],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ 
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <Eye className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+          </motion.div>
           <h3 className="text-lg font-medium">No preview available</h3>
           <p className="text-muted-foreground text-sm">
             Start building an app to see the preview
           </p>
         </div>
-      </div>
+      </motion.div>
     )
   }
 
   if (!hasHtmlFiles && !previewUrl) {
     return (
-      <div className="flex h-full items-center justify-center p-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="flex h-full items-center justify-center p-8"
+      >
         <div className="text-center">
-          <Eye className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+          <motion.div
+            animate={{ 
+              rotate: [0, 360],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{ 
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <Eye className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+          </motion.div>
           <h3 className="text-lg font-medium">Preview coming soon</h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-sm mb-4">
             The preview will be available once you have UI components
           </p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRefresh}
-            disabled={isRefreshing}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {isRefreshing ? (
-              <ArrowsClockwise className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <ArrowsClockwise className="mr-2 h-4 w-4" />
-            )}
-            Check for Preview
-          </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="gap-2"
+            >
+              <motion.div
+                animate={{ rotate: isRefreshing ? 360 : 0 }}
+                transition={{ duration: 1, repeat: isRefreshing ? Infinity : 0 }}
+              >
+                <ArrowsClockwise className="h-4 w-4" />
+              </motion.div>
+              {isRefreshing ? 'Refreshing...' : 'Check for Preview'}
+            </Button>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     )
   }
 

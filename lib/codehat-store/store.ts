@@ -24,6 +24,7 @@ interface CodeHatState {
   // UI actions
   togglePanel: () => void
   setPanelOpen: (open: boolean) => void
+  setIsPanelOpen: (open: boolean) => void
   setActiveTab: (tab: CodeHatPanelTab) => void
   setPreviewUrl: (url: string | null) => void
   
@@ -80,6 +81,7 @@ export const useCodeHatStore = create<CodeHatState>()(
     // UI actions
     togglePanel: () => set((state) => ({ isPanelOpen: !state.isPanelOpen })),
     setPanelOpen: (open) => set({ isPanelOpen: open }),
+    setIsPanelOpen: (open) => set({ isPanelOpen: open }),
     setActiveTab: (tab) => set({ activeTab: tab }),
     setPreviewUrl: (url) => set({ previewUrl: url }),
     
