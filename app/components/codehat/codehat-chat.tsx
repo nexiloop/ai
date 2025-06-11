@@ -125,9 +125,21 @@ export function CodeHatChat() {
       
       // Replace code-heavy responses with friendly message
       if (message.content && /```[\s\S]*?```/.test(message.content)) {
+        const codeBlocks = (message.content.match(/```[\s\S]*?```/g) || []).length
         const simplifiedMessage = {
           ...message,
-          content: "🚀 I am building your application! Check the code panel on the right to see all the generated files and preview your app."
+          content: `🚀 I've generated your application with ${codeBlocks} code file${codeBlocks > 1 ? 's' : ''}! 
+
+✨ **What I've created:**
+- Modern, responsive design
+- Clean, readable code
+- Ready-to-use components
+
+📁 **Check the CodeHat IDE panel →** to view and edit all your generated files
+🎯 **Preview tab** to see your app in action
+💻 **Terminal tab** for development commands
+
+Your code is ready! Feel free to ask me to modify anything or add new features.`
         }
         
         // Update the message in the UI
@@ -205,10 +217,16 @@ export function CodeHatChat() {
         }, 800) // Slightly longer delay for better UX
       }
       
-      // Show success notification
+      // Show success notification with file details
+      const fileTypes = fileUpdates.reduce((acc, file) => {
+        const ext = file.name.split('.').pop()?.toLowerCase()
+        if (ext && !acc.includes(ext)) acc.push(ext)
+        return acc
+      }, [] as string[])
+      
       toast({
         title: `✨ Generated ${fileUpdates.length} file${fileUpdates.length > 1 ? 's' : ''}`,
-        description: "Your code is ready in the editor! Check the panel on the right.",
+        description: `${fileTypes.join(', ')} files ready in the IDE panel! →`,
         status: "success"
       })
     }

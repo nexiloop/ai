@@ -49,19 +49,7 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
                 </Link>
                 
                 {/* Navigation Tabs */}
-                <div className="flex items-center justify-center flex-1">
-                  <Link
-                    href="/codehat"
-                    className={`flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-                      isCodeHatActive 
-                        ? 'bg-primary text-primary-foreground' 
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                    }`}
-                  >
-                    <Code className="h-4 w-4" />
-                    CodeHat
-                  </Link>
-                </div>
+                
               </div>
             )}
           </div>

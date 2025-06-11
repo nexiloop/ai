@@ -1,4 +1,5 @@
 export { CodeHatHeader } from './codehat-header'
 export { CodeHatSidebar } from './codehat-sidebar'
 export { CodeHatRightPanel } from './codehat-right-panel'
+export { CodeHatPanelToggle } from './codehat-panel-toggle'
 export { LayoutCodeHat } from './layout-codehat'

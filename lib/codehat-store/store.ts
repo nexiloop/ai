@@ -32,12 +32,46 @@ interface CodeHatState {
   reset: () => void
 }
 
+const defaultReadmeFile: CodeHatFile = {
+  name: "README.md",
+  content: `# Welcome to CodeHat! 🎩
+
+CodeHat is your AI-powered development companion that helps you build amazing projects.
+
+## Getting Started
+
+1. **Describe your project** - Tell me what you want to build
+2. **Watch the magic** - I'll generate the code files for you
+3. **Preview & customize** - See your project come to life
+4. **Deploy & share** - Share your creation with the world
+
+## Features
+
+- 🚀 **Instant project generation** - From idea to code in seconds
+- 🎨 **Modern UI components** - Beautiful, responsive designs
+- 🔧 **Multiple frameworks** - React, Next.js, Vue, and more
+- 📱 **Mobile-first** - Optimized for all devices
+- 🌟 **AI-powered** - Smart code generation and optimization
+
+## Example Projects
+
+Try asking me to build:
+- "Create a todo app with dark mode"
+- "Build a landing page for a startup"
+- "Make a dashboard with charts"
+- "Create a blog with authentication"
+
+Start by telling me what you'd like to build! 🚀`,
+  type: "other",
+  language: "markdown"
+}
+
 export const useCodeHatStore = create<CodeHatState>()(
   subscribeWithSelector((set, get) => ({
     // Initial state
     currentProject: null,
-    files: [],
-    selectedFile: null,
+    files: [defaultReadmeFile],
+    selectedFile: "README.md",
     
     isPanelOpen: false,
     activeTab: "code",
@@ -48,12 +82,14 @@ export const useCodeHatStore = create<CodeHatState>()(
     
     setFiles: (files) => set({ 
       files,
-      selectedFile: files.length > 0 ? files[0].name : null
+      selectedFile: files.length > 0 ? files[0].name : null,
+      isPanelOpen: files.length > 1 // Open panel if there are multiple files (more than just README)
     }),
     
     addFile: (file) => set((state) => ({
       files: [...state.files, file],
-      selectedFile: file.name
+      selectedFile: file.name,
+      isPanelOpen: true // Open panel when adding files
     })),
     
     updateFile: (fileName, content) => set((state) => ({
@@ -88,8 +124,8 @@ export const useCodeHatStore = create<CodeHatState>()(
     // Reset
     reset: () => set({
       currentProject: null,
-      files: [],
-      selectedFile: null,
+      files: [defaultReadmeFile],
+      selectedFile: "README.md",
       isPanelOpen: false,
       activeTab: "code",
       previewUrl: null
