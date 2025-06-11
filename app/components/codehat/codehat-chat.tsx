@@ -1,7 +1,7 @@
 "use client"
 
 import { CodeHatChatInput } from "@/app/components/codehat/codehat-chat-input"
-import { Conversation } from "@/app/components/chat/conversation"
+import { CodeHatConversation } from "@/app/components/codehat/codehat-conversation"
 import { useChatDraft } from "@/app/hooks/use-chat-draft"
 import { useCodeHatProject } from "@/app/hooks/use-codehat-project"
 import { toast } from "@/components/ui/toast"
@@ -26,6 +26,7 @@ import { AnimatePresence, motion } from "motion/react"
 import dynamic from "next/dynamic"
 import { redirect, useSearchParams } from "next/navigation"
 import { Suspense, useCallback, useEffect, useRef, useState } from "react"
+import { Code, Eye, FolderOpen } from "@phosphor-icons/react"
 import { useChatHandlers } from "../chat/use-chat-handlers"
 import { useChatUtils } from "../chat/use-chat-utils"
 import { useFileUpload } from "../chat/use-file-upload"
@@ -188,13 +189,13 @@ export function CodeHatChat() {
         setTimeout(() => {
           setIsPanelOpen(true)
           setActiveTab('code')
-        }, 500) // Small delay for smooth transition
+        }, 800) // Slightly longer delay for better UX
       }
       
       // Show success notification
       toast({
-        title: `Generated ${fileUpdates.length} file${fileUpdates.length > 1 ? 's' : ''}`,
-        description: "Your code is ready in the editor!",
+        title: `✨ Generated ${fileUpdates.length} file${fileUpdates.length > 1 ? 's' : ''}`,
+        description: "Your code is ready in the editor! Check the panel on the right.",
         status: "success"
       })
     }
@@ -204,26 +205,31 @@ export function CodeHatChat() {
   const extractFilesFromMessage = (content: string) => {
     const files: any[] = []
     
-    // Look for file paths in the content
-    const filePathRegex = /(?:File:|Create file|Update file)\s*[`"]?([^`"\n]+\.[a-zA-Z]+)[`"]?/gi
-    const codeBlockRegex = /```(\w+)?\s*(?:\/\/\s*([^\n]+))?\n([\s\S]*?)```/g
+    // Enhanced patterns for file detection
+    const filePathRegex = /(?:File:|Create file|Update file|Save as|Filename:|File name:)\s*[`"]?([^`"\n]+\.[a-zA-Z0-9]+)[`"]?/gi
+    const codeBlockRegex = /```(\w+)?\s*(?:\/\/\s*([^\n]+)|\/\*\s*([^\n]+)\s*\*\/|#\s*([^\n]+))?\n([\s\S]*?)```/g
     
     let match
     const codeBlocks = []
     
-    // Extract all code blocks
+    // Extract all code blocks with enhanced detection
     while ((match = codeBlockRegex.exec(content)) !== null) {
       const language = match[1] || 'text'
-      const possiblePath = match[2]
-      const code = match[3]
+      const possiblePath = match[2] || match[3] || match[4] // Check different comment styles
+      const code = match[5]
       
-      codeBlocks.push({ language, possiblePath, code })
+      // Skip empty code blocks
+      if (code.trim()) {
+        codeBlocks.push({ language, possiblePath, code: code.trim() })
+      }
     }
     
     // Try to match file paths with code blocks
     const pathMatches: string[] = []
     let pathMatch
-    while ((pathMatch = filePathRegex.exec(content)) !== null) {
+    const contentCopy = content // Reset regex state
+    const pathRegex = new RegExp(filePathRegex.source, filePathRegex.flags)
+    while ((pathMatch = pathRegex.exec(contentCopy)) !== null) {
       pathMatches.push(pathMatch[1])
     }
     
@@ -232,14 +238,18 @@ export function CodeHatChat() {
       let filePath = block.possiblePath || pathMatches[index]
       
       if (!filePath) {
-        // Generate a filename based on language
+        // Generate a smart filename based on language and content
         const extension = getExtensionForLanguage(block.language)
-        filePath = `file${index + 1}.${extension}`
+        const contentPreview = block.code.split('\n')[0].substring(0, 20).replace(/[^a-zA-Z0-9]/g, '')
+        filePath = contentPreview ? `${contentPreview}.${extension}` : `generated_${index + 1}.${extension}`
       }
+      
+      // Clean up file path
+      const fileName = filePath.split('/').pop() || filePath
       
       files.push({
         id: `file-${Date.now()}-${index}`,
-        name: filePath.split('/').pop() || filePath,
+        name: fileName,
         path: filePath,
         content: block.code,
         language: block.language,
@@ -313,6 +323,12 @@ export function CodeHatChat() {
 
   const submit = async () => {
     setIsSubmitting(true)
+
+    // Auto-open panel when user sends a message
+    const { isPanelOpen, setIsPanelOpen } = useCodeHatStore.getState()
+    if (!isPanelOpen) {
+      setIsPanelOpen(true)
+    }
 
     const uid = await getOrCreateGuestUserId(user)
     if (!uid) return
@@ -396,6 +412,13 @@ export function CodeHatChat() {
   const handleSuggestion = useCallback(
     async (suggestion: string) => {
       setIsSubmitting(true)
+      
+      // Auto-open panel when user selects a suggestion
+      const { isPanelOpen, setIsPanelOpen } = useCodeHatStore.getState()
+      if (!isPanelOpen) {
+        setIsPanelOpen(true)
+      }
+      
       const optimisticId = `optimistic-${Date.now().toString()}`
       const optimisticMessage = {
         id: optimisticId,
@@ -531,9 +554,12 @@ export function CodeHatChat() {
             <h1 className="mb-6 text-center text-3xl font-medium tracking-tight">
               What would you like me to build today?
             </h1>
+ 
+            
+    
           </motion.div>
         ) : (
-          <Conversation
+          <CodeHatConversation
             key="conversation"
             messages={messages}
             status={status}
