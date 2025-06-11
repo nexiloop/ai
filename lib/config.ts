@@ -2,6 +2,7 @@ import {
   BookOpenText,
   Brain,
   Code,
+  Globe,
   Lightbulb,
   Notepad,
   PaintBrush,
@@ -121,7 +122,34 @@ export const SUGGESTIONS = [
 
 export const SYSTEM_PROMPT_DEFAULT = `You are nexiloop, an AI model trained and created by Nexiloop. You're a clear, thoughtful assistant. Your tone is calm, minimal, and human. You speak with purpose—never too much, never too little. No fluff, no clichés. You keep it simple, sharp, and helpful. If something needs clarity, you ask the right questions. Metaphors are fine, but only if they actually help. Your goal is to guide the user forward, not to confuse or perform. Just solid, grounded help.`;
 
+export const SYSTEM_PROMPT_CODEHAT = `You are CodeHat, an AI coding agent that builds complete applications step-by-step. You are a master developer with expertise in React, Next.js, TypeScript, Tailwind CSS, and modern web development.
+
+Your approach:
+1. **Think before you code**: Analyze the user's request and plan the project structure
+2. **Build iteratively**: Start with core functionality, then enhance
+3. **Write clean, production-ready code**: Follow best practices, add proper TypeScript types
+4. **Document your process**: Explain what you're building and why
+5. **Test as you go**: Consider edge cases and user experience
+
+When building apps:
+- Use modern React patterns (hooks, functional components)
+- Implement responsive design with Tailwind CSS
+- Add proper error handling and loading states
+- Include TypeScript for type safety
+- Structure files logically
+- Add comments for complex logic
+
+Start by understanding the user's vision, then create a detailed plan before writing any code. Build something amazing!`;
+
 export const MESSAGE_MAX_LENGTH = 4000
+
+// CodeHat configuration
+export const CODEHAT_LIMITS = {
+  FREE_DAILY_PROJECTS: 5,
+  FREE_MONTHLY_PROJECTS: 4,
+  PRO_DAILY_PROJECTS: -1, // unlimited
+  PRO_MONTHLY_PROJECTS: -1, // unlimited
+} as const
 
 export const CURATED_AGENTS_SLUGS = [
   "github/ibelick/prompt-kit",
@@ -130,3 +158,55 @@ export const CURATED_AGENTS_SLUGS = [
   "tweet-vibe-checker",
   "blog-draft",
 ]
+
+// CodeHat specific suggestions
+export const CODEHAT_SUGGESTIONS = [
+  {
+    label: "React App",
+    highlight: "Build",
+    prompt: "Build",
+    items: [
+      "Build a task management app with React and TypeScript",
+      "Build a weather dashboard with real-time data",
+      "Build a blog platform with authentication",
+      "Build a expense tracker with charts and analytics",
+    ],
+    icon: Code,
+  },
+  {
+    label: "Landing Page",
+    highlight: "Create",
+    prompt: "Create",
+    items: [
+      "Create a modern SaaS landing page with pricing tiers",
+      "Create a portfolio website with dark mode",
+      "Create a restaurant website with online ordering",
+      "Create a fitness app landing page with animations",
+    ],
+    icon: Globe,
+  },
+  {
+    label: "Components",
+    highlight: "Design",
+    prompt: "Design",
+    items: [
+      "Design a reusable modal component with animations",
+      "Design a advanced data table with sorting and filtering",
+      "Design a multi-step form with validation",
+      "Design a drag-and-drop file upload component",
+    ],
+    icon: PaintBrush,
+  },
+  {
+    label: "API",
+    highlight: "Implement",
+    prompt: "Implement",
+    items: [
+      "Implement a REST API with authentication and CRUD operations",
+      "Implement real-time chat functionality with WebSockets",
+      "Implement file upload and storage system",
+      "Implement search functionality with filters and pagination",
+    ],
+    icon: Code,
+  },
+] as const

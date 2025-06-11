@@ -346,6 +346,107 @@ export type Database = {
           },
         ]
       }
+      codehat_projects: {
+        Row: {
+          id: string
+          user_id: string
+          chat_id: string
+          title: string
+          description: string | null
+          status: "draft" | "building" | "completed" | "error"
+          files: Json
+          preview_url: string | null
+          deploy_url: string | null
+          framework: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          chat_id: string
+          title: string
+          description?: string | null
+          status?: "draft" | "building" | "completed" | "error"
+          files?: Json
+          preview_url?: string | null
+          deploy_url?: string | null
+          framework?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          chat_id?: string
+          title?: string
+          description?: string | null
+          status?: "draft" | "building" | "completed" | "error"
+          files?: Json
+          preview_url?: string | null
+          deploy_url?: string | null
+          framework?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "codehat_projects_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "codehat_projects_chat_id_fkey"
+            columns: ["chat_id"]
+            isOneToOne: false
+            referencedRelation: "chats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      codehat_usage: {
+        Row: {
+          id: string
+          user_id: string
+          project_count_daily: number
+          project_count_monthly: number
+          daily_reset: string | null
+          monthly_reset: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          project_count_daily?: number
+          project_count_monthly?: number
+          daily_reset?: string | null
+          monthly_reset?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          project_count_daily?: number
+          project_count_monthly?: number
+          daily_reset?: string | null
+          monthly_reset?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "codehat_usage_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

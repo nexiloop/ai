@@ -4,28 +4,25 @@ import { HistoryTrigger } from "@/app/components/history/history-trigger"
 import { AppInfoTrigger } from "@/app/components/layout/app-info/app-info-trigger"
 import { ButtonNewChat } from "@/app/components/layout/button-new-chat"
 import { UserMenu } from "@/app/components/layout/user-menu"
+import { HeaderSidebarTrigger } from "@/app/components/layout/header-sidebar-trigger"
 import { Logo } from "@/app/components/logo"
 import { useBreakpoint } from "@/app/hooks/use-breakpoint"
-import type { Agent } from "@/app/types/agent"
 import { Button } from "@/components/ui/button"
-import { useAgent } from "@/lib/agent-store/provider"
+import { Badge } from "@/components/ui/badge"
 import { APP_NAME } from "@/lib/config"
 import { useUser } from "@/lib/user-store/provider"
-import { Info, Code } from "@phosphor-icons/react"
+import { useCodeHatStore } from "@/lib/codehat-store/store"
+import { Code, Info, SidebarSimple, X } from "@phosphor-icons/react"
 import Link from "next/link"
 
-import { DialogPublish } from "./dialog-publish"
-import { HeaderSidebarTrigger } from "./header-sidebar-trigger"
+interface CodeHatHeaderProps {
+  hasSidebar: boolean
+}
 
-export type AgentHeader = Pick<
-  Agent,
-  "name" | "description" | "avatar_url" | "slug"
->
-
-export function Header({ hasSidebar }: { hasSidebar: boolean }) {
+export function CodeHatHeader({ hasSidebar }: CodeHatHeaderProps) {
   const isMobile = useBreakpoint(768)
   const { user } = useUser()
-  const { currentAgent } = useAgent()
+  const { isPanelOpen, togglePanel } = useCodeHatStore()
 
   const isLoggedIn = !!user
 
@@ -35,30 +32,22 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
         <div className="flex flex-1 items-center justify-between">
           <div className="flex flex-1 items-center gap-2 pl-0 md:pl-0.5">
             {hasSidebar && <HeaderSidebarTrigger />}
-            {Boolean(!currentAgent || !isMobile) && (
-              <div className="flex flex-1 items-center gap-6">
-                <Link
-                  href="/"
-                  className="pointer-events-auto flex items-center gap-2 text-xl font-medium tracking-tight"
-                >
-                  <Logo className="h-6 w-6" />
-                  {APP_NAME}
-                </Link>
-                
-                {/* Navigation Tabs */}
-                <nav className="pointer-events-auto flex items-center gap-1">
-                  <Link
-                    href="/codehat"
-                    className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-md px-3 py-1.5 text-sm transition-colors"
-                  >
-                    <Code className="h-4 w-4" />
-                    CodeHat
-                  </Link>
-                </nav>
-              </div>
-            )}
+            <div className="flex-1">
+              <Link
+                href="/codehat"
+                className="pointer-events-auto flex items-center gap-2 text-xl font-medium tracking-tight"
+              >
+                <Code className="h-6 w-6" />
+                CodeHat
+                <Badge variant="secondary" className="text-xs">
+                  Beta
+                </Badge>
+              </Link>
+            </div>
           </div>
+          
           <div />
+          
           {!isLoggedIn ? (
             <div className="pointer-events-auto flex flex-1 items-center justify-end gap-4">
               <AppInfoTrigger
@@ -82,7 +71,19 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
             </div>
           ) : (
             <div className="pointer-events-auto flex flex-1 items-center justify-end gap-2">
-              {currentAgent && <DialogPublish />}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={togglePanel}
+                className="bg-background hover:bg-muted text-muted-foreground h-8 w-8 rounded-full"
+                aria-label={isPanelOpen ? "Close panel" : "Open panel"}
+              >
+                {isPanelOpen ? (
+                  <X className="size-4" />
+                ) : (
+                  <SidebarSimple className="size-4" />
+                )}
+              </Button>
               <ButtonNewChat />
               {!hasSidebar && <HistoryTrigger hasSidebar={hasSidebar} />}
               <UserMenu />
