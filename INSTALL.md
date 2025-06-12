@@ -49,6 +49,10 @@ XAI_API_KEY=your_xai_api_key
 # Ollama (for local AI models)
 OLLAMA_BASE_URL=http://localhost:11434
 
+# Cloudflare Workers AI (for image generation)
+CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
+CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+
 # Optional: Set the URL for production
 # NEXT_PUBLIC_VERCEL_URL=your_production_url
 ```
@@ -78,6 +82,36 @@ python -c "import secrets; print(secrets.token_hex(32))"
 ```
 
 Copy the generated value and add it to your `.env.local` file as the `CSRF_SECRET` value.
+
+### Setting Up Optional Features
+
+#### Image Generation with Cloudflare Workers AI
+
+Nexiloop supports AI image generation using Cloudflare Workers AI models. To enable this feature:
+
+1. **Get Cloudflare Credentials**:
+   - Sign up for a [Cloudflare account](https://dash.cloudflare.com/sign-up)
+   - Go to "My Profile" → "API Tokens"
+   - Create a custom token with the following permissions:
+     - Account: `Cloudflare Workers:Edit`
+     - Zone Resources: `Include All zones`
+   - Copy your Account ID from the right sidebar
+
+2. **Add to Environment Variables**:
+   ```bash
+   CLOUDFLARE_ACCOUNT_ID=your_account_id_here
+   CLOUDFLARE_API_TOKEN=your_api_token_here
+   ```
+
+3. **Run the Image Generation Schema** (see Database Schema section above)
+
+#### Background Removal (Beta)
+
+The background removal feature uses client-side AI processing and requires:
+
+1. **Run the Background Removal Schema** (see Database Schema section above)
+2. **Enable in Settings**: Users can toggle this feature in Settings → General → Model Preferences
+3. **No additional API keys required** - processing happens locally in the browser
 
 #### Google OAuth Authentication
 
@@ -238,6 +272,69 @@ CREATE TABLE user_keys (
 -- ... add policies for other tables (agents, chats, messages, etc.) ...
 ```
 
+#### Optional: Image Generation Schema
+
+For AI image generation features, run the image generation schema:
+
+```sql
+-- Image Generations tracking table
+CREATE TABLE image_generations (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL,
+  model TEXT NOT NULL,
+  prompt TEXT NOT NULL,
+  image_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  CONSTRAINT image_generations_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Add RLS policies
+ALTER TABLE image_generations ENABLE ROW LEVEL SECURITY;
+
+-- Users can only see their own image generations
+CREATE POLICY "Users can view their own image generations" ON image_generations 
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own image generations" ON image_generations 
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- Create index for efficient daily usage queries
+CREATE INDEX idx_image_generations_user_created ON image_generations(user_id, created_at);
+```
+
+#### Optional: Background Removal Schema
+
+For AI background removal features, run the background removal schema:
+
+```sql
+-- Create user_preferences table if it doesn't exist
+CREATE TABLE IF NOT EXISTS user_preferences (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL UNIQUE,
+  background_removal_enabled BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  CONSTRAINT user_preferences_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Add RLS policies
+ALTER TABLE user_preferences ENABLE ROW LEVEL SECURITY;
+
+-- Users can only see their own preferences
+CREATE POLICY "Users can view their own preferences" ON user_preferences 
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own preferences" ON user_preferences 
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own preferences" ON user_preferences 
+  FOR UPDATE USING (auth.uid() = user_id);
+
+-- Create indexes for faster queries
+CREATE INDEX IF NOT EXISTS idx_user_preferences_user_id ON user_preferences(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_preferences_background_removal ON user_preferences(background_removal_enabled);
+```
+
 ### Storage Setup
 
 Create the buckets `chat-attachments` and `avatars` in your Supabase dashboard:
@@ -245,6 +342,41 @@ Create the buckets `chat-attachments` and `avatars` in your Supabase dashboard:
 1. Go to Storage in your Supabase dashboard
 2. Click "New bucket" and create two buckets: `chat-attachments` and `avatars`
 3. Configure public access permissions for both buckets
+
+#### Storage Policies
+
+Add these RLS policies for the storage buckets:
+
+```sql
+-- Allow authenticated users to upload to chat-attachments
+CREATE POLICY "Authenticated users can upload chat attachments" ON storage.objects
+  FOR INSERT WITH CHECK (
+    bucket_id = 'chat-attachments' 
+    AND auth.role() = 'authenticated'
+  );
+
+-- Allow users to read their own uploaded files
+CREATE POLICY "Users can read their own chat attachments" ON storage.objects
+  FOR SELECT USING (
+    bucket_id = 'chat-attachments' 
+    AND auth.uid()::text = (storage.foldername(name))[1]
+  );
+
+-- Allow public read access to chat attachments (optional, for sharing)
+CREATE POLICY "Public read access to chat attachments" ON storage.objects
+  FOR SELECT USING (bucket_id = 'chat-attachments');
+
+-- Allow authenticated users to upload avatars
+CREATE POLICY "Authenticated users can upload avatars" ON storage.objects
+  FOR INSERT WITH CHECK (
+    bucket_id = 'avatars' 
+    AND auth.role() = 'authenticated'
+  );
+
+-- Allow public read access to avatars
+CREATE POLICY "Public read access to avatars" ON storage.objects
+  FOR SELECT USING (bucket_id = 'avatars');
+```
 
 #### Agent Avatar Configuration
 

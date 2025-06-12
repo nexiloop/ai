@@ -191,3 +191,10 @@ code {
 .animation-delay-500 {
   animation-delay: 500ms;
 }
+
+/* Touch device improvements for message actions */
+@media (hover: none) and (pointer: coarse) {
+  .group .group-hover\:opacity-100 {
+    opacity: 1;
+  }
+}

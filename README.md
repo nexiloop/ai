@@ -17,6 +17,12 @@
   - 9 Cloudflare Workers AI image models (FLUX.1 Schnell, SDXL Lightning, Ideogram v2 Turbo, etc.)
   - Completely free with daily usage limits (5 images/day)
   - Configurable preferred image model in settings
+- **✂️ AI Background Removal** (Beta):
+  - Remove backgrounds from uploaded images instantly
+  - AI-powered background removal using @imgly/background-removal
+  - One-click processing with smooth animations
+  - Auto-download processed images as PNG
+  - Enable/disable in Settings → Model Preferences
 - **Smart Chat Integration**: Auto-detects image generation requests in natural conversation
 - File uploads with context-aware answers
 - Clean, responsive UI with light/dark themes
@@ -69,7 +75,7 @@ docker-compose -f docker-compose.ollama.yml up
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ibelick/nexiloop)
 
-To unlock features like auth, file uploads, and agents, see [INSTALL.md](./INSTALL.md).
+To unlock features like auth, file uploads, agents, and background removal, see [INSTALL.md](./INSTALL.md).
 
 ## CodeHat Workspace
 
@@ -117,6 +123,7 @@ CLOUDFLARE_API_TOKEN=your_api_token
 - "make an illustration of a space station"
 - "draw a painting of mountains at sunset"
 - "show me a visualization of neural networks"
+- "remove the background from this image" (when uploading images)
 
 ### Setup
 Add your Cloudflare credentials to enable image generation:
@@ -124,6 +131,67 @@ Add your Cloudflare credentials to enable image generation:
 CLOUDFLARE_ACCOUNT_ID=your_account_id
 CLOUDFLARE_API_TOKEN=your_api_token
 ```
+
+## Background Removal (Beta)
+
+nexiloop includes AI-powered background removal for uploaded images using advanced machine learning models.
+
+### Features
+- **Instant Processing**: Remove backgrounds from images with one click
+- **AI-Powered**: Uses state-of-the-art neural networks for precise background detection
+- **High Quality**: Preserves fine details like hair, fur, and complex edges
+- **Batch Support**: Process multiple images in your file uploads
+- **Auto-Download**: Processed images automatically download as PNG with transparency
+- **Smart Integration**: Appears automatically when you upload images (if enabled)
+
+### How to Use
+
+#### Enable Background Removal
+1. Go to **Settings** → **General** → **Model Preferences**
+2. Toggle **Background Removal** to **ON** (marked as Beta)
+3. The feature will now appear when you upload images
+
+#### Process Images
+1. **Upload an Image**: Click the **+** button or drag and drop images into chat
+2. **Remove Background**: Click the **"Remove BG"** button that appears below image uploads
+3. **Download**: The processed image will automatically download to your device
+
+#### Supported Formats
+- **Input**: JPEG, PNG, WEBP, GIF, HEIC, HEIF
+- **Output**: PNG with transparent background
+
+### Technical Details
+- **Model**: Uses ISNET FP16 for optimal balance of speed and quality
+- **Processing**: Client-side processing (no data sent to external servers)
+- **Performance**: Optimized for CPU processing with optional GPU acceleration
+- **Privacy**: All processing happens locally in your browser
+
+### Usage Examples
+- Remove backgrounds from profile photos
+- Create transparent product images for websites
+- Prepare images for presentations or design work
+- Extract subjects from complex backgrounds
+- Create cutout effects for creative projects
+
+### Database Setup
+If you're self-hosting, run the background removal schema:
+
+```sql
+-- Run this in your Supabase SQL editor or database
+-- See BACKGROUND_REMOVAL_SCHEMA.sql for the complete setup
+CREATE TABLE IF NOT EXISTS user_preferences (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL UNIQUE,
+  background_removal_enabled BOOLEAN DEFAULT false,
+  -- ... other columns
+);
+```
+
+### Troubleshooting
+- **Slow Processing**: Try smaller images (< 2MB) for faster results
+- **Poor Quality**: Works best with clear subject-background separation
+- **Browser Issues**: Requires modern browser with WebAssembly support
+- **Memory Errors**: Close other tabs if processing fails on large images
 
 ## Built with
 

@@ -8,6 +8,8 @@ import { useUserPreferences } from "@/lib/user-preference-store/provider"
 import { cn } from "@/lib/utils"
 import type { Message as MessageAISDK } from "@ai-sdk/react"
 import { ArrowClockwise, Check, Copy, ThumbsDown, ThumbsUp } from "@phosphor-icons/react"
+import { useState } from "react"
+import { toast } from "@/components/ui/toast"
 import { getSources } from "./get-sources"
 import { Reasoning } from "./reasoning"
 import { SearchImages } from "./search-images"
@@ -39,7 +41,29 @@ export function MessageAssistant({
   imageGenerationData,
 }: MessageAssistantProps) {
   const { preferences } = useUserPreferences()
+  const [feedbackGiven, setFeedbackGiven] = useState<'up' | 'down' | null>(null)
+  
   const sources = getSources(parts)
+  const handleThumbsUp = () => {
+    setFeedbackGiven('up')
+    toast({
+      title: "Thanks for your feedback!",
+      description: "This helps us improve the AI responses.",
+      status: "success"
+    })
+    // TODO: Send feedback to analytics/database
+  }
+
+  const handleThumbsDown = () => {
+    setFeedbackGiven('down')
+    toast({
+      title: "Feedback received",
+      description: "We'll use this to improve future responses.",
+      status: "info"
+    })
+    // TODO: Send feedback to analytics/database
+  }
+
   const toolInvocationParts = parts?.filter(
     (part) => part.type === "tool-invocation"
   )
@@ -113,12 +137,15 @@ export function MessageAssistant({
         {Boolean(isLastStreaming || contentNullOrEmpty) ? null : (
           <MessageActions
             className={cn(
-              "-ml-2 flex gap-0 opacity-0 transition-opacity group-hover:opacity-100"
+              "-ml-2 flex gap-0 transition-opacity duration-200",
+              // Show on hover for larger screens, always visible on smaller screens
+              "opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
             )}
           >
             <MessageAction
               tooltip={copied ? "Copied!" : "Copy text"}
               side="bottom"
+              delayDuration={0}
             >
               <button
                 className="hover:bg-accent/60 text-muted-foreground hover:text-foreground flex size-7.5 items-center justify-center rounded-full bg-transparent transition"
@@ -145,20 +172,32 @@ export function MessageAssistant({
             </MessageAction>
             <MessageAction tooltip="Good response" side="bottom" delayDuration={0}>
               <button
-                className="hover:bg-accent/60 text-muted-foreground hover:text-green-600 flex size-7.5 items-center justify-center rounded-full bg-transparent transition"
+                className={cn(
+                  "hover:bg-accent/60 text-muted-foreground flex size-7.5 items-center justify-center rounded-full bg-transparent transition",
+                  feedbackGiven === 'up' 
+                    ? "text-green-600 bg-green-100/50" 
+                    : "hover:text-green-600"
+                )}
                 aria-label="Good response"
-                onClick={() => {/* TODO: Handle thumbs up */}}
+                onClick={handleThumbsUp}
                 type="button"
+                disabled={feedbackGiven !== null}
               >
                 <ThumbsUp className="size-4" />
               </button>
             </MessageAction>
             <MessageAction tooltip="Bad response" side="bottom" delayDuration={0}>
               <button
-                className="hover:bg-accent/60 text-muted-foreground hover:text-red-600 flex size-7.5 items-center justify-center rounded-full bg-transparent transition"
+                className={cn(
+                  "hover:bg-accent/60 text-muted-foreground flex size-7.5 items-center justify-center rounded-full bg-transparent transition",
+                  feedbackGiven === 'down' 
+                    ? "text-red-600 bg-red-100/50" 
+                    : "hover:text-red-600"
+                )}
                 aria-label="Bad response"
-                onClick={() => {/* TODO: Handle thumbs down */}}
+                onClick={handleThumbsDown}
                 type="button"
+                disabled={feedbackGiven !== null}
               >
                 <ThumbsDown className="size-4" />
               </button>
