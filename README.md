@@ -64,6 +64,19 @@ docker-compose -f docker-compose.ollama.yml up
 
 To unlock features like auth, file uploads, and agents, see [INSTALL.md](./INSTALL.md).
 
+## CodeHat Workspace
+
+CodeHat generates files and runs commands inside a local workspace.
+By default the workspace root is the project directory, but you can
+override it with the `WORKSPACE_ROOT` environment variable:
+
+```bash
+WORKSPACE_ROOT=/path/to/workspace npm run dev
+```
+
+All projects are saved under `codehat-projects` inside this workspace
+and the interactive terminal operates from that directory.
+
 ## Built with
 
 - [prompt-kit](https://prompt-kit.com/) — AI components

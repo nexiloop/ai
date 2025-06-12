@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
-
-const WORKSPACE_ROOT = '/workspaces/agentai'
+import { WORKSPACE_ROOT } from '@/lib/config'
 
 export async function POST(request: NextRequest) {
   try {

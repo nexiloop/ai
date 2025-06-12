@@ -17,6 +17,10 @@ export const DAILY_FILE_UPLOAD_LIMIT = 5
 export const DAILY_SPECIAL_AGENT_LIMIT = 5
 export const DAILY_LIMIT_PRO_MODELS = 5
 
+// Root directory for CodeHat workspace
+// Can be overridden with the WORKSPACE_ROOT environment variable
+export const WORKSPACE_ROOT = process.env.WORKSPACE_ROOT || process.cwd()
+
 export const FREE_MODELS_IDS = [
   "deepseek-r1",
   "pixtral-large-latest",
