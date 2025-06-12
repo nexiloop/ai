@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Download, ExternalLink } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { motion } from "motion/react"
 
 type GeneratedImageProps = {
   imageUrl: string
@@ -46,35 +47,73 @@ export function GeneratedImage({
   }
 
   return (
-    <div className={cn("w-full max-w-lg mx-auto", className)}>
-      <div className="relative rounded-lg overflow-hidden bg-muted">
+    <motion.div 
+      className={cn("w-full max-w-lg mx-auto", className)}
+      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ 
+        duration: 0.5,
+        ease: [0.16, 1, 0.3, 1] // Custom easing for smooth animation
+      }}
+    >
+      <motion.div 
+        className="relative rounded-lg overflow-hidden bg-muted shadow-lg"
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.2 }}
+      >
         {/* Main Image */}
         <div className="relative aspect-square">
           {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse">
-              <div className="text-muted-foreground text-sm">Loading image...</div>
-            </div>
+            <motion.div 
+              className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <motion.div 
+                className="text-muted-foreground text-sm"
+                animate={{ 
+                  opacity: [0.5, 1, 0.5],
+                  scale: [0.98, 1, 0.98]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                Loading image...
+              </motion.div>
+            </motion.div>
           )}
           
-          <Image
-            src={imageUrl}
-            alt={prompt}
-            fill
-            className={cn(
-              "object-cover transition-opacity duration-300",
-              isLoading ? "opacity-0" : "opacity-100"
-            )}
-            onLoad={() => setIsLoading(false)}
-            onError={() => {
-              setIsLoading(false)
-              setHasError(true)
-            }}
-            unoptimized // Since it's an external URL
-          />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isLoading ? 0 : 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Image
+              src={imageUrl}
+              alt={prompt}
+              fill
+              className="object-cover"
+              onLoad={() => setIsLoading(false)}
+              onError={() => {
+                setIsLoading(false)
+                setHasError(true)
+              }}
+              unoptimized // Since it's an external URL
+            />
+          </motion.div>
 
           {/* Watermark Overlay */}
           {!isLoading && !hasError && (
-            <div className="absolute bottom-2 right-2 bg-black/50 backdrop-blur-sm rounded px-2 py-1 flex items-center gap-1">
+            <motion.div 
+              className="absolute bottom-2 right-2 bg-black/50 backdrop-blur-sm rounded px-2 py-1 flex items-center gap-1"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+            >
               <Image
                 src="/nl.svg"
                 alt="Nexiloop"
@@ -83,20 +122,31 @@ export function GeneratedImage({
                 className="opacity-80"
               />
               <span className="text-white text-xs font-medium opacity-80">nexiloop</span>
-            </div>
+            </motion.div>
           )}
 
           {/* Error State */}
           {hasError && (
-            <div className="absolute inset-0 flex items-center justify-center bg-muted">
+            <motion.div 
+              className="absolute inset-0 flex items-center justify-center bg-muted"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
               <div className="text-muted-foreground text-sm">Failed to load image</div>
-            </div>
+            </motion.div>
           )}
         </div>
 
         {/* Action Buttons */}
         {!isLoading && !hasError && (
-          <div className="absolute top-2 right-2 flex gap-1">
+          <motion.div 
+            className="absolute top-2 right-2 flex gap-1"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.3 }}
+            whileHover={{ scale: 1.05 }}
+          >
             <Button
               size="sm"
               variant="secondary"
@@ -115,12 +165,17 @@ export function GeneratedImage({
             >
               <ExternalLink className="h-4 w-4" />
             </Button>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       {/* Image Info */}
-      <div className="mt-3 space-y-1">
+      <motion.div 
+        className="mt-3 space-y-1"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.3 }}
+      >
         <div className="text-sm font-medium line-clamp-2">{prompt}</div>
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>Model: {model.replace('@cf/', '').replace(/[_-]/g, ' ')}</span>
@@ -128,7 +183,7 @@ export function GeneratedImage({
             <span>{remainingGenerations} generations remaining today</span>
           )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
