@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { spawn } from 'child_process'
 import { promises as fs } from 'fs'
 import path from 'path'
+import { WORKSPACE_ROOT } from '@/lib/config'
 
-const WORKSPACE_ROOT = '/workspaces/agentai'
 const CODEHAT_PROJECT_ROOT = path.join(WORKSPACE_ROOT, 'codehat-projects')
 
 // Ensure CodeHat projects directory exists

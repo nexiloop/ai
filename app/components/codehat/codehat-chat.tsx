@@ -27,6 +27,7 @@ import dynamic from "next/dynamic"
 import { redirect, useSearchParams } from "next/navigation"
 import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { Code, Eye, FolderOpen } from "@phosphor-icons/react"
+import { Progress } from "@/components/ui/progress"
 import { useChatHandlers } from "../chat/use-chat-handlers"
 import { useCodeHatChatUtils } from "./use-codehat-chat-utils"
 import { useFileUpload } from "../chat/use-file-upload"
@@ -678,6 +679,16 @@ ${jsScripts}
           />
         )}
       </AnimatePresence>
+      {(isSubmitting || status === "streaming") && (
+        <motion.div
+          layoutId="codehat-progress"
+          className="absolute left-0 right-0 bottom-[72px] mx-auto w-full max-w-3xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <Progress value={50} className="h-1 w-full" />
+        </motion.div>
+      )}
       <motion.div
         className={cn(
           "relative inset-x-0 bottom-0 z-50 mx-auto w-full max-w-3xl"
