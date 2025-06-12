@@ -10,9 +10,14 @@
 
 ## Features
 
-- Multi-model support: OpenAI, Mistral, Claude, Gemini, **Ollama (local models)**, **Cloudflare Workers AI**
-- **Image Generation**: Integrated AI image generation with multiple Cloudflare models (FLUX.1, SDXL, Ideogram, etc.)
-- **Smart Chat Integration**: Simply type "generate image of..." in chat for automatic image creation
+- **Multi-model support**: OpenAI, Mistral, Claude, Gemini, **Ollama (local models)**, **Cloudflare Workers AI**
+- **🎨 Integrated Image Generation**: 
+  - Natural language image generation directly in chat
+  - Simply type "generate image of a sunset" or "create a picture of a cat"
+  - 9 Cloudflare Workers AI image models (FLUX.1 Schnell, SDXL Lightning, Ideogram v2 Turbo, etc.)
+  - Completely free with daily usage limits (5 images/day)
+  - Configurable preferred image model in settings
+- **Smart Chat Integration**: Auto-detects image generation requests in natural conversation
 - File uploads with context-aware answers
 - Clean, responsive UI with light/dark themes
 - Built with Tailwind, shadcn/ui, and prompt-kit
@@ -92,8 +97,26 @@ nexiloop includes integrated AI image generation powered by Cloudflare Workers A
 
 ### Supported Models
 - **FLUX.1 Schnell** - Ultra-fast, exceptional quality (default)
-- **SDXL Lightning** - Lightning-fast 1024px images
+- **SDXL Lightning** - Lightning-fast 1024px images  
 - **Ideogram v2 Turbo** - Excellent text rendering
+- **Stable Diffusion XL** - High-quality, versatile generation
+- **DreamShaper 8** - Artistic and creative styles
+- **OpenJourney v4** - Midjourney-style artistic generation
+- **Hunyuan DiT** - High-quality transformer-based generation
+
+### Setup
+Add your Cloudflare credentials to `.env.local`:
+```bash
+CLOUDFLARE_ACCOUNT_ID=your_account_id
+CLOUDFLARE_API_TOKEN=your_api_token
+```
+
+### Usage Examples
+- "generate image of a futuristic city"
+- "create a picture of a golden retriever in a park"  
+- "make an illustration of a space station"
+- "draw a painting of mountains at sunset"
+- "show me a visualization of neural networks"
 - **Stable Diffusion XL** - Versatile, high-quality generation
 - **DreamShaper 8** - Artistic and creative styles
 - **OpenJourney v4** - Midjourney-style artistic generation
