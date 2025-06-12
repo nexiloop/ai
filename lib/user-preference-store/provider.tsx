@@ -10,6 +10,7 @@ type UserPreferences = {
   showToolInvocations: boolean
   showConversationPreviews: boolean
   defaultImageModel: string
+  backgroundRemovalEnabled: boolean
 }
 
 const defaultPreferences: UserPreferences = {
@@ -18,6 +19,7 @@ const defaultPreferences: UserPreferences = {
   showToolInvocations: true,
   showConversationPreviews: true,
   defaultImageModel: "@cf/lykon/dreamshaper-8-lcm",
+  backgroundRemovalEnabled: false,
 }
 
 const PREFERENCES_STORAGE_KEY = "user-preferences"
@@ -30,6 +32,7 @@ interface UserPreferencesContextType {
   setShowToolInvocations: (enabled: boolean) => void
   setShowConversationPreviews: (enabled: boolean) => void
   setDefaultImageModel: (model: string) => void
+  setBackgroundRemovalEnabled: (enabled: boolean) => void
 }
 
 const UserPreferencesContext = createContext<
@@ -111,6 +114,10 @@ export function UserPreferencesProvider({
     setPreferences((prev) => ({ ...prev, defaultImageModel: model }))
   }
 
+  const setBackgroundRemovalEnabled = (enabled: boolean) => {
+    setPreferences((prev) => ({ ...prev, backgroundRemovalEnabled: enabled }))
+  }
+
   return (
     <UserPreferencesContext.Provider
       value={{
@@ -120,6 +127,7 @@ export function UserPreferencesProvider({
         setShowToolInvocations,
         setShowConversationPreviews,
         setDefaultImageModel,
+        setBackgroundRemovalEnabled,
       }}
     >
       {children}

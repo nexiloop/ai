@@ -105,6 +105,29 @@ export function CodeHatChat() {
 
   const { draftValue, clearDraft } = useChatDraft(chatId)
 
+  // Handle processed files from background removal
+  const handleFileProcessed = useCallback((processedBlob: Blob, originalFile: File) => {
+    // Create a new file from the processed blob
+    const processedFile = new File(
+      [processedBlob],
+      originalFile.name.replace(/\.[^/.]+$/, "") + "-bg-removed.png",
+      { type: "image/png" }
+    )
+    
+    // Replace the original file with the processed one
+    setFiles((prevFiles) => 
+      prevFiles.map(file => 
+        file === originalFile ? processedFile : file
+      )
+    )
+    
+    toast({
+      title: "Background removed successfully!",
+      description: "The processed image has replaced the original in your upload.",
+      status: "success"
+    })
+  }, [setFiles])
+
   const {
     messages,
     input,
@@ -741,6 +764,7 @@ ${jsScripts}
           files={files}
           onFileUpload={handleFileUpload}
           onFileRemove={handleFileRemove}
+          onFileProcessed={handleFileProcessed}
           hasSuggestions={
             preferences.promptSuggestions && !chatId && messages.length === 0
           }

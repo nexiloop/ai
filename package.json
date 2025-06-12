@@ -15,6 +15,7 @@
     "@ai-sdk/mistral": "^1.2.0",
     "@ai-sdk/openai": "^1.3.18",
     "@ai-sdk/xai": "^1.2.16",
+    "@imgly/background-removal": "^1.6.0",
     "@monaco-editor/react": "^4.7.0",
     "@openrouter/ai-sdk-provider": "^0.4.5",
     "@phosphor-icons/react": "^2.1.7",

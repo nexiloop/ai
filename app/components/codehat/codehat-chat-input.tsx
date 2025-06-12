@@ -26,6 +26,7 @@ type CodeHatChatInputProps = {
   files: File[]
   onFileUpload: (files: File[]) => void
   onFileRemove: (file: File) => void
+  onFileProcessed?: (processedBlob: Blob, originalFile: File) => void
   hasSuggestions?: boolean
   onSelectModel: (model: string) => void
   selectedModel: string
@@ -44,6 +45,7 @@ export function CodeHatChatInput({
   files,
   onFileUpload,
   onFileRemove,
+  onFileProcessed,
   hasSuggestions = false,
   onSelectModel,
   selectedModel,
@@ -121,7 +123,11 @@ export function CodeHatChatInput({
             </div>
           </div>
 
-          <FileList files={files} onFileRemove={onFileRemove} />
+          <FileList 
+            files={files} 
+            onFileRemove={onFileRemove}
+            onFileProcessed={onFileProcessed}
+          />
           <PromptInputTextarea
             placeholder="Tell me what you want to build..."
             onKeyDown={handleKeyDown}

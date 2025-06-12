@@ -31,6 +31,7 @@ type ChatInputProps = {
   files: File[]
   onFileUpload: (files: File[]) => void
   onFileRemove: (file: File) => void
+  onFileProcessed?: (processedBlob: Blob, originalFile: File) => void
   onSuggestion: (suggestion: string) => void
   hasSuggestions?: boolean
   onSelectModel: (model: string) => void
@@ -49,6 +50,7 @@ export function ChatInput({
   files,
   onFileUpload,
   onFileRemove,
+  onFileProcessed,
   onSuggestion,
   hasSuggestions,
   onSelectModel,
@@ -213,7 +215,11 @@ export function ChatInput({
             selectedAgent={agentCommand.selectedAgent}
             removeSelectedAgent={agentCommand.removeSelectedAgent}
           />
-          <FileList files={files} onFileRemove={onFileRemove} />
+          <FileList 
+            files={files} 
+            onFileRemove={onFileRemove} 
+            onFileProcessed={onFileProcessed}
+          />
           <PromptInputTextarea
             placeholder="Ask nexiloop anything..."
             onKeyDown={handleKeyDown}

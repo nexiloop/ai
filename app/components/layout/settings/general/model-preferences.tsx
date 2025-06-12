@@ -5,6 +5,8 @@ import { MODEL_DEFAULT } from "@/lib/config"
 import { useUser } from "@/lib/user-store/provider"
 import { useUserPreferences } from "@/lib/user-preference-store/provider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
+import { Badge } from "@/components/ui/badge"
 import { useEffect, useState } from "react"
 import { SystemPromptSection } from "./system-prompt"
 
@@ -48,7 +50,7 @@ const IMAGE_MODELS = [
 
 export function ModelPreferences() {
   const { user, updateUser } = useUser()
-  const { preferences, setDefaultImageModel } = useUserPreferences()
+  const { preferences, setDefaultImageModel, setBackgroundRemovalEnabled } = useUserPreferences()
   const [selectedModelId, setSelectedModelId] = useState<string>(
     user?.preferred_model || MODEL_DEFAULT
   )
@@ -104,6 +106,24 @@ export function ModelPreferences() {
         <p className="text-muted-foreground mt-2 text-xs">
           This model will be used when generating images from chat messages.
         </p>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <h3 className="text-sm font-medium flex items-center gap-2">
+              Background Removal
+              <Badge variant="secondary" className="text-xs">Beta</Badge>
+            </h3>
+            <p className="text-muted-foreground text-xs">
+              Automatically detect and show "Remove BG" option when uploading images
+            </p>
+          </div>
+          <Switch
+            checked={preferences.backgroundRemovalEnabled}
+            onCheckedChange={setBackgroundRemovalEnabled}
+          />
+        </div>
       </div>
 
       <SystemPromptSection />
