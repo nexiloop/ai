@@ -1,6 +1,7 @@
 import React from "react"
 import Anthropic from "@/components/icons/anthropic"
 import Claude from "@/components/icons/claude"
+import Cloudflare from "@/components/icons/cloudflare"
 import DeepSeek from "@/components/icons/deepseek"
 import Gemini from "@/components/icons/gemini"
 import Google from "@/components/icons/google"
@@ -68,6 +69,11 @@ export const PROVIDERS: Provider[] = [
     id: "anthropic",
     name: "Anthropic",
     icon: Anthropic,
+  },
+  {
+    id: "cloudflare",
+    name: "Cloudflare",
+    icon: Cloudflare,
   },
   {
     id: "ollama",

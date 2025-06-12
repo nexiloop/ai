@@ -4,7 +4,7 @@ export interface ProviderSettings {
   enabled: boolean
   apiKey?: string
   baseUrl?: string
-  type: 'openai' | 'anthropic' | 'google' | 'mistral' | 'xai' | 'deepseek' | 'ollama' | 'openai-compatible'
+  type: 'openai' | 'anthropic' | 'google' | 'mistral' | 'xai' | 'deepseek' | 'ollama' | 'cloudflare' | 'openai-compatible'
 }
 
 export interface OpenAICompatibleProvider extends ProviderSettings {

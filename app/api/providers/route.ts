@@ -29,6 +29,8 @@ export async function POST(request: NextRequest) {
       google: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
       anthropic: process.env.ANTHROPIC_API_KEY,
       xai: process.env.XAI_API_KEY,
+      cloudflare: process.env.CLOUDFLARE_API_TOKEN,
+      ollama: undefined, // Ollama doesn't require API keys
     }
     
     return NextResponse.json({ 

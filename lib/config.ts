@@ -16,6 +16,7 @@ export const DAILY_FILE_UPLOAD_LIMIT = 5
 // @todo: remove this
 export const DAILY_SPECIAL_AGENT_LIMIT = 5
 export const DAILY_LIMIT_PRO_MODELS = 5
+export const DAILY_IMAGE_GENERATION_LIMIT = 5 // 5 image generations per day
 
 // Root directory for CodeHat workspace
 // Can be overridden with the WORKSPACE_ROOT environment variable
@@ -28,6 +29,27 @@ export const FREE_MODELS_IDS = [
   "gpt-4.1-nano",
   "gpt-4o-mini",
   "gemini-2.0-flash",
+  // Cloudflare Workers AI models (all free)
+  "@cf/meta/llama-3.1-8b-instruct",
+  "@cf/meta/llama-2-7b-chat-int8",
+  "@cf/google/gemma-7b-it",
+  "@cf/mistral/mistral-7b-instruct-v0.2",
+  "@cf/nousresearch/hermes-2-pro-mistral-7b",
+  "@cf/llava-hf/llava-1.5-7b-hf",
+  "@cf/qwen/qwen1.5-7b-chat-awq",
+  "@cf/thebloke/openhermes-2.5-mistral-7b-awq",
+  "@cf/deepseek-ai/deepseek-math-7b-instruct",
+  "@cf/thebloke/deepseek-coder-6.7b-instruct-awq",
+  // Cloudflare Image Generation Models (all free)
+  "@cf/runwayml/stable-diffusion-v1-5-inpainting",
+  "@cf/bytedance/stable-diffusion-xl-lightning",
+  "@cf/lykon/dreamshaper-8-lcm",
+  "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+  "@cf/runwayml/stable-diffusion-v1-5-img2img",
+  "@cf/black-forest-labs/flux-1-schnell",
+  "@cf/ideogram-ai/ideogram-v2-turbo",
+  "@cf/prompthero/openjourney-v4",
+  "@cf/tencent/hunyuan-dit",
 ]
 
 

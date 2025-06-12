@@ -447,6 +447,44 @@ export type Database = {
           },
         ]
       }
+      image_generations: {
+        Row: {
+          id: string
+          user_id: string
+          model: string
+          prompt: string
+          image_url: string | null
+          created_at: string | null
+          generation_date: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          model: string
+          prompt: string
+          image_url?: string | null
+          created_at?: string | null
+          generation_date: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          model?: string
+          prompt?: string
+          image_url?: string | null
+          created_at?: string | null
+          generation_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "image_generations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

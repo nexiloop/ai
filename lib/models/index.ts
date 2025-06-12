@@ -1,5 +1,7 @@
 import { claudeModels } from "./data/claude"
+import { cloudflareModels } from "./data/cloudflare"
 import { deepseekModels } from "./data/deepseek"
+import { geminiModels } from "./data/gemini"
 import { grokModels } from "./data/grok"
 import { mistralModels } from "./data/mistral"
 import { ollamaModels, getOllamaModels } from "./data/ollama"
@@ -10,9 +12,11 @@ import { ModelConfig } from "./types"
 export const STATIC_MODELS: ModelConfig[] = [
   ...openaiModels,
   ...mistralModels,
+  ...geminiModels,
   ...deepseekModels,
   ...claudeModels,
   ...grokModels,
+  ...cloudflareModels,
   ...ollamaModels, // Static fallback Ollama models
 
   // not ready

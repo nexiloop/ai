@@ -1,0 +1,21 @@
+# Example Cloudflare Workers AI configuration
+# This is an example configuration for using Cloudflare Workers AI
+# Copy this to your project root and modify as needed
+
+name = "nexiloop-workers-ai"
+compatibility_date = "2023-12-01"
+
+[ai]
+binding = "AI"
+
+# Environment variables for Cloudflare Workers
+[vars]
+ENVIRONMENT = "production"
+
+# If deploying to Workers, you might want to set these
+# [env.production.vars]
+# DATABASE_URL = "your-production-database-url"
+
+# For local development with wrangler
+# [env.development.vars]
+# DATABASE_URL = "your-local-database-url"

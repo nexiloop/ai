@@ -113,7 +113,47 @@ export type StaticOllamaModel =
 // Dynamic Ollama model type - allows any string for auto-detected models
 export type OllamaModel = StaticOllamaModel | (string & {})
 
-export type Provider = "openai" | "mistral" | "google" | "anthropic" | "xai" | "ollama"
+// Cloudflare Workers AI models
+export type CloudflareModel =
+  | "@cf/meta/llama-3.1-8b-instruct"
+  | "@cf/meta/llama-2-7b-chat-int8"
+  | "@cf/google/gemma-2b-it-lora"
+  | "@cf/google/gemma-7b-it-lora"
+  | "@cf/nexusflow/starling-lm-7b-beta"
+  | "@cf/thebloke/llamaguard-7b-awq"
+  | "@cf/thebloke/neural-chat-7b-v3-1-awq"
+  | "@cf/mistral/mistral-7b-instruct-v0.2-lora"
+  | "@cf/tinyllama/tinyllama-1.1b-chat-v1.0"
+  | "@cf/mistral/mistral-7b-instruct-v0.2"
+  | "@cf/fblgit/una-cybertron-7b-v2-bf16"
+  | "@cf/thebloke/discolm-german-7b-v1-awq"
+  | "@cf/thebloke/mistral-7b-instruct-v0.1-awq"
+  | "@cf/qwen/qwen1.5-7b-chat-awq"
+  | "@cf/thebloke/llama-2-13b-chat-awq"
+  | "@cf/thebloke/deepseek-coder-6.7b-base-awq"
+  | "@cf/meta-llama/llama-2-7b-chat-hf-lora"
+  | "@cf/thebloke/openhermes-2.5-mistral-7b-awq"
+  | "@cf/thebloke/deepseek-coder-6.7b-instruct-awq"
+  | "@cf/deepseek-ai/deepseek-math-7b-instruct"
+  | "@cf/tiiuae/falcon-7b-instruct"
+  | "@cf/nousresearch/hermes-2-pro-mistral-7b"
+  | "@cf/thebloke/zephyr-7b-beta-awq"
+  | "@cf/qwen/qwen1.5-1.8b-chat"
+  | "@cf/defog/sqlcoder-7b-2"
+  | "@cf/microsoft/phi-2"
+  | "@cf/google/gemma-7b-it"
+  | "@cf/qwen/qwen1.5-14b-chat-awq"
+  | "@cf/openchat/openchat-3.5-0106"
+  | "@cf/llava-hf/llava-1.5-7b-hf"
+  | "@cf/unum/uform-gen2-qwen-500m"
+  // Image Generation Models
+  | "@cf/runwayml/stable-diffusion-v1-5-inpainting"
+  | "@cf/bytedance/stable-diffusion-xl-lightning"
+  | "@cf/lykon/dreamshaper-8-lcm"
+  | "@cf/stabilityai/stable-diffusion-xl-base-1.0"
+  | "@cf/runwayml/stable-diffusion-v1-5-img2img"
+
+export type Provider = "openai" | "mistral" | "google" | "anthropic" | "xai" | "ollama" | "cloudflare"
 
 export type SupportedModel =
   | OpenAIModel
@@ -122,3 +162,4 @@ export type SupportedModel =
   | AnthropicModel
   | XaiModel
   | OllamaModel
+  | CloudflareModel

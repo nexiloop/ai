@@ -23,6 +23,9 @@ export function ProviderSettings() {
   const [enableXai, setEnableXai] = useState(false)
   const [googleAPIKey, setGoogleAPIKey] = useState("")
   const [enableGoogle, setEnableGoogle] = useState(false)
+  const [cloudflareAccountId, setCloudflareAccountId] = useState("")
+  const [cloudflareApiToken, setCloudflareApiToken] = useState("")
+  const [enableCloudflare, setEnableCloudflare] = useState(false)
   const [ollamaEndpoint, setOllamaEndpoint] = useState("http://localhost:11434")
   const [enableOllama, setEnableOllama] = useState(false)
 
@@ -67,6 +70,9 @@ export function ProviderSettings() {
               case "xai":
                 setXaiAPIKey(key.maskedKey)
                 break
+              case "cloudflare":
+                setCloudflareApiToken(key.maskedKey)
+                break
             }
           })
         }
@@ -93,6 +99,7 @@ export function ProviderSettings() {
         { provider: "google", key: googleAPIKey },
         { provider: "anthropic", key: anthropicAPIKey },
         { provider: "xai", key: xaiAPIKey },
+        { provider: "cloudflare", key: cloudflareApiToken },
       ]
 
       for (const { provider, key } of keysToSave) {
@@ -129,13 +136,14 @@ export function ProviderSettings() {
       </div>
 
       <Tabs defaultValue="openrouter" className="w-full">
-        <TabsList className="grid w-full grid-cols-7">
+        <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="openrouter">OpenRouter</TabsTrigger>
           <TabsTrigger value="openai">OpenAI</TabsTrigger>
           <TabsTrigger value="mistral">Mistral</TabsTrigger>
           <TabsTrigger value="anthropic">Anthropic</TabsTrigger>
           <TabsTrigger value="xai">xAI</TabsTrigger>
           <TabsTrigger value="google">Google</TabsTrigger>
+          <TabsTrigger value="cloudflare">Cloudflare</TabsTrigger>
           <TabsTrigger value="ollama">Ollama</TabsTrigger>
         </TabsList>
 
@@ -292,6 +300,44 @@ export function ProviderSettings() {
                   value={googleAPIKey}
                   onChange={(e) => setGoogleAPIKey(e.target.value)}
                   disabled={!enableGoogle}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="cloudflare" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span>Cloudflare Workers AI</span>
+                <Switch
+                  checked={enableCloudflare}
+                  onCheckedChange={setEnableCloudflare}
+                />
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="cloudflare-account-id">Account ID</Label>
+                <Input
+                  id="cloudflare-account-id"
+                  type="text"
+                  placeholder="your-cloudflare-account-id"
+                  value={cloudflareAccountId}
+                  onChange={(e) => setCloudflareAccountId(e.target.value)}
+                  disabled={!enableCloudflare}
+                />
+              </div>
+              <div>
+                <Label htmlFor="cloudflare-api-token">API Token</Label>
+                <Input
+                  id="cloudflare-api-token"
+                  type="password"
+                  placeholder="your-cloudflare-api-token"
+                  value={cloudflareApiToken}
+                  onChange={(e) => setCloudflareApiToken(e.target.value)}
+                  disabled={!enableCloudflare}
                 />
               </div>
             </CardContent>

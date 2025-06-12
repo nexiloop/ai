@@ -4,10 +4,12 @@ import { mistral, createMistral } from "@ai-sdk/mistral"
 import { openai, createOpenAI } from "@ai-sdk/openai"
 import type { LanguageModelV1 } from "@ai-sdk/provider"
 import { xai, createXai } from "@ai-sdk/xai"
+import { createWorkersAI } from "workers-ai-provider"
 import { getProviderForModel } from "./provider-map"
 
 import type {
   AnthropicModel,
+  CloudflareModel,
   GeminiModel,
   MistralModel,
   OllamaModel,
@@ -23,6 +25,7 @@ type GoogleGenerativeAIProviderSettings = Parameters<typeof google>[1]
 type AnthropicProviderSettings = Parameters<typeof anthropic>[1]
 type XaiProviderSettings = Parameters<typeof xai>[1]
 type OllamaProviderSettings = OpenAIChatSettings // Ollama uses OpenAI-compatible API
+type CloudflareProviderSettings = {} // Cloudflare Workers AI has minimal settings
 
 type ModelSettings<T extends SupportedModel> = T extends OpenAIModel
   ? OpenAIChatSettings
@@ -36,7 +39,9 @@ type ModelSettings<T extends SupportedModel> = T extends OpenAIModel
           ? XaiProviderSettings
           : T extends OllamaModel
             ? OllamaProviderSettings
-            : never
+            : T extends CloudflareModel
+              ? CloudflareProviderSettings
+              : never
 
 export type OpenProvidersOptions<T extends SupportedModel> = ModelSettings<T>
 
@@ -113,6 +118,16 @@ export function openproviders<T extends SupportedModel>(
   if (provider === "ollama") {
     const ollamaProvider = createOllamaProvider()
     return ollamaProvider(modelId as OllamaModel, settings as OllamaProviderSettings)
+  }
+
+  if (provider === "cloudflare") {
+    // For Cloudflare Workers AI, we need to get the AI binding from env
+    // In a Cloudflare Worker environment, this would be available as env.AI
+    // For now, we'll create a basic implementation that can be extended
+    const workersai = createWorkersAI({ 
+      binding: (globalThis as any).AI || null
+    })
+    return workersai(modelId as CloudflareModel, settings as CloudflareProviderSettings)
   }
 
   throw new Error(`Unsupported model: ${modelId}`)

@@ -2,7 +2,7 @@ import { createClient } from "./supabase/server"
 import { decryptKey } from "./encryption"
 import { env } from "./openproviders/env"
 
-export type Provider = "openai" | "mistral" | "google" | "anthropic" | "xai"
+export type Provider = "openai" | "mistral" | "google" | "anthropic" | "xai" | "cloudflare" | "ollama"
 
 export async function getUserKey(userId: string, provider: Provider): Promise<string | null> {
   try {
@@ -37,6 +37,8 @@ export async function getEffectiveApiKey(userId: string | null, provider: Provid
     google: env.GOOGLE_GENERATIVE_AI_API_KEY,
     anthropic: env.ANTHROPIC_API_KEY,
     xai: env.XAI_API_KEY,
+    cloudflare: process.env.CLOUDFLARE_API_TOKEN,
+    ollama: undefined, // Ollama doesn't require API keys
   }
 
   return envKeyMap[provider] || null

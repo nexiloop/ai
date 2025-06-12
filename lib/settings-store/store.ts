@@ -40,6 +40,12 @@ const defaultProviders: ProviderSettings[] = [
     type: 'deepseek',
   },
   {
+    id: 'cloudflare',
+    name: 'Cloudflare Workers AI',
+    enabled: true,
+    type: 'cloudflare',
+  },
+  {
     id: 'ollama',
     name: 'Ollama',
     enabled: true,
