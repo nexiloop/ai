@@ -9,6 +9,7 @@ type UserPreferences = {
   promptSuggestions: boolean
   showToolInvocations: boolean
   showConversationPreviews: boolean
+  defaultImageModel: string
 }
 
 const defaultPreferences: UserPreferences = {
@@ -16,6 +17,7 @@ const defaultPreferences: UserPreferences = {
   promptSuggestions: true,
   showToolInvocations: true,
   showConversationPreviews: true,
+  defaultImageModel: "@cf/black-forest-labs/flux-1-schnell",
 }
 
 const PREFERENCES_STORAGE_KEY = "user-preferences"
@@ -27,6 +29,7 @@ interface UserPreferencesContextType {
   setPromptSuggestions: (enabled: boolean) => void
   setShowToolInvocations: (enabled: boolean) => void
   setShowConversationPreviews: (enabled: boolean) => void
+  setDefaultImageModel: (model: string) => void
 }
 
 const UserPreferencesContext = createContext<
@@ -104,6 +107,10 @@ export function UserPreferencesProvider({
     setPreferences((prev) => ({ ...prev, showConversationPreviews: enabled }))
   }
 
+  const setDefaultImageModel = (model: string) => {
+    setPreferences((prev) => ({ ...prev, defaultImageModel: model }))
+  }
+
   return (
     <UserPreferencesContext.Provider
       value={{
@@ -112,6 +119,7 @@ export function UserPreferencesProvider({
         setPromptSuggestions,
         setShowToolInvocations,
         setShowConversationPreviews,
+        setDefaultImageModel,
       }}
     >
       {children}

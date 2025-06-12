@@ -501,6 +501,7 @@ ${jsScripts}
           model: selectedModel,
           isAuthenticated,
           systemPrompt: systemPrompt,
+          preferredImageModel: preferences.defaultImageModel,
         },
         experimental_attachments: attachments || undefined,
       }
@@ -569,6 +570,7 @@ ${jsScripts}
           model: selectedModel,
           isAuthenticated,
           systemPrompt: systemPrompt,
+          preferredImageModel: preferences.defaultImageModel,
         },
       }
 
@@ -607,6 +609,7 @@ ${jsScripts}
         model: selectedModel,
         isAuthenticated,
         systemPrompt: systemPrompt,
+        preferredImageModel: preferences.defaultImageModel,
       },
     }
 

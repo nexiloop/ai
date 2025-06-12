@@ -238,6 +238,7 @@ export function Chat() {
         model: selectedModel,
         isAuthenticated,
         systemPrompt: systemPrompt || SYSTEM_PROMPT_DEFAULT,
+        preferredImageModel: preferences.defaultImageModel,
         ...(effectiveAgentId && { agentId: effectiveAgentId }),
       },
       experimental_attachments: attachments || undefined,
@@ -302,6 +303,7 @@ export function Chat() {
           model: selectedModel,
           isAuthenticated,
           systemPrompt: SYSTEM_PROMPT_DEFAULT,
+          preferredImageModel: preferences.defaultImageModel,
         },
       }
 
@@ -339,6 +341,7 @@ export function Chat() {
         model: selectedModel,
         isAuthenticated,
         systemPrompt: systemPrompt || SYSTEM_PROMPT_DEFAULT,
+        preferredImageModel: preferences.defaultImageModel,
       },
     }
 

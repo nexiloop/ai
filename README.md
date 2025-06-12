@@ -10,12 +10,14 @@
 
 ## Features
 
-- Multi-model support: OpenAI, Mistral, Claude, Gemini, **Ollama (local models)**
+- Multi-model support: OpenAI, Mistral, Claude, Gemini, **Ollama (local models)**, **Cloudflare Workers AI**
+- **Image Generation**: Integrated AI image generation with multiple Cloudflare models (FLUX.1, SDXL, Ideogram, etc.)
+- **Smart Chat Integration**: Simply type "generate image of..." in chat for automatic image creation
 - File uploads with context-aware answers
 - Clean, responsive UI with light/dark themes
 - Built with Tailwind, shadcn/ui, and prompt-kit
 - Fully open-source and self-hostable
-- Customizable: user system prompt, multiple layout options
+- Customizable: user system prompt, multiple layout options, preferred image models
 - **Local AI with Ollama**: Run models locally with automatic model detection
 
 ## Agent Features (WIP)
@@ -76,6 +78,33 @@ WORKSPACE_ROOT=/path/to/workspace npm run dev
 
 All projects are saved under `codehat-projects` inside this workspace
 and the interactive terminal operates from that directory.
+
+## Image Generation
+
+nexiloop includes integrated AI image generation powered by Cloudflare Workers AI:
+
+### Features
+- **Natural Language**: Simply type "generate image of a sunset" or "create a picture of a cat" in any chat
+- **Multiple Models**: Choose from 9+ high-quality image models (FLUX.1 Schnell, SDXL Lightning, Ideogram v2, etc.)
+- **Daily Limits**: 5 free image generations per day for all users
+- **Inline Results**: Generated images appear directly in your chat conversation
+- **Model Selection**: Configure your preferred image model in Settings → General → Model Preferences
+
+### Supported Models
+- **FLUX.1 Schnell** - Ultra-fast, exceptional quality (default)
+- **SDXL Lightning** - Lightning-fast 1024px images
+- **Ideogram v2 Turbo** - Excellent text rendering
+- **Stable Diffusion XL** - Versatile, high-quality generation
+- **DreamShaper 8** - Artistic and creative styles
+- **OpenJourney v4** - Midjourney-style artistic generation
+- **Hunyuan DiT** - Transformer-based generation
+
+### Setup
+Add your Cloudflare credentials to enable image generation:
+```bash
+CLOUDFLARE_ACCOUNT_ID=your_account_id
+CLOUDFLARE_API_TOKEN=your_api_token
+```
 
 ## Built with
 

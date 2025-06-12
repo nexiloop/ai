@@ -17,7 +17,6 @@ import React, { useCallback, useEffect, useState } from "react"
 import { PromptSystem } from "../suggestions/prompt-system"
 import { AgentCommand } from "./agent-command"
 import { ButtonFileUpload } from "./button-file-upload"
-import { ButtonImageGenerator } from "./button-image-generator"
 import { ButtonSearch } from "./button-search"
 import { FileList } from "./file-list"
 import { SelectedAgent } from "./selected-agent"
@@ -227,9 +226,6 @@ export function ChatInput({
                 onFileUpload={onFileUpload}
                 isUserAuthenticated={isUserAuthenticated}
                 model={selectedModel}
-              />
-              <ButtonImageGenerator
-                isUserAuthenticated={isUserAuthenticated}
               />
     
               <Button
