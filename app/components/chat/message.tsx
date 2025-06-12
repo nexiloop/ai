@@ -43,12 +43,6 @@ export function Message({
   if (variant === "user") {
     return (
       <MessageUser
-        copied={copied}
-        copyToClipboard={copyToClipboard}
-        onReload={onReload}
-        onEdit={onEdit}
-        onDelete={onDelete}
-        id={id}
         hasScrollAnchor={hasScrollAnchor}
         attachments={attachments}
       >

@@ -21,6 +21,7 @@ import { ButtonSearch } from "./button-search"
 import { FileList } from "./file-list"
 import { SelectedAgent } from "./selected-agent"
 import { useSearchAgent } from "./use-search-agent"
+import { ProcessedImageData } from "@/lib/background-removal"
 
 type ChatInputProps = {
   value: string
@@ -31,7 +32,7 @@ type ChatInputProps = {
   files: File[]
   onFileUpload: (files: File[]) => void
   onFileRemove: (file: File) => void
-  onFileProcessed?: (processedBlob: Blob, originalFile: File) => void
+  onFileProcessed?: (processedImageData: ProcessedImageData) => void
   onSuggestion: (suggestion: string) => void
   hasSuggestions?: boolean
   onSelectModel: (model: string) => void

@@ -49,6 +49,40 @@ export function downloadProcessedImage(blob: Blob, filename: string = 'backgroun
   document.body.removeChild(a)
 }
 
+export function revokeImageUrl(url: string) {
+  URL.revokeObjectURL(url)
+}
+
+export type ProcessedImageData = {
+  originalFile: File
+  processedBlob: Blob
+  previewUrl: string
+  filename: string
+}
+
+export async function processImageWithPreview(file: File): Promise<ProcessedImageData> {
+  try {
+    const preparedBlob = await prepareImageForProcessing(file)
+    const processedBlob = await removeBackground(preparedBlob)
+    const previewUrl = createImageFromBlob(processedBlob)
+    
+    // Generate filename with timestamp
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)
+    const originalName = file.name.replace(/\.[^/.]+$/, '')
+    const filename = `${originalName}-bg-removed-${timestamp}.png`
+    
+    return {
+      originalFile: file,
+      processedBlob,
+      previewUrl,
+      filename
+    }
+  } catch (error) {
+    console.error('Failed to process image with preview:', error)
+    throw error
+  }
+}
+
 // Utility to convert file to supported format
 export function prepareImageForProcessing(file: File): Promise<Blob> {
   return new Promise((resolve, reject) => {

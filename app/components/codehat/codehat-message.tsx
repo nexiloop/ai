@@ -99,12 +99,6 @@ export function CodeHatMessage({
       {/* For user messages, use the standard component */}
       {variant === "user" ? (
         <MessageUser
-          copied={copied}
-          copyToClipboard={copyToClipboard}
-          onReload={onReload}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          id={id}
           hasScrollAnchor={hasScrollAnchor}
           attachments={attachments}
         >

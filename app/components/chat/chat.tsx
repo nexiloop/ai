@@ -2,6 +2,7 @@
 
 import { ChatInput } from "@/app/components/chat-input/chat-input"
 import { Conversation } from "@/app/components/chat/conversation"
+import { ProcessedImageData } from "@/lib/background-removal"
 import { useChatDraft } from "@/app/hooks/use-chat-draft"
 import { toast } from "@/components/ui/toast"
 import { useAgent } from "@/lib/agent-store/provider"
@@ -98,18 +99,18 @@ export function Chat() {
   const { draftValue, clearDraft } = useChatDraft(chatId)
 
   // Handle processed files from background removal
-  const handleFileProcessed = useCallback((processedBlob: Blob, originalFile: File) => {
+  const handleFileProcessed = useCallback((processedImageData: ProcessedImageData) => {
     // Create a new file from the processed blob
     const processedFile = new File(
-      [processedBlob],
-      originalFile.name.replace(/\.[^/.]+$/, "") + "-bg-removed.png",
+      [processedImageData.processedBlob],
+      processedImageData.filename,
       { type: "image/png" }
     )
     
     // Replace the original file with the processed one
     setFiles((prevFiles) => 
       prevFiles.map(file => 
-        file === originalFile ? processedFile : file
+        file === processedImageData.originalFile ? processedFile : file
       )
     )
     

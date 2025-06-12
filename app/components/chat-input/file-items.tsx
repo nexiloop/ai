@@ -15,16 +15,19 @@ import { X } from "@phosphor-icons/react"
 import Image from "next/image"
 import { useState } from "react"
 import { BackgroundRemovalButton } from "../chat/background-removal-button"
+import { ProcessedImagePreview } from "../chat/processed-image-preview"
+import { ProcessedImageData } from "@/lib/background-removal"
 
 type FileItemProps = {
   file: File
   onRemove: (file: File) => void
-  onFileProcessed?: (processedBlob: Blob, originalFile: File) => void
+  onFileProcessed?: (processedImageData: ProcessedImageData) => void
 }
 
 export function FileItem({ file, onRemove, onFileProcessed }: FileItemProps) {
   const [isRemoving, setIsRemoving] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [processedImages, setProcessedImages] = useState<ProcessedImageData[]>([])
   const { preferences } = useUserPreferences()
 
   const handleRemove = () => {
@@ -35,10 +38,15 @@ export function FileItem({ file, onRemove, onFileProcessed }: FileItemProps) {
   const isImage = file.type.includes("image")
   const showBackgroundRemoval = isImage && preferences.backgroundRemovalEnabled
 
-  const handleFileProcessed = (processedBlob: Blob, originalFile: File) => {
+  const handleFileProcessed = (processedImageData: ProcessedImageData) => {
+    setProcessedImages(prev => [...prev, processedImageData])
     if (onFileProcessed) {
-      onFileProcessed(processedBlob, originalFile)
+      onFileProcessed(processedImageData)
     }
+  }
+
+  const handleRemoveProcessedImage = (index: number) => {
+    setProcessedImages(prev => prev.filter((_, i) => i !== index))
   }
 
   return (
@@ -109,6 +117,19 @@ export function FileItem({ file, onRemove, onFileProcessed }: FileItemProps) {
           size="sm"
           className="w-full"
         />
+      )}
+      
+      {/* Processed Images Preview */}
+      {processedImages.length > 0 && (
+        <div className="flex flex-col gap-2 mt-2">
+          {processedImages.map((processedImage, index) => (
+            <ProcessedImagePreview
+              key={index}
+              processedImage={processedImage}
+              onRemove={() => handleRemoveProcessedImage(index)}
+            />
+          ))}
+        </div>
       )}
     </div>
   )

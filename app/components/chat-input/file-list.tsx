@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from "motion/react"
 import { FileItem } from "./file-items"
+import { ProcessedImageData } from "@/lib/background-removal"
 
 type FileListProps = {
   files: File[]
   onFileRemove: (file: File) => void
-  onFileProcessed?: (processedBlob: Blob, originalFile: File) => void
+  onFileProcessed?: (processedImageData: ProcessedImageData) => void
 }
 
 const TRANSITION = {

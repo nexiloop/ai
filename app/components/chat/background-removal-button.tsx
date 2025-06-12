@@ -4,13 +4,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Scissors, Download, Loader2 } from "lucide-react"
-import { removeBackground, createImageFromBlob, downloadProcessedImage } from "@/lib/background-removal"
+import { processImageWithPreview, ProcessedImageData } from "@/lib/background-removal"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "motion/react"
 
 type BackgroundRemovalButtonProps = {
   file: File
-  onProcessed?: (processedBlob: Blob, originalFile: File) => void
+  onProcessed?: (processedImageData: ProcessedImageData) => void
   className?: string
   variant?: "default" | "outline" | "secondary"
   size?: "default" | "sm" | "lg"
@@ -37,20 +37,13 @@ export function BackgroundRemovalButton({
     try {
       console.log('Starting background removal for:', file.name)
       
-      const processedBlob = await removeBackground(file)
+      const processedImageData = await processImageWithPreview(file)
       
       console.log('Background removal completed successfully')
       
-      // Create a new file name
-      const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "")
-      const newFileName = `${nameWithoutExt}-bg-removed.png`
-      
       // Call the callback if provided
       if (onProcessed) {
-        onProcessed(processedBlob, file)
-      } else {
-        // Default behavior: download the processed image
-        downloadProcessedImage(processedBlob, newFileName)
+        onProcessed(processedImageData)
       }
       
       setIsCompleted(true)
@@ -104,7 +97,7 @@ export function BackgroundRemovalButton({
               className="flex items-center gap-2"
             >
               <Download className="h-4 w-4" />
-              <span>Downloaded!</span>
+              <span>Processed!</span>
             </motion.div>
           ) : error ? (
             <motion.div

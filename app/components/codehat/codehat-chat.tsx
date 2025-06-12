@@ -4,6 +4,7 @@ import { CodeHatChatInput } from "@/app/components/codehat/codehat-chat-input"
 import { CodeHatConversation } from "@/app/components/codehat/codehat-conversation"
 import { useChatDraft } from "@/app/hooks/use-chat-draft"
 import { useCodeHatProject } from "@/app/hooks/use-codehat-project"
+import { ProcessedImageData } from "@/lib/background-removal"
 import { toast } from "@/components/ui/toast"
 import { useAgent } from "@/lib/agent-store/provider"
 import { getOrCreateGuestUserId } from "@/lib/api"
@@ -106,18 +107,18 @@ export function CodeHatChat() {
   const { draftValue, clearDraft } = useChatDraft(chatId)
 
   // Handle processed files from background removal
-  const handleFileProcessed = useCallback((processedBlob: Blob, originalFile: File) => {
+  const handleFileProcessed = useCallback((processedImageData: ProcessedImageData) => {
     // Create a new file from the processed blob
     const processedFile = new File(
-      [processedBlob],
-      originalFile.name.replace(/\.[^/.]+$/, "") + "-bg-removed.png",
+      [processedImageData.processedBlob],
+      processedImageData.filename,
       { type: "image/png" }
     )
     
     // Replace the original file with the processed one
     setFiles((prevFiles) => 
       prevFiles.map(file => 
-        file === originalFile ? processedFile : file
+        file === processedImageData.originalFile ? processedFile : file
       )
     )
     

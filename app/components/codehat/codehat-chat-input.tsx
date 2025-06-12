@@ -16,6 +16,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { CodeHatPromptSystem } from "./codehat-prompt-system"
 import { ButtonFileUpload } from "../chat-input/button-file-upload"
 import { FileList } from "../chat-input/file-list"
+import { ProcessedImageData } from "@/lib/background-removal"
 
 type CodeHatChatInputProps = {
   value: string
@@ -26,7 +27,7 @@ type CodeHatChatInputProps = {
   files: File[]
   onFileUpload: (files: File[]) => void
   onFileRemove: (file: File) => void
-  onFileProcessed?: (processedBlob: Blob, originalFile: File) => void
+  onFileProcessed?: (processedImageData: ProcessedImageData) => void
   hasSuggestions?: boolean
   onSelectModel: (model: string) => void
   selectedModel: string
@@ -113,13 +114,13 @@ export function CodeHatChatInput({
         >
           {/* CodeHat Indicator */}
           <div className="border-b border-border flex items-center gap-2 px-3 py-2">
-            <Code className="h-4 w-4 text-blue-500" />
-            <span className="text-sm font-medium">CodeHat Mode</span>
+            <Code className="h-4 w-4 " />
+            <span className="text-sm font-medium">CodeHat</span>
             <Badge variant="secondary" className="text-xs">
               Beta
             </Badge>
             <div className="text-muted-foreground ml-auto text-xs">
-              AI-powered app development
+  by Nexiloop
             </div>
           </div>
 
@@ -144,7 +145,7 @@ export function CodeHatChatInput({
                 selectedModelId={selectedModel}
                 setSelectedModelId={onSelectModel}
                 isUserAuthenticated={isUserAuthenticated}
-                className="sm:px-2.5 sm:py-1.5 sm:text-xs"
+                className="sm:px-2.5 rounded-full sm:py-1.5 sm:text-xs"
               />
             </div>
             <PromptInputAction
