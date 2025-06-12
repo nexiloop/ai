@@ -117,10 +117,6 @@ CLOUDFLARE_API_TOKEN=your_api_token
 - "make an illustration of a space station"
 - "draw a painting of mountains at sunset"
 - "show me a visualization of neural networks"
-- **Stable Diffusion XL** - Versatile, high-quality generation
-- **DreamShaper 8** - Artistic and creative styles
-- **OpenJourney v4** - Midjourney-style artistic generation
-- **Hunyuan DiT** - Transformer-based generation
 
 ### Setup
 Add your Cloudflare credentials to enable image generation:

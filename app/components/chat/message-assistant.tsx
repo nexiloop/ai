@@ -13,6 +13,7 @@ import { Reasoning } from "./reasoning"
 import { SearchImages } from "./search-images"
 import { SourcesList } from "./sources-list"
 import { ToolInvocation } from "./tool-invocation"
+import { GeneratedImage } from "./generated-image"
 
 type MessageAssistantProps = {
   children: string
@@ -23,6 +24,7 @@ type MessageAssistantProps = {
   onReload?: () => void
   parts?: MessageAISDK["parts"]
   status?: "streaming" | "ready" | "submitted" | "error"
+  imageGenerationData?: any
 }
 
 export function MessageAssistant({
@@ -34,6 +36,7 @@ export function MessageAssistant({
   onReload,
   parts,
   status,
+  imageGenerationData,
 }: MessageAssistantProps) {
   const { preferences } = useUserPreferences()
   const sources = getSources(parts)
@@ -93,6 +96,16 @@ export function MessageAssistant({
           >
             {children}
           </MessageContent>
+        )}
+
+        {imageGenerationData && (
+          <GeneratedImage
+            imageUrl={imageGenerationData.imageUrl}
+            prompt={imageGenerationData.prompt}
+            model={imageGenerationData.model}
+            remainingGenerations={imageGenerationData.remainingGenerations}
+            className="mt-4"
+          />
         )}
 
         {sources && sources.length > 0 && <SourcesList sources={sources} />}

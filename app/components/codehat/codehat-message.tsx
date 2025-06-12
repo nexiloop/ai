@@ -22,6 +22,7 @@ type CodeHatMessageProps = {
   hasScrollAnchor?: boolean
   parts?: MessageType["parts"]
   status?: "streaming" | "ready" | "submitted" | "error"
+  imageGenerationData?: any
 }
 
 export function CodeHatMessage({
@@ -36,6 +37,7 @@ export function CodeHatMessage({
   hasScrollAnchor,
   parts,
   status,
+  imageGenerationData,
 }: CodeHatMessageProps) {
   const [copied, setCopied] = useState(false)
   const [copiedCodeBlock, setCopiedCodeBlock] = useState<number | null>(null)
@@ -121,6 +123,7 @@ export function CodeHatMessage({
               hasScrollAnchor={hasScrollAnchor}
               status={status}
               parts={parts}
+              imageGenerationData={imageGenerationData}
             >
               {textParts.filter(part => part.type === 'text').map(part => part.content).join('\n')}
             </MessageAssistant>

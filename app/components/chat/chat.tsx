@@ -90,6 +90,9 @@ export function Chat() {
   const [hydrated, setHydrated] = useState(false)
   const hasSentFirstMessageRef = useRef(false)
 
+  // State to store image generation data
+  const [imageGenerationData, setImageGenerationData] = useState<Record<string, any>>({})
+
   const isAuthenticated = !!user?.id
 
   const { draftValue, clearDraft } = useChatDraft(chatId)
@@ -105,6 +108,7 @@ export function Chat() {
     setMessages,
     setInput,
     append,
+    data,
   } = useChat({
     api: API_ROUTE_CHAT,
     initialMessages,
@@ -113,7 +117,33 @@ export function Chat() {
       // store the assistant message in the cache
       await cacheAndAddMessage(message)
     },
+    onError: (error) => {
+      console.error("Chat error:", error)
+    },
   })
+
+  // Handle custom data chunks for image generation
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      data.forEach((chunk: any) => {
+        if (chunk?.type === "image-generation") {
+          // Associate image data with the latest assistant message
+          const latestMessage = messages[messages.length - 1]
+          if (latestMessage && latestMessage.role === "assistant") {
+            setImageGenerationData(prev => ({
+              ...prev,
+              [latestMessage.id]: {
+                imageUrl: chunk.imageUrl,
+                prompt: chunk.prompt,
+                model: chunk.model,
+                remainingGenerations: chunk.remainingGenerations
+              }
+            }))
+          }
+        }
+      })
+    }
+  }, [data, messages])
 
   const { checkLimitsAndNotify, ensureChatExists } = useChatUtils({
     isAuthenticated,
@@ -408,6 +438,7 @@ How can I help you today?
             onDelete={handleDelete}
             onEdit={handleEdit}
             onReload={handleReload}
+            imageGenerationData={imageGenerationData}
           />
         )}
       </AnimatePresence>

@@ -16,6 +16,7 @@ type CodeHatConversationProps = {
   onDelete: (id: string) => void
   onEdit: (id: string, newText: string) => void
   onReload: () => void
+  imageGenerationData?: any
 }
 
 export function CodeHatConversation({
@@ -24,6 +25,7 @@ export function CodeHatConversation({
   onDelete,
   onEdit,
   onReload,
+  imageGenerationData,
 }: CodeHatConversationProps) {
   const initialMessageCount = useRef(messages.length)
 
@@ -69,6 +71,7 @@ export function CodeHatConversation({
                   attachments={message.experimental_attachments}
                   parts={message.parts}
                   status={status}
+                  imageGenerationData={imageGenerationData}
                 >
                   {message.content}
                 </CodeHatMessage>
@@ -88,6 +91,7 @@ export function CodeHatConversation({
                 attachments={message.experimental_attachments}
                 parts={message.parts}
                 status={status}
+                imageGenerationData={imageGenerationData}
               >
                 {message.content}
               </Message>

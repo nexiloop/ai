@@ -14,6 +14,7 @@ type ConversationProps = {
   onDelete: (id: string) => void
   onEdit: (id: string, newText: string) => void
   onReload: () => void
+  imageGenerationData?: Record<string, any>
 }
 
 export function Conversation({
@@ -22,6 +23,7 @@ export function Conversation({
   onDelete,
   onEdit,
   onReload,
+  imageGenerationData,
 }: ConversationProps) {
   const initialMessageCount = useRef(messages.length)
 
@@ -62,6 +64,7 @@ export function Conversation({
                 hasScrollAnchor={hasScrollAnchor}
                 parts={message.parts}
                 status={status}
+                imageGenerationData={imageGenerationData?.[message.id]}
               >
                 {message.content}
               </Message>

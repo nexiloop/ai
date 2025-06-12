@@ -60,7 +60,7 @@ async function handleImageGeneration(
     }
 
     // Use user's preferred model or default
-    const defaultImageModel = preferredImageModel || "@cf/black-forest-labs/flux-1-schnell"
+    const defaultImageModel = preferredImageModel || "@cf/lykon/dreamshaper-8-lcm"
 
     // Generate image using the existing API
     const imageResponse = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000'}/api/generate-image`, {
@@ -82,12 +82,20 @@ async function handleImageGeneration(
       throw new Error(imageData.error || "Failed to generate image")
     }
 
-    // Create a response message with the generated image
-    const assistantMessage = `I've generated an image for you: "${prompt}"
+    // Create a response message with the generated image data
+    const assistantMessage = `I've generated an image for you based on your prompt: "${prompt}"`
 
-![Generated Image](${imageData.imageUrl})
-
-The image was created using Cloudflare's FLUX.1 Schnell model. You have ${imageData.remainingGenerations} image generations remaining today.`
+    // Store the assistant message with special image metadata
+    const messageWithImage = {
+      role: "assistant" as const,
+      content: assistantMessage,
+      imageData: {
+        imageUrl: imageData.imageUrl,
+        prompt,
+        model: defaultImageModel,
+        remainingGenerations: imageData.remainingGenerations
+      }
+    }
 
     // Store the assistant message if we have supabase
     if (supabase) {
@@ -96,34 +104,37 @@ The image was created using Cloudflare's FLUX.1 Schnell model. You have ${imageD
         role: "assistant", 
         content: assistantMessage,
         user_id: userId,
+        parts: JSON.stringify([{
+          type: "image-generation",
+          imageUrl: imageData.imageUrl,
+          prompt,
+          model: defaultImageModel,
+          remainingGenerations: imageData.remainingGenerations
+        }])
       })
     }
 
-    // Return a streaming response that matches AI SDK format
+    // Return a streaming response with image data
     const encoder = new TextEncoder()
     const stream = new ReadableStream({
       start(controller) {
-        // Send text delta chunks to simulate streaming
-        const chunks = assistantMessage.split(' ')
-        let accumulatedText = ''
+        // Send the text content
+        controller.enqueue(encoder.encode(`0:${JSON.stringify(assistantMessage)}\n`))
         
-        chunks.forEach((chunk, index) => {
-          accumulatedText += (index > 0 ? ' ' : '') + chunk
-          
-          // Send text delta
-          controller.enqueue(encoder.encode(`0:"${JSON.stringify({
-            type: 'text-delta',
-            textDelta: (index > 0 ? ' ' : '') + chunk
-          })}"\n`))
-          
-          // Small delay between chunks to simulate streaming
-          setTimeout(() => {}, 10)
-        })
+        // Send image data as a custom data chunk
+        controller.enqueue(encoder.encode(`2:${JSON.stringify({
+          type: "image-generation",
+          imageUrl: imageData.imageUrl,
+          prompt,
+          model: defaultImageModel,
+          remainingGenerations: imageData.remainingGenerations
+        })}\n`))
         
-        // Send finish message
-        controller.enqueue(encoder.encode(`d:{"finishReason":"stop","usage":{"promptTokens":1,"completionTokens":${chunks.length}}}\n`))
-        
-        controller.close()
+        // Close the stream
+        setTimeout(() => {
+          controller.enqueue(encoder.encode(`d:{"finishReason":"stop"}\n`))
+          controller.close()
+        }, 100)
       }
     })
 
@@ -131,7 +142,6 @@ The image was created using Cloudflare's FLUX.1 Schnell model. You have ${imageD
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
         'X-Chat-Id': chatId,
-        'x-vercel-ai-data-stream': 'v1',
       }
     })
 
@@ -144,15 +154,9 @@ The image was created using Cloudflare's FLUX.1 Schnell model. You have ${imageD
     const encoder = new TextEncoder()
     const stream = new ReadableStream({
       start(controller) {
-        // Send error message as text delta
-        controller.enqueue(encoder.encode(`0:"${JSON.stringify({
-          type: 'text-delta',
-          textDelta: errorMessage
-        })}"\n`))
-        
-        // Send finish message
-        controller.enqueue(encoder.encode(`d:{"finishReason":"stop","usage":{"promptTokens":1,"completionTokens":1}}\n`))
-        
+        // Send error message directly
+        controller.enqueue(encoder.encode(`0:${JSON.stringify(errorMessage)}\n`))
+        controller.enqueue(encoder.encode(`d:{"finishReason":"stop"}\n`))
         controller.close()
       }
     })
@@ -161,7 +165,6 @@ The image was created using Cloudflare's FLUX.1 Schnell model. You have ${imageD
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
         'X-Chat-Id': chatId,
-        'x-vercel-ai-data-stream': 'v1',
       }
     })
   }

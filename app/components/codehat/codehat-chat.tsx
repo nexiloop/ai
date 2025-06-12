@@ -80,6 +80,9 @@ export function CodeHatChat() {
   const { setFiles: updateFiles } = useCodeHatStore()
   const { createProject } = useCodeHatProject()
   
+  // State to store image generation data
+  const [imageGenerationData, setImageGenerationData] = useState<Record<string, any>>({})
+  
   const {
     files,
     setFiles,
@@ -113,6 +116,7 @@ export function CodeHatChat() {
     setMessages,
     setInput,
     append,
+    data,
   } = useChat({
     api: API_ROUTE_CHAT,
     initialMessages,
@@ -150,6 +154,29 @@ Your code is ready! Feel free to ask me to modify anything or add new features.`
       }
     },
   })
+
+  // Handle custom data chunks for image generation
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      data.forEach((chunk: any) => {
+        if (chunk?.type === "image-generation") {
+          // Associate image data with the latest assistant message
+          const latestMessage = messages[messages.length - 1]
+          if (latestMessage && latestMessage.role === "assistant") {
+            setImageGenerationData(prev => ({
+              ...prev,
+              [latestMessage.id]: {
+                imageUrl: chunk.imageUrl,
+                prompt: chunk.prompt,
+                model: chunk.model,
+                remainingGenerations: chunk.remainingGenerations
+              }
+            }))
+          }
+        }
+      })
+    }
+  }, [data, messages])
 
   const { checkLimitsAndNotify, ensureChatExists } = useCodeHatChatUtils({
     isAuthenticated,
@@ -679,6 +706,7 @@ ${jsScripts}
             onDelete={handleDelete}
             onEdit={handleEdit}
             onReload={handleReload}
+            imageGenerationData={imageGenerationData}
           />
         )}
       </AnimatePresence>

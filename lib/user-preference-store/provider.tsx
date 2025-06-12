@@ -17,7 +17,7 @@ const defaultPreferences: UserPreferences = {
   promptSuggestions: true,
   showToolInvocations: true,
   showConversationPreviews: true,
-  defaultImageModel: "@cf/black-forest-labs/flux-1-schnell",
+  defaultImageModel: "@cf/lykon/dreamshaper-8-lcm",
 }
 
 const PREFERENCES_STORAGE_KEY = "user-preferences"
