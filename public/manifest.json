@@ -1,7 +1,7 @@
 {
-  "name": "nexiloop",
+  "name": "nexiloop - Advanced AI Chat App",
   "short_name": "nexiloop",
-  "description": "AI-powered chat assistant",
+  "description": "nexiloop AI is an advanced AI chat app developed by Nexiloop with multi-model support. Chat with OpenAI, Claude, Gemini, Mistral, Ollama and more. Features include image generation, background removal, and AI agents.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -21,7 +21,8 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["productivity", "utilities"],
+  "categories": ["productivity", "utilities", "education", "business", "developer tools"],
+  "keywords": ["AI", "chat", "artificial intelligence", "productivity", "assistant", "OpenAI", "Claude", "Gemini", "Mistral", "Ollama", "image generation", "background removal", "AI agents", "multi-model", "nexiloop"],
   "screenshots": [
     {
       "src": "/screenshot-wide.png",

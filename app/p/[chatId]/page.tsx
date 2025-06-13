@@ -30,7 +30,7 @@ export async function generateMetadata({
     .single()
 
   const title = chat?.title || "Chat"
-  const description = "A chat in nexiloop"
+  const description = `A chat conversation in nexiloop AI - Advanced AI chat app with multi-model support`
 
   return {
     title,
@@ -40,11 +40,21 @@ export async function generateMetadata({
       description,
       type: "article",
       url: `${APP_DOMAIN}/p/${chatId}`,
+      siteName: 'nexiloop',
+      images: [
+        {
+          url: '/nl.png',
+          width: 1200,
+          height: 630,
+          alt: 'nexiloop - Advanced AI Chat App',
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: ['/nl.png'],
     },
   }
 }

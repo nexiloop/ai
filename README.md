@@ -6,7 +6,7 @@
 
 [![Chat with this repo](https://nexiloop.chat/button/github.svg)](https://nexiloop.chat/?agent=github/ibelick/nexiloop)
 
-![nexiloop screenshot](./public/cover_nexiloop.webp)
+![nexiloop screenshot](./public/nl.png)
 
 ## Features
 

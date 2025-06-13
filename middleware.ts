@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // CSP for development and production
-  const isDev = process.env.NODE_ENV === "development"
+  const isDev = process.env.NODE_ENV === "production"
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseDomain = supabaseUrl ? new URL(supabaseUrl).origin : ""

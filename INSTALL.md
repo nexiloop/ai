@@ -2,7 +2,7 @@
 
 Nexiloop is a free, open-source AI chat app with multi-model support. This guide covers how to install and run Nexiloop on different platforms, including Docker deployment options.
 
-![Nexiloop screenshot](./public/cover_nexiloop.webp)
+![Nexiloop screenshot](./public/nl.png)
 
 ## Prerequisites
 
