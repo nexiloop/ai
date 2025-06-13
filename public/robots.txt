@@ -20,5 +20,5 @@ Allow: /p/
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://nexiloop.chat/sitemap.xml
+Sitemap: https://ai.nexiloop.com/sitemap.xml
 Sitemap: https://ai.nexiloop.com/sitemap.xml

@@ -16,6 +16,7 @@ import { SearchImages } from "./search-images"
 import { SourcesList } from "./sources-list"
 import { ToolInvocation } from "./tool-invocation"
 import { GeneratedImage } from "./generated-image"
+import { MovieSearchResults } from "./movie-search-results"
 
 type MessageAssistantProps = {
   children: string
@@ -88,6 +89,29 @@ export function MessageAssistant({
           : []
       ) ?? []
 
+  const movieSearchResults =
+    parts
+      ?.filter(
+        (part) =>
+          part.type === "tool-invocation" &&
+          part.toolInvocation?.state === "result" &&
+          part.toolInvocation?.toolName === "tmdbMovieSearch" &&
+          part.toolInvocation?.result?.content?.[0]?.type === "movies"
+      )
+      .flatMap((part) =>
+        part.type === "tool-invocation" &&
+        part.toolInvocation?.state === "result" &&
+        part.toolInvocation?.toolName === "tmdbMovieSearch" &&
+        part.toolInvocation?.result?.content?.[0]?.type === "movies"
+          ? {
+              results: part.toolInvocation?.result?.content?.[0]?.results ?? [],
+              query: part.toolInvocation?.result?.content?.[0]?.query ?? "",
+              totalResults: part.toolInvocation?.result?.content?.[0]?.totalResults ?? 0
+            }
+          : null
+      )
+      .filter(Boolean)[0] ?? null
+
   return (
     <Message
       className={cn(
@@ -108,6 +132,14 @@ export function MessageAssistant({
 
         {searchImageResults.length > 0 && (
           <SearchImages results={searchImageResults} />
+        )}
+
+        {movieSearchResults && movieSearchResults.results.length > 0 && (
+          <MovieSearchResults 
+            results={movieSearchResults.results}
+            query={movieSearchResults.query}
+            totalResults={movieSearchResults.totalResults}
+          />
         )}
 
         {contentNullOrEmpty ? null : (

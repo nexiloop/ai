@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap locations
-Sitemap: https://nexiloop.chat/sitemap.xml
+Sitemap: https://ai.nexiloop.com/sitemap.xml
 Sitemap: https://ai.nexiloop.com/sitemap.xml
 
 # Crawl delay

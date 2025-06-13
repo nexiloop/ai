@@ -11,6 +11,7 @@ type UserPreferences = {
   showConversationPreviews: boolean
   defaultImageModel: string
   backgroundRemovalEnabled: boolean
+  videoStreamingEnabled: boolean
 }
 
 const defaultPreferences: UserPreferences = {
@@ -20,6 +21,7 @@ const defaultPreferences: UserPreferences = {
   showConversationPreviews: true,
   defaultImageModel: "@cf/lykon/dreamshaper-8-lcm",
   backgroundRemovalEnabled: false,
+  videoStreamingEnabled: true,
 }
 
 const PREFERENCES_STORAGE_KEY = "user-preferences"
@@ -33,6 +35,7 @@ interface UserPreferencesContextType {
   setShowConversationPreviews: (enabled: boolean) => void
   setDefaultImageModel: (model: string) => void
   setBackgroundRemovalEnabled: (enabled: boolean) => void
+  setVideoStreamingEnabled: (enabled: boolean) => void
 }
 
 const UserPreferencesContext = createContext<
@@ -118,6 +121,10 @@ export function UserPreferencesProvider({
     setPreferences((prev) => ({ ...prev, backgroundRemovalEnabled: enabled }))
   }
 
+  const setVideoStreamingEnabled = (enabled: boolean) => {
+    setPreferences((prev) => ({ ...prev, videoStreamingEnabled: enabled }))
+  }
+
   return (
     <UserPreferencesContext.Provider
       value={{
@@ -128,6 +135,7 @@ export function UserPreferencesProvider({
         setShowConversationPreviews,
         setDefaultImageModel,
         setBackgroundRemovalEnabled,
+        setVideoStreamingEnabled,
       }}
     >
       {children}

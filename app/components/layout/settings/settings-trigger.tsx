@@ -28,9 +28,9 @@ export function SettingsTrigger() {
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={setOpen}>
+      <Drawer open={open} onOpenChange={setOpen} shouldScaleBackground={false}>
         <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-        <DrawerContent>
+        <DrawerContent className="h-[100vh] max-h-[100vh] rounded-none border-none mt-0 [&>div:first-child]:hidden">
           <SettingsContent isDrawer onClose={() => setOpen(false)} />
         </DrawerContent>
       </Drawer>

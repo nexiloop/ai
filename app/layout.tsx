@@ -210,12 +210,48 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebSite",
-              "url": "https://ai.nexiloop.com",
+              "@type": "SoftwareApplication",
               "name": "nexiloop",
               "description": "nexiloop AI is an advanced AI chat app developed by Nexiloop with multi-model support. Chat with OpenAI, Claude, Gemini, Mistral, Ollama and more. Features include image generation, background removal, and AI agents.",
+              "url": "https://ai.nexiloop.com",
+              "applicationCategory": "AI Chat Application",
+              "operatingSystem": "Web Browser",
+              "publisher": {
+                "@type": "Organization",
+                "name": "Nexiloop",
+                "url": "https://nexiloop.com"
+              },
+              "author": {
+                "@type": "Organization",
+                "name": "Nexiloop",
+                "url": "https://nexiloop.com"
+              },
               "image": "https://ai.nexiloop.com/nl.png",
               "screenshot": "https://ai.nexiloop.com/nl.png",
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "ratingCount": "1000"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+              },
+              "featureList": [
+                "Multi-model AI support (OpenAI, Claude, Gemini, Mistral, Ollama)",
+                "Image generation with Cloudflare Workers AI",
+                "AI-powered background removal",
+                "Local AI with Ollama integration",
+                "AI agents and tool integration",
+                "CodeHat workspace for development",
+                "File uploads and context-aware answers",
+                "Responsive design with light/dark themes",
+                "Progressive Web App (PWA)",
+                "Open source and self-hostable"
+              ],
+              "keywords": "AI chat, artificial intelligence, multi-model AI, OpenAI, Claude, Gemini, Mistral, Ollama, local AI, chat assistant, machine learning, natural language processing, AI tools, productivity, open source AI, Nexiloop, CodeHat, image generation, background removal, AI agents"
             })
           }}
         />

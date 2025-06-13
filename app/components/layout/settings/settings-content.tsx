@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { isSupabaseEnabled } from "@/lib/supabase/config"
 import { cn, isDev } from "@/lib/utils"
-import { GearSix, PaintBrush, PlugsConnected, X } from "@phosphor-icons/react"
+import { GearSix, PaintBrush, PlugsConnected, X, Sparkle } from "@phosphor-icons/react"
 import { useState } from "react"
 import { InteractionPreferences } from "./appearance/interaction-preferences"
 import { LayoutSettings } from "./appearance/layout-settings"
@@ -15,6 +15,7 @@ import { ConnectionsPlaceholder } from "./connections/connections-placeholder"
 import { DeveloperTools } from "./connections/developer-tools"
 import { ProviderSettings } from "./connections/provider-settings"
 import { AccountManagement } from "./general/account-management"
+import { FeaturesSection } from "./general/features-section"
 import { ModelPreferences } from "./general/model-preferences"
 // General tab components
 import { UserProfile } from "./general/user-profile"
@@ -24,7 +25,7 @@ type SettingsContentProps = {
   isDrawer?: boolean
 }
 
-type TabType = "general" | "appearance" | "connections"
+type TabType = "general" | "features" | "appearance" | "connections"
 
 export function SettingsContent({
   onClose,
@@ -35,15 +36,15 @@ export function SettingsContent({
   return (
     <div
       className={cn(
-        "flex w-full flex-col overflow-y-auto",
-        isDrawer ? "p-0 pb-16" : "py-0"
+        "flex w-full flex-col",
+        isDrawer ? "h-full min-h-screen overflow-y-auto p-0" : "py-0 overflow-y-auto"
       )}
     >
       {isDrawer && (
-        <div className="border-border mb-2 flex items-center justify-between border-b px-4 pb-2">
-          <h2 className="text-lg font-medium">Settings</h2>
-          <Button variant="ghost" size="icon" onClick={onClose}>
-            <X className="h-4 w-4" />
+        <div className="border-border mb-4 flex items-center justify-between border-b bg-background px-4 py-4 sticky top-0 z-10 shadow-sm">
+          <h2 className="text-xl font-semibold">Settings</h2>
+          <Button variant="ghost" size="icon" onClick={onClose} className="h-10 w-10">
+            <X className="h-5 w-5" />
           </Button>
         </div>
       )}
@@ -52,56 +53,69 @@ export function SettingsContent({
         value={activeTab}
         onValueChange={(value) => setActiveTab(value as TabType)}
         className={cn(
-          "flex w-full flex-row",
-          isDrawer ? "" : "flex min-h-[400px]"
+          "flex w-full",
+          isDrawer ? "h-full flex-col" : "flex-row min-h-[400px]"
         )}
       >
         {isDrawer ? (
-          // Mobile version - tabs on top
-          <div className="w-full px-6 py-4">
-            <TabsList className="mb-4 grid w-full grid-cols-3 bg-transparent">
-              <TabsTrigger value="general" className="flex items-center gap-2">
-                <GearSix className="size-4" />
-                <span>General</span>
+          // Mobile version - tabs on top, full height
+          <div className="flex h-full w-full flex-col">
+            <TabsList className="mb-6 mx-4 grid w-auto grid-cols-4 bg-muted/50 h-12">
+              <TabsTrigger value="general" className="flex items-center gap-1 h-10">
+                <GearSix className="size-3" />
+                <span className="text-xs font-medium">General</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="features"
+                className="flex items-center gap-1 h-10"
+              >
+                <Sparkle className="size-3" />
+                <span className="text-xs font-medium">Features</span>
               </TabsTrigger>
               <TabsTrigger
                 value="appearance"
-                className="flex items-center gap-2"
+                className="flex items-center gap-1 h-10"
               >
-                <PaintBrush className="size-4" />
-                <span>Appearance</span>
+                <PaintBrush className="size-3" />
+                <span className="text-xs font-medium">Appearance</span>
               </TabsTrigger>
               <TabsTrigger
                 value="connections"
-                className="flex items-center gap-2"
+                className="flex items-center gap-1 h-10"
               >
-                <PlugsConnected className="size-4" />
-                <span>Connections</span>
+                <PlugsConnected className="size-3" />
+                <span className="text-xs font-medium">Connections</span>
               </TabsTrigger>
             </TabsList>
 
-            {/* Mobile tabs content */}
-            <TabsContent value="general" className="space-y-6">
-              <UserProfile />
-              {isSupabaseEnabled && (
-                <>
-                  <ModelPreferences />
-                  <AccountManagement />
-                </>
-              )}
-            </TabsContent>
+            {/* Mobile tabs content with full height and better spacing */}
+            <div className="flex-1 overflow-y-auto px-4 pb-8">
+              <TabsContent value="general" className="mt-0 space-y-8 h-full">
+                <UserProfile />
+                {isSupabaseEnabled && (
+                  <>
+                    <ModelPreferences />
+                    <AccountManagement />
+                  </>
+                )}
+              </TabsContent>
 
-            <TabsContent value="appearance" className="space-y-6">
-              <ThemeSelection />
-              <LayoutSettings />
-              <InteractionPreferences />
-            </TabsContent>
+              <TabsContent value="features" className="mt-0 space-y-8 h-full">
+                <FeaturesSection />
+              </TabsContent>
 
-            <TabsContent value="connections" className="space-y-6">
-              {!isDev && <ConnectionsPlaceholder />}
-              {isDev && <ProviderSettings />}
-              {isDev && <DeveloperTools />}
-            </TabsContent>
+              <TabsContent value="appearance" className="mt-0 space-y-8 h-full">
+                <ThemeSelection />
+                <LayoutSettings />
+                <InteractionPreferences />
+              </TabsContent>
+
+              <TabsContent value="connections" className="mt-0 space-y-8 h-full">
+                {!isDev && <ConnectionsPlaceholder />}
+                {isDev && <ProviderSettings />}
+                {isDev && <DeveloperTools />}
+              </TabsContent>
+            </div>
           </div>
         ) : (
           // Desktop version - tabs on left
@@ -137,6 +151,16 @@ export function SettingsContent({
                     <span>Connections</span>
                   </div>
                 </TabsTrigger>
+
+                <TabsTrigger
+                  value="features"
+                  className="w-full justify-start rounded-md px-3 py-2 text-left"
+                >
+                  <div className="flex items-center gap-2">
+                    <Sparkle className="size-4" />
+                    <span>Features</span>
+                  </div>
+                </TabsTrigger>
               </div>
             </TabsList>
 
@@ -162,6 +186,10 @@ export function SettingsContent({
                 {!isDev && <ConnectionsPlaceholder />}
                 {isDev && <ProviderSettings />}
                 {isDev && <DeveloperTools />}
+              </TabsContent>
+
+              <TabsContent value="features" className="mt-0 space-y-6">
+                <FeaturesSection />
               </TabsContent>
             </div>
           </>

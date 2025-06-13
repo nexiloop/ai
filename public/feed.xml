@@ -1,61 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>nexiloop AI Updates</title>
-    <description>Advanced AI chat app with multi-model support. Stay updated on new features, models, and AI agents.</description>
+    <title>nexiloop AI - Advanced AI Chat App</title>
+    <description>nexiloop AI is an advanced AI chat app developed by Nexiloop with multi-model support. Latest updates, features, and AI news.</description>
     <link>https://ai.nexiloop.com</link>
     <atom:link href="https://ai.nexiloop.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 13 Jun 2025 06:00:00 GMT</pubDate>
-    <lastBuildDate>Tue, 13 Jun 2025 06:00:00 GMT</lastBuildDate>
-    <generator>RSS Generator</generator>
-    <language>en</language>
+    <language>en-US</language>
+    <managingEditor>hello@nexiloop.com (Nexiloop Team)</managingEditor>
+    <webMaster>hello@nexiloop.com (Nexiloop Team)</webMaster>
+    <lastBuildDate>Fri, 13 Jun 2025 06:00:00 GMT</lastBuildDate>
+    <pubDate>Fri, 13 Jun 2025 06:00:00 GMT</pubDate>
+    <ttl>60</ttl>
     <image>
-      <title>nexiloop AI</title>
-      <description>nexiloop AI Logo</description>
       <url>https://ai.nexiloop.com/nl.png</url>
+      <title>nexiloop AI</title>
+      <link>https://ai.nexiloop.com</link>
       <width>144</width>
       <height>144</height>
-      <link>https://ai.nexiloop.com</link>
     </image>
     
     <item>
-      <title>New Chat Experience</title>
-      <description>We've redesigned our chat interface for a more intuitive and responsive experience.</description>
+      <title>nexiloop AI 2.0 - Multi-Model AI Support Released</title>
+      <description>Experience the power of multiple AI models in one platform. Chat with OpenAI GPT-4, Claude, Gemini, Mistral, and local Ollama models.</description>
       <link>https://ai.nexiloop.com/chat</link>
       <guid>https://ai.nexiloop.com/chat</guid>
-      <pubDate>Tue, 13 Jun 2025 06:00:00 GMT</pubDate>
+      <pubDate>Fri, 13 Jun 2025 06:00:00 GMT</pubDate>
+      <category>AI Technology</category>
     </item>
     
     <item>
-      <title>Image Generation</title>
-      <description>Create stunning images with our AI-powered image generation feature.</description>
+      <title>AI Image Generation Now Available</title>
+      <description>Generate stunning images with natural language using Cloudflare Workers AI. Features FLUX.1 Schnell, SDXL Lightning, and more advanced models.</description>
       <link>https://ai.nexiloop.com/features/image-generation</link>
       <guid>https://ai.nexiloop.com/features/image-generation</guid>
-      <pubDate>Tue, 13 Jun 2025 05:00:00 GMT</pubDate>
+      <pubDate>Wed, 11 Jun 2025 12:00:00 GMT</pubDate>
+      <category>Features</category>
     </item>
     
     <item>
-      <title>CodeHat Launch</title>
-      <description>Introducing CodeHat - Your AI-powered coding companion.</description>
+      <title>CodeHat Workspace - AI-Powered Development</title>
+      <description>Build applications with AI assistance using CodeHat workspace. Generate, edit, and run code with integrated terminal and file management.</description>
       <link>https://ai.nexiloop.com/codehat</link>
       <guid>https://ai.nexiloop.com/codehat</guid>
-      <pubDate>Tue, 13 Jun 2025 04:00:00 GMT</pubDate>
+      <pubDate>Mon, 09 Jun 2025 09:00:00 GMT</pubDate>
+      <category>Development Tools</category>
     </item>
     
     <item>
-      <title>Background Removal</title>
-      <description>Remove image backgrounds with one click using our AI technology.</description>
+      <title>Background Removal Beta Launch</title>
+      <description>Remove backgrounds from images instantly with AI-powered processing. One-click background removal for photos and graphics.</description>
       <link>https://ai.nexiloop.com/features/background-removal</link>
       <guid>https://ai.nexiloop.com/features/background-removal</guid>
-      <pubDate>Tue, 13 Jun 2025 03:00:00 GMT</pubDate>
+      <pubDate>Sat, 07 Jun 2025 15:00:00 GMT</pubDate>
+      <category>AI Tools</category>
     </item>
     
     <item>
-      <title>Local AI Support</title>
-      <description>Run AI models locally with Ollama integration.</description>
+      <title>Local AI with Ollama Integration</title>
+      <description>Run AI models locally with Ollama integration. Privacy-focused AI chat without sending data to external servers.</description>
       <link>https://ai.nexiloop.com/features/local-ai</link>
       <guid>https://ai.nexiloop.com/features/local-ai</guid>
-      <pubDate>Tue, 13 Jun 2025 02:00:00 GMT</pubDate>
+      <pubDate>Thu, 05 Jun 2025 18:00:00 GMT</pubDate>
+      <category>Privacy & Security</category>
     </item>
+    
   </channel>
 </rss>

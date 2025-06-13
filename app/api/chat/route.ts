@@ -12,6 +12,8 @@ import {
   trackSpecialAgentUsage,
   validateAndTrackUsage,
 } from "./api"
+import { TOOL_REGISTRY } from "@/lib/tools"
+import { movieSearchTool } from "@/lib/tools/tmdb/movieSearch/tool"
 import { cleanMessagesForTools } from "./utils"
 
 export const maxDuration = 60
@@ -35,8 +37,24 @@ const IMAGE_GENERATION_PATTERNS = [
   /\b(text\s*to\s*image|t2i)\b/i,
 ]
 
+// Movie and TV search keywords and patterns
+const MOVIE_SEARCH_PATTERNS = [
+  /\b(movie|film|cinema|flick)\b/i,
+  /\b(tv\s*show|television|series|episode)\b/i,
+  /\b(watch|stream|streaming)\b/i,
+  /\b(actor|actress|director|cast)\b/i,
+  /\b(recommend|suggestion|similar\s+to)\b.*\b(movie|film|show|series)\b/i,
+  /\b(what\s+should\s+i\s+watch|good\s+movies|best\s+shows)\b/i,
+  /\b(netflix|hulu|disney|amazon\s+prime|hbo)\b/i,
+  /\b(genre|comedy|drama|action|thriller|horror|romance|sci-fi|fantasy)\b.*\b(movie|film|show|series)\b/i,
+]
+
 function detectImageGenerationRequest(content: string): boolean {
   return IMAGE_GENERATION_PATTERNS.some(pattern => pattern.test(content))
+}
+
+function detectMovieSearchRequest(content: string): boolean {
+  return MOVIE_SEARCH_PATTERNS.some(pattern => pattern.test(content))
 }
 
 async function handleImageGeneration(
@@ -249,6 +267,18 @@ export async function POST(req: Request) {
       toolsToUse = agentConfig.tools
       if (supabase) {
         await trackSpecialAgentUsage(supabase, userId)
+      }
+    } else {
+      // Check if the user's message suggests movie/TV search and add appropriate tools
+      const lastUserMessage = messages[messages.length - 1]
+      if (lastUserMessage && lastUserMessage.role === 'user') {
+        const isMovieRequest = detectMovieSearchRequest(lastUserMessage.content)
+        
+        if (isMovieRequest && process.env.TMDB_API_KEY) {
+          toolsToUse = {
+            tmdbMovieSearch: movieSearchTool
+          }
+        }
       }
     }
 

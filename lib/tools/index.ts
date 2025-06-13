@@ -1,7 +1,9 @@
 import { exaTools } from "./exa/index"
+import { tmdbTools } from "./tmdb/index"
 
 export const TOOL_REGISTRY = {
   ...exaTools,
+  ...tmdbTools,
   // future: ...githubTools, ...huggingfaceTools, etc.
 }
 

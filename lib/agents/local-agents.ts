@@ -1,5 +1,6 @@
 import { imageSearchTool } from "@/lib/tools/exa/imageSearch/tool"
 import { webSearchTool } from "@/lib/tools/exa/webSearch/tool"
+import { movieSearchTool } from "@/lib/tools/tmdb/movieSearch/tool"
 import { Tool } from "ai"
 
 export type LocalAgent = {
@@ -32,5 +33,23 @@ Your written response must:
       imageSearch: imageSearchTool,
     },
     hidden: true,
+  },
+  movies: {
+    id: "movies",
+    name: "Movies & TV",
+    system_prompt: `You are a movie and TV show expert assistant. You help users discover, search for, and get information about movies, TV shows, actors, and entertainment content.
+
+When users ask about movies, TV shows, actors, or entertainment:
+- Use tmdbMovieSearch to find relevant content
+- Provide helpful information about plot, cast, ratings, and availability
+- Include streaming information when available
+- Be enthusiastic about entertainment content
+- Suggest related movies or shows when relevant
+
+Your responses should be engaging and informative, helping users discover great content to watch.`,
+    tools: {
+      tmdbMovieSearch: movieSearchTool,
+    },
+    hidden: false,
   },
 }
