@@ -8,40 +8,40 @@
 
   <!-- Main Pages -->
   <url>
-    <loc>https://nexiloop.chat/</loc>
+    <loc>https://ai.nexiloop.com/</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://nexiloop.chat/nl.png</image:loc>
+      <image:loc>https://ai.nexiloop.com/nl.png</image:loc>
       <image:title>nexiloop AI - Advanced AI Chat App</image:title>
       <image:caption>nexiloop AI is an advanced AI chat app developed by Nexiloop with multi-model support</image:caption>
     </image:image>
   </url>
 
   <url>
-    <loc>https://nexiloop.chat/chat</loc>
+    <loc>https://ai.nexiloop.com/chat</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://nexiloop.chat/agents</loc>
+    <loc>https://ai.nexiloop.com/agents</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://nexiloop.chat/codehat</loc>
+    <loc>https://ai.nexiloop.com/codehat</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://nexiloop.chat/auth</loc>
+    <loc>https://ai.nexiloop.com/auth</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -49,14 +49,14 @@
 
   <!-- Feature Pages -->
   <url>
-    <loc>https://nexiloop.chat/features</loc>
+    <loc>https://ai.nexiloop.com/features</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://nexiloop.chat/pricing</loc>
+    <loc>https://ai.nexiloop.com/pricing</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -64,28 +64,28 @@
 
   <!-- Popular Agent Categories -->
   <url>
-    <loc>https://nexiloop.chat/agents/coding</loc>
+    <loc>https://ai.nexiloop.com/agents/coding</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://nexiloop.chat/agents/writing</loc>
+    <loc>https://ai.nexiloop.com/agents/writing</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://nexiloop.chat/agents/design</loc>
+    <loc>https://ai.nexiloop.com/agents/design</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://nexiloop.chat/agents/business</loc>
+    <loc>https://ai.nexiloop.com/agents/business</loc>
     <lastmod>2025-06-13T06:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

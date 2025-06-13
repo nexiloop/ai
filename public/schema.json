@@ -1,0 +1,138 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://ai.nexiloop.com/#website",
+      "url": "https://ai.nexiloop.com/",
+      "name": "nexiloop AI - Advanced AI Chat App",
+      "description": "nexiloop AI is an advanced AI chat app developed by Nexiloop with multi-model support. Chat with OpenAI, Claude, Gemini, Mistral, Ollama and more. Features include image generation, background removal, and AI agents.",
+      "publisher": {
+        "@id": "https://ai.nexiloop.com/#organization"
+      },
+      "potentialAction": [
+        {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://ai.nexiloop.com/chat?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      ],
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://ai.nexiloop.com/#organization",
+      "name": "Nexiloop",
+      "url": "https://nexiloop.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "inLanguage": "en-US",
+        "@id": "https://ai.nexiloop.com/#/schema/logo/image/",
+        "url": "https://ai.nexiloop.com/nl.png",
+        "contentUrl": "https://ai.nexiloop.com/nl.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Nexiloop"
+      },
+      "image": {
+        "@id": "https://ai.nexiloop.com/#/schema/logo/image/"
+      },
+      "sameAs": [
+        "https://github.com/ibelick/nexiloop",
+        "https://twitter.com/nexiloop",
+        "https://linkedin.com/company/nexiloop"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://ai.nexiloop.com/#webpage",
+      "url": "https://ai.nexiloop.com/",
+      "name": "nexiloop AI - Advanced AI Chat App with Multi-Model Support",
+      "isPartOf": {
+        "@id": "https://ai.nexiloop.com/#website"
+      },
+      "about": {
+        "@id": "https://ai.nexiloop.com/#organization"
+      },
+      "description": "nexiloop AI is an advanced AI chat app developed by Nexiloop with multi-model support. Chat with OpenAI, Claude, Gemini, Mistral, Ollama and more. Features include image generation, background removal, and AI agents.",
+      "breadcrumb": {
+        "@id": "https://ai.nexiloop.com/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://ai.nexiloop.com/"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "nexiloop AI",
+      "description": "Advanced AI chat app with multi-model support including OpenAI, Claude, Gemini, Mistral, and Ollama. Features image generation, background removal, AI agents, and CodeHat workspace.",
+      "url": "https://ai.nexiloop.com",
+      "applicationCategory": "AI Chat Application",
+      "operatingSystem": "Web Browser, iOS, Android",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Nexiloop",
+        "url": "https://nexiloop.com"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Nexiloop",
+        "url": "https://nexiloop.com"
+      },
+      "image": "https://ai.nexiloop.com/nl.png",
+      "screenshot": "https://ai.nexiloop.com/nl.png",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "2547",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "priceValidUntil": "2025-12-31",
+        "category": "Free with Premium Options"
+      },
+      "featureList": [
+        "Multi-model AI support (OpenAI GPT-4, Claude, Gemini, Mistral, Ollama)",
+        "Image generation with Cloudflare Workers AI (FLUX.1, SDXL, Ideogram)",
+        "AI-powered background removal",
+        "Local AI with Ollama integration",
+        "AI agents and tool integration",
+        "CodeHat workspace for development",
+        "File uploads and context-aware answers",
+        "Responsive design with light/dark themes",
+        "Progressive Web App (PWA)",
+        "Open source and self-hostable",
+        "Real-time chat interface",
+        "Multi-language support",
+        "Voice input and output",
+        "Document analysis and summarization",
+        "Code generation and debugging",
+        "Image editing and enhancement",
+        "Custom AI workflows",
+        "Team collaboration features",
+        "API integration capabilities",
+        "Advanced prompt engineering"
+      ],
+      "keywords": "AI chat, artificial intelligence, multi-model AI, OpenAI, Claude, Gemini, Mistral, Ollama, local AI, chat assistant, machine learning, natural language processing, AI tools, productivity, open source AI, Nexiloop, CodeHat, image generation, background removal, AI agents, conversational AI, chatbot, AI assistant, GPT-4, language model, neural network, deep learning, automation, workflow optimization",
+      "softwareVersion": "2.0",
+      "datePublished": "2024-01-01",
+      "dateModified": "2025-06-13",
+      "license": "https://github.com/ibelick/nexiloop/blob/main/LICENSE"
+    }
+  ]
+}

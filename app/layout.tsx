@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   title: APP_NAME,
   description: "nexiloop AI is an advanced AI chat app developed by Nexiloop with multi-model support",
   manifest: '/manifest.json',
-  metadataBase: new URL('https://nexiloop.chat'),
+  metadataBase: new URL('https://ai.nexiloop.com'),
   keywords: [
     'AI chat',
     'artificial intelligence',
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://nexiloop.chat',
+    url: 'https://ai.nexiloop.com',
     siteName: 'nexiloop',
     title: 'nexiloop - Advanced AI Chat App with Multi-Model Support',
     description: 'nexiloop AI is an advanced AI chat app developed by Nexiloop with multi-model support. Chat with OpenAI, Claude, Gemini, Mistral, Ollama and more. Features include image generation, background removal, and AI agents.',
@@ -117,7 +117,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://nexiloop.chat',
+    canonical: 'https://ai.nexiloop.com',
   },
 }
 
@@ -132,7 +132,60 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Basic Meta Tags */}
         <meta name="application-name" content={APP_NAME} />
+        <meta name="generator" content="Next.js" />
+        <meta name="referrer" content="origin-when-cross-origin" />
+        
+        {/* SEO Meta Tags */}
+        <meta name="google-site-verification" content="your-google-site-verification-code" />
+        <meta name="msvalidate.01" content="your-bing-verification-code" />
+        <meta name="yandex-verification" content="your-yandex-verification-code" />
+        
+        {/* Language and Locale */}
+        <meta httpEquiv="content-language" content="en-US" />
+        <meta name="language" content="English" />
+        <meta name="geo.region" content="US" />
+        <meta name="geo.placename" content="United States" />
+        
+        {/* Cache Control */}
+        <meta httpEquiv="cache-control" content="public, max-age=31536000, immutable" />
+        <meta httpEquiv="expires" content="Thu, 31 Dec 2025 23:59:59 GMT" />
+        
+        {/* Security Headers */}
+        <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
+        <meta httpEquiv="X-Frame-Options" content="DENY" />
+        <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
+        <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+        
+        {/* Additional SEO Tags */}
+        <meta name="rating" content="General" />
+        <meta name="distribution" content="Global" />
+        <meta name="revisit-after" content="1 days" />
+        <meta name="coverage" content="Worldwide" />
+        <meta name="target" content="all" />
+        <meta name="audience" content="all" />
+        <meta name="resource-type" content="document" />
+        <meta name="classification" content="AI Software" />
+        <meta name="category" content="AI, Technology, Productivity, Software" />
+        <meta name="subject" content="AI Chat Application, Artificial Intelligence, Multi-Model AI Support" />
+        <meta name="abstract" content="Advanced AI chat application with support for multiple AI models including OpenAI, Claude, Gemini, Mistral, and Ollama. Features include image generation, background removal, AI agents, and development tools." />
+        <meta name="topic" content="Artificial Intelligence, Chat Applications, AI Tools, Productivity Software" />
+        <meta name="summary" content="nexiloop AI is an advanced, open-source AI chat app with multi-model support, image generation, and powerful development tools." />
+        <meta name="designer" content="Nexiloop" />
+        <meta name="copyright" content="© 2025 Nexiloop. All rights reserved." />
+        <meta name="reply-to" content="hello@nexiloop.com" />
+        <meta name="owner" content="Nexiloop" />
+        <meta name="url" content="https://ai.nexiloop.com" />
+        <meta name="identifier-URL" content="https://ai.nexiloop.com" />
+        <meta name="directory" content="submission" />
+        <meta name="pagename" content="nexiloop AI - Advanced AI Chat App" />
+        <meta name="subtitle" content="Multi-Model AI Support with Image Generation and Background Removal" />
+        
+        {/* Rich Snippets & Structured Data */}
+        <link rel="preload" href="/schema.json" as="fetch" crossOrigin="anonymous" />
+        
+        {/* PWA Meta Tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content={APP_NAME} />
@@ -142,18 +195,6 @@ export default async function RootLayout({
         <meta name="msapplication-tap-highlight" content="no" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="shortcut icon" href="/favicon.ico" />
-        
-        {/* Additional SEO Meta Tags */}
-        <meta name="language" content="English" />
-        <meta name="revisit-after" content="7 days" />
-        <meta name="rating" content="general" />
-        <meta name="distribution" content="global" />
-        <meta name="HandheldFriendly" content="True" />
-        <meta name="MobileOptimized" content="320" />
-        <meta name="generator" content="Next.js" />
-        <meta name="referrer" content="no-referrer-when-downgrade" />
-        <meta name="color-scheme" content="light dark" />
-        <meta name="supported-color-schemes" content="light dark" />
         
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -169,48 +210,12 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
+              "@type": "WebSite",
+              "url": "https://ai.nexiloop.com",
               "name": "nexiloop",
               "description": "nexiloop AI is an advanced AI chat app developed by Nexiloop with multi-model support. Chat with OpenAI, Claude, Gemini, Mistral, Ollama and more. Features include image generation, background removal, and AI agents.",
-              "url": "https://nexiloop.chat",
-              "applicationCategory": "AI Chat Application",
-              "operatingSystem": "Web Browser",
-              "publisher": {
-                "@type": "Organization",
-                "name": "Nexiloop",
-                "url": "https://nexiloop.com"
-              },
-              "author": {
-                "@type": "Organization",
-                "name": "Nexiloop",
-                "url": "https://nexiloop.com"
-              },
-              "image": "https://nexiloop.chat/nl.png",
-              "screenshot": "https://nexiloop.chat/nl.png",
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.8",
-                "ratingCount": "1000"
-              },
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock"
-              },
-              "featureList": [
-                "Multi-model AI support (OpenAI, Claude, Gemini, Mistral, Ollama)",
-                "Image generation with Cloudflare Workers AI",
-                "AI-powered background removal",
-                "Local AI with Ollama integration",
-                "AI agents and tool integration",
-                "CodeHat workspace for development",
-                "File uploads and context-aware answers",
-                "Responsive design with light/dark themes",
-                "Progressive Web App (PWA)",
-                "Open source and self-hostable"
-              ],
-              "keywords": "AI chat, artificial intelligence, multi-model AI, OpenAI, Claude, Gemini, Mistral, Ollama, local AI, chat assistant, machine learning, natural language processing, AI tools, productivity, open source AI, Nexiloop, CodeHat, image generation, background removal, AI agents"
+              "image": "https://ai.nexiloop.com/nl.png",
+              "screenshot": "https://ai.nexiloop.com/nl.png",
             })
           }}
         />

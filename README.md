@@ -1,10 +1,10 @@
 # nexiloop
 
-[nexiloop.chat](https://nexiloop.chat)
+[ai.nexiloop.com](https://ai.nexiloop.com)
 
 **nexiloop** is the open-source interface for AI chat.
 
-[![Chat with this repo](https://nexiloop.chat/button/github.svg)](https://nexiloop.chat/?agent=github/ibelick/nexiloop)
+[![Chat with this repo](https://ai.nexiloop.com/button/github.svg)](https://ai.nexiloop.com/?agent=github/ibelick/nexiloop)
 
 ![nexiloop screenshot](./public/nl.png)
 

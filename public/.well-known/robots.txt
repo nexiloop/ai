@@ -1,0 +1,37 @@
+User-agent: *
+Allow: /
+
+# Sitemap locations
+Sitemap: https://nexiloop.chat/sitemap.xml
+Sitemap: https://ai.nexiloop.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
+
+# Important pages to crawl
+Allow: /chat
+Allow: /agents
+Allow: /codehat
+Allow: /features
+Allow: /pricing
+
+# Private areas
+Disallow: /api/
+Disallow: /auth/callback
+Disallow: /auth/error
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /settings/
+
+# Clean URLs
+Disallow: /*?
+Disallow: /*#
+Disallow: /*&
+
+# Search parameters
+Allow: /chat?*
+Allow: /agents?*
+
+# Host preference
+Host: ai.nexiloop.com

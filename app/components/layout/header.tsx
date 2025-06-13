@@ -45,7 +45,7 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
                   className="pointer-events-auto flex items-center gap-2 text-xl font-medium tracking-tight"
                 >
                   <Logo className="h-6 w-6" />
-                  {APP_NAME}
+                  nexiloop
                 </Link>
                 
                 {/* Navigation Tabs */}
