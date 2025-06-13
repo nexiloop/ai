@@ -16,6 +16,7 @@ import {
 import { useUser } from "@/lib/user-store/provider"
 import { AppInfoTrigger } from "./app-info/app-info-trigger"
 import { FeedbackTrigger } from "./feedback/feedback-trigger"
+import { MyAgentsTrigger } from "./my-agents/my-agents-trigger"
 import { SettingsTrigger } from "./settings/settings-trigger"
 
 export function UserMenu() {
@@ -50,6 +51,7 @@ export function UserMenu() {
           </span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
+        <MyAgentsTrigger />
         <SettingsTrigger />
         <FeedbackTrigger />
         <AppInfoTrigger />

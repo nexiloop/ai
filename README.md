@@ -193,6 +193,116 @@ CREATE TABLE IF NOT EXISTS user_preferences (
 - **Browser Issues**: Requires modern browser with WebAssembly support
 - **Memory Errors**: Close other tabs if processing fails on large images
 
+## Movie Search & Streaming with vlop.fun
+
+nexiloop includes intelligent movie and TV show search powered by TMDB (The Movie Database) with direct streaming links to vlop.fun.
+
+### Features
+- **Smart Detection**: Automatically detects movie-related queries in your conversations
+- **TMDB Integration**: Access comprehensive movie and TV show database
+- **vlop.fun Streaming**: One-click streaming for found content
+- **User Control**: Toggle streaming features on/off in settings
+- **Rich Results**: Movie posters, ratings, descriptions, cast, and more
+
+### How to Use
+
+#### Enable Movie Search
+1. Go to **Settings** → **General** → **Features**
+2. Toggle **Video Streaming & Movie Search** to **ON**
+3. The feature is now enabled for movie-related queries
+
+#### Search for Movies/Shows
+Simply ask natural questions in chat:
+- "What are some good sci-fi movies?"
+- "Find information about Inception"
+- "Show me popular thriller series"
+- "Recommend movies like The Matrix"
+- "What movies are trending this week?"
+
+#### Stream Content
+1. **Ask for movies**: Use any of the example queries above
+2. **Browse results**: nexiloop will show movie cards with details
+3. **Click "Watch on vlop.fun"**: Direct streaming link opens in new tab
+4. **Enjoy**: Stream content directly through vlop.fun
+
+### Supported Queries
+- **Movie recommendations**: "What are good action movies?"
+- **Specific searches**: "Tell me about Avatar 2"
+- **Genre searches**: "Best horror movies 2023"
+- **Actor/director searches**: "Movies with Tom Hanks"
+- **TV shows**: "Popular Netflix series"
+- **Trending content**: "What's trending on Netflix?"
+
+### Setup TMDB Integration
+
+#### Get TMDB API Key
+1. Visit [TMDB API](https://www.themoviedb.org/settings/api)
+2. Create a free account and request an API key
+3. Add to your `.env.local`:
+
+```bash
+TMDB_API_KEY=your_tmdb_api_key_here
+```
+
+#### Database Setup
+Run the TMDB schema in your Supabase database:
+
+```sql
+-- Run this in your Supabase SQL editor
+-- See MOVIE_TMDB_SCHEMA.pgsql for the complete setup
+
+-- Movie search history
+CREATE TABLE IF NOT EXISTS movie_searches (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    search_query TEXT NOT NULL,
+    search_type VARCHAR(20) DEFAULT 'movie' CHECK (search_type IN ('movie', 'tv', 'multi')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- User movie preferences
+CREATE TABLE IF NOT EXISTS user_movie_preferences (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    preferred_genres TEXT[] DEFAULT '{}',
+    streaming_enabled BOOLEAN DEFAULT true,
+    vlop_enabled BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- User favorites
+CREATE TABLE IF NOT EXISTS user_favorites (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    tmdb_id INTEGER NOT NULL,
+    media_type VARCHAR(10) DEFAULT 'movie' CHECK (media_type IN ('movie', 'tv')),
+    title TEXT NOT NULL,
+    poster_path TEXT,
+    added_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### Privacy & Settings
+- **Toggle Control**: Enable/disable movie search in Settings
+- **vlop.fun Links**: Only appear when streaming is enabled and movies are mentioned
+- **Search History**: Optionally stored for better recommendations (can be disabled)
+- **No Tracking**: Movie searches are not shared with third parties
+
+### Troubleshooting
+- **No movie results**: Check that TMDB_API_KEY is set correctly
+- **vlop.fun not showing**: Ensure "Video Streaming" is enabled in Settings
+- **API limits**: TMDB free tier has rate limits (check your usage)
+- **Search not working**: Try more specific movie/show names
+
+### Technical Details
+- **TMDB API**: Uses TMDB v3 API for movie data
+- **vlop.fun Integration**: Generates streaming URLs automatically
+- **Smart Detection**: Uses keyword matching to detect movie queries
+- **Rate Limiting**: Respects TMDB API rate limits
+- **Caching**: Search results cached to improve performance
+
 ## Built with
 
 - [prompt-kit](https://prompt-kit.com/) — AI components

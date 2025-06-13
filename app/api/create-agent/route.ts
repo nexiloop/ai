@@ -69,8 +69,6 @@ export async function POST(request: Request) {
         system_prompt: systemPrompt,
         max_steps,
         creator_id: creatorId,
-        // Store whether this should be displayed as created by Nexiloop
-        created_by_nexiloop: useNexiloopAsCreator,
       })
       .select()
       .single()

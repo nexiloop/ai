@@ -17,6 +17,7 @@ import { ProviderSettings } from "./connections/provider-settings"
 import { AccountManagement } from "./general/account-management"
 import { FeaturesSection } from "./general/features-section"
 import { ModelPreferences } from "./general/model-preferences"
+import { MyAgentsSection } from "./general/my-agents-section"
 // General tab components
 import { UserProfile } from "./general/user-profile"
 
@@ -94,6 +95,7 @@ export function SettingsContent({
                 <UserProfile />
                 {isSupabaseEnabled && (
                   <>
+                    <MyAgentsSection />
                     <ModelPreferences />
                     <AccountManagement />
                   </>
@@ -170,6 +172,7 @@ export function SettingsContent({
                 <UserProfile />
                 {isSupabaseEnabled && (
                   <>
+                    <MyAgentsSection />
                     <ModelPreferences />
                     <AccountManagement />
                   </>
