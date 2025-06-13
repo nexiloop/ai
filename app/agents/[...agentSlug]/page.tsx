@@ -58,7 +58,6 @@ export default async function AgentIdPage({
             isFullPage
             system_prompt={agent.system_prompt}
             tools={agent.tools}
-            mcp_config={agent.mcp_config}
           />
         </div>
       </LayoutApp>

@@ -1,4 +1,3 @@
-import { Tables } from "@/app/types/database.types"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 
@@ -12,7 +11,6 @@ type AgentCardProps = {
   onClick?: () => void
   system_prompt?: string
   tools?: string[] | null
-  mcp_config?: Tables<"agents">["mcp_config"] | null
   isLight?: boolean
 }
 
@@ -25,7 +23,6 @@ export function AgentCard({
   onClick,
   system_prompt,
   tools,
-  mcp_config,
   isLight = false,
 }: AgentCardProps) {
   return (
@@ -76,10 +73,6 @@ export function AgentCard({
             {tools && tools.length > 0 ? (
               <span className="text-muted-foreground">
                 tools: {tools.join(", ")}
-              </span>
-            ) : mcp_config ? (
-              <span className="text-muted-foreground">
-                mcp: {mcp_config.server}
               </span>
             ) : (
               <span className="text-muted-foreground">tools: none</span>

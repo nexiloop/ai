@@ -21,7 +21,6 @@ export const convertLocalAgentToAgentDb = (localAgent: LocalAgent) => {
     tools_enabled: true,
     updated_at: null,
     max_steps: null,
-    mcp_config: null,
   }
 
   return convertedAgent

@@ -11,7 +11,6 @@ export async function loadAgent(agentId: string) {
       systemPrompt: localAgent.system_prompt,
       tools: localAgent.tools,
       maxSteps: 5,
-      mcpConfig: null,
     }
   }
 
@@ -46,6 +45,5 @@ export async function loadAgent(agentId: string) {
     systemPrompt: agent.system_prompt,
     tools: activeTools,
     maxSteps: agent.max_steps ?? 5,
-    mcpConfig: agent.mcp_config,
   }
 }

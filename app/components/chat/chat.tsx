@@ -137,6 +137,16 @@ export function Chat() {
     api: API_ROUTE_CHAT,
     initialMessages,
     initialInput: draftValue,
+    body: async () => ({
+      chatId,
+      userId: isAuthenticated ? user?.id : await getOrCreateGuestUserId(user),
+      model: selectedModel,
+      isAuthenticated,
+      systemPrompt,
+      agentId: searchAgentId || currentAgent?.id || null,
+      preferredImageModel: preferences.defaultImageModel,
+      videoStreamingEnabled: preferences.videoStreamingEnabled,
+    }),
     onFinish: async (message) => {
       // store the assistant message in the cache
       await cacheAndAddMessage(message)

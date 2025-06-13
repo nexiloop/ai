@@ -1,7 +1,6 @@
 "use client"
 
 import { AgentSummary } from "@/app/types/agent"
-import type { Tables } from "@/app/types/database.types"
 import { ButtonCopy } from "@/components/common/button-copy"
 import {
   AlertDialog,
@@ -84,7 +83,6 @@ type AgentDetailProps = {
   isFullPage?: boolean
   system_prompt?: string | null
   tools?: string[] | null
-  mcp_config?: Tables<"agents">["mcp_config"] | null
 }
 
 export function AgentDetail({
@@ -99,7 +97,6 @@ export function AgentDetail({
   isFullPage,
   system_prompt,
   tools,
-  mcp_config,
 }: AgentDetailProps) {
   const [copied, setCopied] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
@@ -287,22 +284,12 @@ export function AgentDetail({
           </div>
         )}
 
-        {(tools || mcp_config) && (
+        {tools && (
           <div className="mb-8 grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 md:px-8">
-            {tools && (
-              <div className="rounded-md border p-2">
-                <h3 className="mb-2 text-xs font-medium">Tools</h3>
-                <p className="text-muted-foreground text-xs">{tools}</p>
-              </div>
-            )}
-            {mcp_config && (
-              <div className="rounded-md border p-2">
-                <h3 className="mb-2 text-xs font-medium">MCP</h3>
-                <p className="text-muted-foreground truncate text-xs">
-                  {JSON.stringify(mcp_config)}
-                </p>
-              </div>
-            )}
+            <div className="rounded-md border p-2">
+              <h3 className="mb-2 text-xs font-medium">Tools</h3>
+              <p className="text-muted-foreground text-xs">{Array.isArray(tools) ? tools.join(", ") : tools}</p>
+            </div>
           </div>
         )}
 

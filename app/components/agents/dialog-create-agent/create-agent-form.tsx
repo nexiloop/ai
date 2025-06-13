@@ -1,18 +1,11 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { AlertCircle, Check, Github, X } from "lucide-react"
+import { AlertCircle, X } from "lucide-react"
 import type React from "react"
 import { ToolsSection } from "./tools-section"
 
@@ -20,37 +13,32 @@ type AgentFormData = {
   name: string
   description: string
   systemPrompt: string
-  mcp: "none" | "git-mcp"
-  repository?: string
   tools: string[]
+  useNexiloopAsCreator: boolean
 }
 
 type CreateAgentFormProps = {
   formData: AgentFormData
-  repository: string
-  setRepository: (e: React.ChangeEvent<HTMLInputElement>) => void
   error: { [key: string]: string }
   isLoading: boolean
   handleInputChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void
-  handleSelectChange: (value: string) => void
   handleToolsChange: (selectedTools: string[]) => void
   handleSubmit: (e: React.FormEvent) => Promise<void>
+  handleFormDataChange: (data: Partial<AgentFormData>) => void
   onClose: () => void
   isDrawer?: boolean
 }
 
 export function CreateAgentForm({
   formData,
-  repository,
-  setRepository,
   error,
   isLoading,
   handleInputChange,
-  handleSelectChange,
   handleToolsChange,
   handleSubmit,
+  handleFormDataChange,
   onClose,
   isDrawer = false,
 }: CreateAgentFormProps) {
@@ -70,8 +58,8 @@ export function CreateAgentForm({
       <div className="px-6 py-4">
         <div className="bg-muted/50 mb-6 rounded-lg p-3">
           <p className="text-sm">
-            Agents can use a system prompt and optionally connect to GitHub
-            repos via git-mcp. More tools and MCP integrations are coming soon.
+            Create custom agents with personalized system prompts and tool selections. 
+            All agents are simple, lightweight, and ready to help with your tasks.
           </p>
         </div>
 
@@ -120,51 +108,13 @@ export function CreateAgentForm({
 
           <ToolsSection onSelectTools={handleToolsChange} />
 
-          {/* MCP Dropdown */}
-          <div className="space-y-2">
-            <Label htmlFor="mcp">MCP</Label>
-            <Select value={formData.mcp} onValueChange={handleSelectChange}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select MCP" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">None</SelectItem>
-                <SelectItem value="git-mcp">git-mcp</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Repository (only shown if git-mcp is selected) */}
-          {formData.mcp === "git-mcp" && (
-            <div className="space-y-2">
-              <Label htmlFor="repository">GitHub repository</Label>
-              <div className="flex items-center">
-                <Github className="text-muted-foreground mr-2 h-4 w-4" />
-                <Input
-                  id="repository"
-                  placeholder="owner/repo"
-                  value={repository}
-                  onChange={setRepository}
-                  className={error.repository ? "border-red-500" : ""}
-                />
-              </div>
-
-              {error.repository && (
-                <div className="mt-1 flex items-center text-sm text-red-500">
-                  <AlertCircle className="mr-1 h-4 w-4" />
-                  <span>{error.repository}</span>
-                </div>
-              )}
-            </div>
-          )}
-
           {/* System Prompt */}
           <div className="space-y-2">
             <Label htmlFor="systemPrompt">System prompt</Label>
             <Textarea
               id="systemPrompt"
               name="systemPrompt"
-              placeholder="You are a helpful assistant..."
+              placeholder="You are a helpful assistant created by Nexiloop. You help users with their questions and tasks. Be friendly, helpful, and informative in your responses."
               value={formData.systemPrompt}
               onChange={handleInputChange}
               className={`h-32 font-mono ${error.systemPrompt ? "border-red-500" : ""}`}
@@ -177,28 +127,29 @@ export function CreateAgentForm({
             )}
           </div>
 
-          {/* Tools (only shown if git-mcp is selected) */}
-          {formData.mcp === "git-mcp" && (
-            <div className="overflow-hidden rounded-lg border p-2">
-              <div className="mb-2 flex items-center justify-between">
-                <h3 className="text-sm font-medium">
-                  Enabled tools via git-mcp:
-                </h3>
-                <Badge
-                  variant="outline"
-                  className="border-green-200 bg-green-50 text-green-700"
-                >
-                  <Check className="mr-1 h-3 w-3" /> Enabled
-                </Badge>
-              </div>
-              <ul className="list-disc space-y-1 pl-5 text-sm">
-                <li>get_repo_info</li>
-                <li>list_issues</li>
-                <li>create_issue</li>
-                <li>get_file_contents</li>
-              </ul>
+          {/* Creator Choice */}
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="includeMe"
+                checked={!formData.useNexiloopAsCreator}
+                onCheckedChange={(checked: boolean) =>
+                  handleFormDataChange({
+                    useNexiloopAsCreator: !checked
+                  })
+                }
+              />
+              <Label
+                htmlFor="includeMe"
+                className="text-sm font-normal cursor-pointer"
+              >
+                Credit me as the creator instead of Nexiloop
+              </Label>
             </div>
-          )}
+            <p className="text-xs text-muted-foreground">
+              By default, agents are created by Nexiloop. Check this box if you want to be credited as the creator.
+            </p>
+          </div>
 
           {/* Submit Button */}
           <Button type="submit" className="w-full" disabled={isLoading}>

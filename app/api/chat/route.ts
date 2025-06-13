@@ -1,6 +1,5 @@
 import { loadAgent } from "@/lib/agents/load-agent"
 import { SYSTEM_PROMPT_DEFAULT } from "@/lib/config"
-import { loadMCPToolsFromURL } from "@/lib/mcp/load-mcp-from-url"
 import { getAllModels } from "@/lib/models"
 import { getProviderForModel } from "@/lib/openproviders/provider-map"
 import { Provider } from "@/lib/user-keys"
@@ -27,6 +26,7 @@ type ChatRequest = {
   systemPrompt: string
   agentId?: string
   preferredImageModel?: string
+  videoStreamingEnabled?: boolean
 }
 
 // Image generation keywords and patterns
@@ -199,6 +199,7 @@ export async function POST(req: Request) {
       systemPrompt,
       agentId,
       preferredImageModel,
+      videoStreamingEnabled,
     } = (await req.json()) as ChatRequest
 
     if (!messages || !chatId || !userId) {
@@ -260,21 +261,18 @@ export async function POST(req: Request) {
 
     let toolsToUse = undefined
 
-    if (agentConfig?.mcpConfig) {
-      const { tools } = await loadMCPToolsFromURL(agentConfig.mcpConfig.server)
-      toolsToUse = tools
-    } else if (agentConfig?.tools) {
+    if (agentConfig?.tools) {
       toolsToUse = agentConfig.tools
       if (supabase) {
         await trackSpecialAgentUsage(supabase, userId)
       }
     } else {
-      // Check if the user's message suggests movie/TV search and add appropriate tools
+      // Check if the user's message suggests movie/TV search and if streaming is enabled
       const lastUserMessage = messages[messages.length - 1]
       if (lastUserMessage && lastUserMessage.role === 'user') {
         const isMovieRequest = detectMovieSearchRequest(lastUserMessage.content)
         
-        if (isMovieRequest && process.env.TMDB_API_KEY) {
+        if (isMovieRequest && process.env.TMDB_API_KEY && videoStreamingEnabled !== false) {
           toolsToUse = {
             tmdbMovieSearch: movieSearchTool
           }

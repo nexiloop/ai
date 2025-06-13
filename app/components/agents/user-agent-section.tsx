@@ -83,7 +83,6 @@ export function UserAgentsSection({
             slug={agent.slug}
             system_prompt={agent.system_prompt}
             tools={agent.tools}
-            mcp_config={agent.mcp_config}
             creator_id={agent.creator_id}
           />
         ))}

@@ -21,6 +21,7 @@ export async function POST(request: Request) {
       remixable = false,
       is_public = true,
       max_steps = 5,
+      useNexiloopAsCreator = true, // Default to true, user can set to false
     } = await request.json()
 
     if (!name || !description || !systemPrompt) {
@@ -49,21 +50,27 @@ export async function POST(request: Request) {
       })
     }
 
+    // Always use the actual user as creator_id for database integrity
+    // We'll track whether it should display as "Nexiloop" via a separate field
+    const creatorId = authData.user.id
+
     const { data: agent, error: supabaseError } = await supabase
       .from("agents")
       .insert({
         slug: generateAgentSlug(name),
         name,
         description,
-        avatar_url,
-        mcp_config,
+        avatar_url: null, // Remove MCP-related avatar
+        mcp_config: null, // Always set to null since we're removing MCP
         example_inputs,
         tools,
         remixable,
         is_public,
         system_prompt: systemPrompt,
         max_steps,
-        creator_id: authData.user.id,
+        creator_id: creatorId,
+        // Store whether this should be displayed as created by Nexiloop
+        created_by_nexiloop: useNexiloopAsCreator,
       })
       .select()
       .single()

@@ -145,6 +145,16 @@ export function CodeHatChat() {
     api: API_ROUTE_CHAT,
     initialMessages,
     initialInput: draftValue,
+    body: async () => ({
+      chatId,
+      userId: isAuthenticated ? user?.id : await getOrCreateGuestUserId(user),
+      model: selectedModel,
+      isAuthenticated,
+      systemPrompt: SYSTEM_PROMPT_CODEHAT,
+      agentId: null,
+      preferredImageModel: preferences.defaultImageModel,
+      videoStreamingEnabled: preferences.videoStreamingEnabled,
+    }),
     onFinish: async (message) => {
       // Store the assistant message in the cache
       await cacheAndAddMessage(message)

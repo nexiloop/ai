@@ -38,7 +38,6 @@ export function ResearchSection({
         randomAgents={randomAgents}
         system_prompt={researchAgent.system_prompt}
         tools={researchAgent.tools || []}
-        mcp_config={researchAgent.mcp_config}
         trigger={
           <button
             className="group w-full items-end justify-start"

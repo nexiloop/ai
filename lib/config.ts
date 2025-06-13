@@ -240,3 +240,6 @@ export const CODEHAT_SUGGESTIONS = [
     icon: Code,
   },
 ] as const
+
+// Default creator ID for Nexiloop-created agents
+export const NEXILOOP_USER_ID = process.env.NEXILOOP_USER_ID || "00000000-0000-0000-0000-000000000000"

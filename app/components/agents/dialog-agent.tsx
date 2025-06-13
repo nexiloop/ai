@@ -68,7 +68,6 @@ export function DialogAgent({
       isAvailable={isAvailable}
       onClick={() => handleOpenChange(true)}
       tools={tools}
-      mcp_config={mcp_config}
       isLight={isCardLight}
     />
   )
@@ -82,7 +81,6 @@ export function DialogAgent({
       avatar_url={avatar_url}
       system_prompt={system_prompt}
       tools={tools}
-      mcp_config={mcp_config}
       onAgentClick={onAgentClick}
       randomAgents={randomAgents}
       creator_id={creator_id}
