@@ -59,7 +59,7 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
               <div className="flex flex-1 items-center gap-6">
                 <Link
                   href="/"
-                  className="pointer-events-auto flex items-center gap-2 text-xl font-medium tracking-tight"
+                  className="pointer-events-auto flex items-center  text-xl font-medium tracking-tight"
                 >
                   <Logo className="h-8 w-8" />
                 </Link>
