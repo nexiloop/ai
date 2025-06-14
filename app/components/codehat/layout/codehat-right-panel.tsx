@@ -101,95 +101,61 @@ export function CodeHatRightPanel() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.4 }}
-          className="flex flex-1 overflow-hidden"
+          className="flex flex-1 overflow-hidden items-center justify-center"
         >
-          {/* File Explorer Sidebar */}
+          {/* Coming Soon Placeholder */}
           <motion.div
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: "200px", opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.3 }}
-            className="border-r border-border flex-shrink-0 overflow-hidden"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.4 }}
+            className="flex flex-col items-center justify-center text-center p-8 space-y-4"
           >
-            <FileExplorer />
-          </motion.div>
-
-          {/* Main Content Area */}
-          <div className="flex flex-1 flex-col overflow-hidden">
-            {/* Tab Bar */}
-            <div className="border-b border-border bg-muted/20">
-              <Tabs 
-                value={currentMainTab} 
-                onValueChange={(value) => setCurrentMainTab(value as "code" | "terminal" | "preview")}
-                className="w-full"
-              >
-                <TabsList className="w-full justify-start rounded-none border-none bg-transparent p-0">
-                  <TabsTrigger 
-                    value="code" 
-                    className="gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent hover:bg-muted/50 transition-all duration-200 px-4 py-2"
-                  >
-                    <Code className="h-4 w-4" />
-                    <span className="text-sm">Code</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="terminal" 
-                    className="gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent hover:bg-muted/50 transition-all duration-200 px-4 py-2"
-                  >
-                    <Terminal className="h-4 w-4" />
-                    <span className="text-sm">Terminal</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="preview" 
-                    className="gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent hover:bg-muted/50 transition-all duration-200 px-4 py-2"
-                  >
-                    <Eye className="h-4 w-4" />
-                    <span className="text-sm">Preview</span>
-                  </TabsTrigger>
-                </TabsList>
-
-                {/* Current file indicator for code tab */}
-                {selectedFile && currentMainTab === "code" && (
-                  <div className="border-t border-border bg-muted/10 px-4 py-1">
-                    <span className="text-xs text-muted-foreground">
-                      {selectedFile}
-                    </span>
-                  </div>
-                )}
-
-                <TabsContent value="code" className="m-0 flex-1 overflow-hidden">
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full"
-                  >
-                    <CodeEditor />
-                  </motion.div>
-                </TabsContent>
-
-                <TabsContent value="terminal" className="m-0 flex-1 overflow-hidden">
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full"
-                  >
-                    <CodeHatTerminalEnhanced />
-                  </motion.div>
-                </TabsContent>
-
-                <TabsContent value="preview" className="m-0 flex-1 overflow-hidden">
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full"
-                  >
-                    <AppPreview />
-                  </motion.div>
-                </TabsContent>
-              </Tabs>
+            <motion.div
+              animate={{ 
+                rotate: 360,
+                scale: [1, 1.1, 1]
+              }}
+              transition={{ 
+                rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+                scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+              }}
+              className="p-4 rounded-full bg-muted/50 border border-border"
+            >
+              <Code className="h-12 w-12 text-muted-foreground" />
+            </motion.div>
+            
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-foreground">Coming Soon</h3>
+              <p className="text-sm text-muted-foreground max-w-md">
+                CodeHat IDE features are currently in development. 
+                Stay tuned for code editing, terminal, and preview capabilities!
+              </p>
             </div>
-          </div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.3 }}
+              className="flex gap-1"
+            >
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  animate={{
+                    scale: [1, 1.5, 1],
+                    opacity: [0.3, 1, 0.3],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                    ease: "easeInOut",
+                  }}
+                  className="w-2 h-2 bg-primary rounded-full"
+                />
+              ))}
+            </motion.div>
+          </motion.div>
         </motion.div>
       </motion.div>
     </AnimatePresence>
