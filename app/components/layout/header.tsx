@@ -68,7 +68,7 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
                 
                 {/* Model Selector - Left side for desktop on chat pages */}
                 {isChatPage && isLoggedIn && !isMobile && (
-                  <div className="pointer-events-auto ml-4">
+                  <div className="pointer-events-auto ml-4 mt-1">
                     <ModelSelector
                       selectedModelId={selectedModelId}
                       setSelectedModelId={handleModelSelection}
