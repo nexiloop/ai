@@ -16,19 +16,14 @@ const TRANSITION = {
 }
 
 export function Reasoning({ reasoning, isStreaming = false }: ReasoningProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true) // Start expanded by default
   
-  // Auto-expand when streaming (thinking), auto-collapse when done
+  // Auto-expand when streaming (thinking), but stay open when done
   useEffect(() => {
     if (isStreaming) {
       setIsExpanded(true)
-    } else {
-      // Auto-collapse after 2 seconds when done thinking
-      const timer = setTimeout(() => {
-        setIsExpanded(false)
-      }, 2000)
-      return () => clearTimeout(timer)
     }
+    // Remove the auto-collapse logic - let users manually control it
   }, [isStreaming])
 
   return (
@@ -54,7 +49,7 @@ export function Reasoning({ reasoning, isStreaming = false }: ReasoningProps) {
           <CheckCircle className="size-4 text-green-500" />
         )}
         <span className="font-medium">
-          {isStreaming ? "AI is thinking..." : "Thinking Complete"}
+          {isStreaming ? "AI is thinking..." : "View AI Reasoning"}
         </span>
         <CaretDown
           className={cn(
