@@ -26,7 +26,7 @@ import { ProcessedImageData } from "@/lib/background-removal"
 type ChatInputProps = {
   value: string
   onValueChange: (value: string) => void
-  onSend: () => void
+  onSend: (isThinkMode?: boolean) => void
   isSubmitting?: boolean
   hasMessages?: boolean
   files: File[]
@@ -101,8 +101,10 @@ export function ChatInput({
       return
     }
 
-    onSend()
-  }, [isSubmitting, onSend, status, stop])
+    onSend(isThinkMode)
+    // Reset think mode after sending
+    setIsThinkMode(false)
+  }, [isSubmitting, onSend, status, stop, isThinkMode])
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {

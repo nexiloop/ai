@@ -231,7 +231,7 @@ export function Chat() {
     }
   }, [error])
 
-  const submit = async () => {
+  const submit = async (isThinkMode: boolean = false) => {
     setIsSubmitting(true)
 
     const uid = await getOrCreateGuestUserId(user)
@@ -303,6 +303,7 @@ export function Chat() {
         isAuthenticated,
         systemPrompt: systemPrompt || SYSTEM_PROMPT_DEFAULT,
         preferredImageModel: preferences.defaultImageModel,
+        isThinkMode: isThinkMode,
         ...(effectiveAgentId && { agentId: effectiveAgentId }),
       },
       experimental_attachments: attachments || undefined,

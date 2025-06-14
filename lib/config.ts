@@ -26,7 +26,6 @@ export const FREE_MODELS_IDS = [
   // OpenAI Models
   "gpt-3.5-turbo",
   "gpt-3.5-turbo-instruct", 
-  "gpt-4-turbo",
   "gpt-4.1",
   "gpt-4.1-mini",
   "gpt-4.1-nano",
@@ -37,8 +36,6 @@ export const FREE_MODELS_IDS = [
   "o1-mini",
   "o3-mini",
   "o3-mini-high",
-  "o3-mini-low",
-  "o3-mini-medium",
   "o4-mini",
   
   // DeepSeek Models
@@ -46,13 +43,10 @@ export const FREE_MODELS_IDS = [
   "deepseek-v3",
   
   // Google/Gemini Models (ALL FREE)
-  "gemini-1.5-flash-002",
-  "gemini-1.5-flash-8b",
-  "gemini-1.5-pro-002",
-  "gemini-2.0-flash-001",
-  "gemini-2.0-flash-lite-preview-02-05",
+  "gemini-1.5-flash",
+  "gemini-1.5-pro",
+  "gemini-2.0-flash",
   "gemini-2.5-pro-exp-03-25",
-  "gemini-2.5-pro-exp-03-25-pro",
   "gemma-3-27b-it",
   
   // Mistral Models (ALL FREE)
@@ -116,7 +110,7 @@ export const FREE_MODELS_IDS = [
 ]
 
 
-export const MODEL_DEFAULT = "gpt-4.1-mini"
+export const MODEL_DEFAULT = "gpt-4o-mini"
 
 export const APP_NAME = "nexiloop ai"
 export const APP_DOMAIN = "https://ai.nexiloop.com"
@@ -245,10 +239,6 @@ export const CODEHAT_LIMITS = {
 } as const
 
 export const CURATED_AGENTS_SLUGS = [
-  "github/ibelick/prompt-kit",
-  "github/ibelick/nexiloop",
-  "github/shadcn/ui",
-  "tweet-vibe-checker",
   "blog-draft",
 ]
 

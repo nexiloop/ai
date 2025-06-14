@@ -38,6 +38,8 @@ type ModelSelectorProps = {
   setSelectedModelId: (modelId: string) => void
   className?: string
   isUserAuthenticated?: boolean
+  align?: "start" | "center" | "end"
+  side?: "top" | "right" | "bottom" | "left"
 }
 
 export function ModelSelector({
@@ -45,6 +47,8 @@ export function ModelSelector({
   setSelectedModelId,
   className,
   isUserAuthenticated = true,
+  align = "start",
+  side = "top",
 }: ModelSelectorProps) {
   const [models, setModels] = useState<ModelConfig[]>([])
   const [isLoadingModels, setIsLoadingModels] = useState(true)
@@ -330,13 +334,13 @@ export function ModelSelector({
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
           </TooltipTrigger>
-          <TooltipContent>Switch model ⌘⇧P</TooltipContent>
+          <TooltipContent side={side === "top" ? "bottom" : "top"}>Switch model ⌘⇧P</TooltipContent>
           <DropdownMenuContent
             className="flex h-[320px] w-[300px] flex-col space-y-0.5 overflow-visible px-0 pt-0"
-            align="start"
+            align={align}
             sideOffset={4}
             forceMount
-            side="top"
+            side={side}
           >
             <div className="bg-background sticky top-0 z-10 rounded-t-md border-b px-0 pt-0 pb-0">
               <div className="relative">

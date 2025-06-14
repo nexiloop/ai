@@ -25,8 +25,9 @@ type ChatRequest = {
   isAuthenticated: boolean
   systemPrompt: string
   agentId?: string
-  preferredImageModel?: string
+  preferredImageModel?: string  
   videoStreamingEnabled?: boolean
+  isThinkMode?: boolean
 }
 
 // Image generation keywords and patterns
@@ -200,6 +201,7 @@ export async function POST(req: Request) {
       agentId,
       preferredImageModel,
       videoStreamingEnabled,
+      isThinkMode,
     } = (await req.json()) as ChatRequest
 
     if (!messages || !chatId || !userId) {
@@ -259,6 +261,17 @@ export async function POST(req: Request) {
     const effectiveSystemPrompt =
       agentConfig?.systemPrompt || systemPrompt || SYSTEM_PROMPT_DEFAULT
 
+    // Enhanced system prompt for Think Mode
+    let finalSystemPrompt = effectiveSystemPrompt
+    
+    // Check if Think Mode is enabled and model supports reasoning
+    const supportsReasoning = modelConfig.reasoning === true
+    if (isThinkMode && supportsReasoning) {
+      finalSystemPrompt = `${effectiveSystemPrompt}
+
+THINK MODE ENABLED: You are now in enhanced reasoning mode. Please think through this problem step by step. Show your reasoning process, consider multiple perspectives, analyze potential solutions, and provide a thorough, well-reasoned response. Take your time to carefully consider all aspects of the question or problem before providing your final answer.`
+    }
+
     let toolsToUse = undefined
 
     if (agentConfig?.tools) {
@@ -296,7 +309,7 @@ export async function POST(req: Request) {
 
     const result = streamText({
       model: modelConfig.apiSdk(apiKey),
-      system: effectiveSystemPrompt,
+      system: finalSystemPrompt,
       messages: cleanedMessages,
       tools: toolsToUse as ToolSet,
       maxSteps: 10,
