@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { isSupabaseEnabled } from "@/lib/supabase/config"
 import { cn, isDev } from "@/lib/utils"
-import { GearSix, PaintBrush, PlugsConnected, X, Sparkle } from "@phosphor-icons/react"
+import { GearSix, PaintBrush, PlugsConnected, X, Sparkle, Brain } from "@phosphor-icons/react"
 import { useState } from "react"
 import { InteractionPreferences } from "./appearance/interaction-preferences"
 import { LayoutSettings } from "./appearance/layout-settings"
@@ -16,17 +16,18 @@ import { DeveloperTools } from "./connections/developer-tools"
 import { ProviderSettings } from "./connections/provider-settings"
 import { AccountManagement } from "./general/account-management"
 import { FeaturesSection } from "./general/features-section"
-import { ModelPreferences } from "./general/model-preferences"
 import { MyAgentsSection } from "./general/my-agents-section"
 // General tab components
 import { UserProfile } from "./general/user-profile"
+// Models tab components
+import { ModelsSection } from "./models/models-section"
 
 type SettingsContentProps = {
   onClose: () => void
   isDrawer?: boolean
 }
 
-type TabType = "general" | "features" | "appearance" | "connections"
+type TabType = "general" | "models" | "features" | "appearance" | "connections"
 
 export function SettingsContent({
   onClose,
@@ -61,10 +62,14 @@ export function SettingsContent({
         {isDrawer ? (
           // Mobile version - tabs on top, full height
           <div className="flex h-full w-full flex-col">
-            <TabsList className="mb-6 mx-4 grid w-auto grid-cols-4 bg-muted/50 h-12">
+            <TabsList className="mb-6 mx-4 grid w-auto grid-cols-5 bg-muted/50 h-12">
               <TabsTrigger value="general" className="flex items-center gap-1 h-10">
                 <GearSix className="size-3" />
                 <span className="text-xs font-medium">General</span>
+              </TabsTrigger>
+              <TabsTrigger value="models" className="flex items-center gap-1 h-10">
+                <Brain className="size-3" />
+                <span className="text-xs font-medium">Models</span>
               </TabsTrigger>
               <TabsTrigger
                 value="features"
@@ -96,10 +101,13 @@ export function SettingsContent({
                 {isSupabaseEnabled && (
                   <>
                     <MyAgentsSection />
-                    <ModelPreferences />
                     <AccountManagement />
                   </>
                 )}
+              </TabsContent>
+
+              <TabsContent value="models" className="mt-0 space-y-8 h-full">
+                {isSupabaseEnabled && <ModelsSection />}
               </TabsContent>
 
               <TabsContent value="features" className="mt-0 space-y-8 h-full">
@@ -131,6 +139,16 @@ export function SettingsContent({
                   <div className="flex items-center gap-2">
                     <GearSix className="size-4" />
                     <span>General</span>
+                  </div>
+                </TabsTrigger>
+
+                <TabsTrigger
+                  value="models"
+                  className="w-full justify-start rounded-md px-3 py-2 text-left"
+                >
+                  <div className="flex items-center gap-2">
+                    <Brain className="size-4" />
+                    <span>Models</span>
                   </div>
                 </TabsTrigger>
 
@@ -173,10 +191,13 @@ export function SettingsContent({
                 {isSupabaseEnabled && (
                   <>
                     <MyAgentsSection />
-                    <ModelPreferences />
                     <AccountManagement />
                   </>
                 )}
+              </TabsContent>
+
+              <TabsContent value="models" className="mt-0 space-y-6">
+                {isSupabaseEnabled && <ModelsSection />}
               </TabsContent>
 
               <TabsContent value="appearance" className="mt-0 space-y-6">

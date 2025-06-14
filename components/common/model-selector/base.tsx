@@ -171,7 +171,7 @@ export function ModelSelector({
         {isPro && (
           <div className="border-input bg-accent text-muted-foreground flex items-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[10px] font-medium">
             <Star className="size-2" />
-            <span>Pro</span>
+            <span>Coming Soon</span>
           </div>
         )}
       </div>
@@ -400,7 +400,7 @@ export function ModelSelector({
                       </div>
                       {isPro && (
                         <div className="border-input bg-accent text-muted-foreground flex items-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[10px] font-medium">
-                          <span>Pro</span>
+                          <span>Coming Soon</span>
                         </div>
                       )}
                     </DropdownMenuItem>

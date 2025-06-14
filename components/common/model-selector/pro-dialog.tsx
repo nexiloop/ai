@@ -1,19 +1,18 @@
 "use client"
 
-import { useBreakpoint } from "@/app/hooks/use-breakpoint"
-import { Badge } from "@/components/ui/badge"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
-import { APP_NAME } from "@/lib/config"
-import { createClient } from "@/lib/supabase/client"
-import { useUser } from "@/lib/user-store/provider"
-import Image from "next/image"
-import { useEffect, useState } from "react"
+import { Star } from "@phosphor-icons/react"
 
-type ProModelDialogProps = {
+interface ProModelDialogProps {
   isOpen: boolean
-  setIsOpen: (isOpen: boolean) => void
+  setIsOpen: (open: boolean) => void
   currentModel: string
 }
 
@@ -22,117 +21,29 @@ export function ProModelDialog({
   setIsOpen,
   currentModel,
 }: ProModelDialogProps) {
-  const [submitted, setSubmitted] = useState(false)
-  const { user } = useUser()
-  const isMobile = useBreakpoint(768)
-
-  useEffect(() => {
-    setSubmitted(false)
-  }, [currentModel])
-
-  const handleSubmitInterest = async () => {
-    if (!user?.id) {
-      return
-    }
-
-    const supabase = await createClient()
-
-    if (!supabase) {
-      return
-    }
-
-    const { error } = await supabase.from("feedback").insert({
-      message: `I want access to ${currentModel}`,
-      user_id: user?.id,
-    })
-
-    if (error) {
-      throw new Error(error.message)
-    }
-
-    setSubmitted(true)
-  }
-
-  const renderContent = () => (
-    <div className="flex max-h-[70vh] flex-col">
-      <div className="relative">
-        <Image
-          src="/banner_ocean.jpg"
-          alt={`calm paint generate by ${APP_NAME}`}
-          width={400}
-          height={128}
-          className="h-32 w-full object-cover"
-        />
-      </div>
-
-<div className="px-6 pt-4 text-center text-lg leading-tight font-medium">
-  This feature is part of <span className="text-primary">Nexiloop Pro</span> — coming soon.
-</div>
-
-
-      <div className="flex-grow overflow-y-auto">
-        <div className="px-6 py-4">
-<p className="text-muted-foreground text-sm">
-  Nexiloop is free to use. Pro features will unlock more advanced models and tools.
-</p>
-
-     <p className="text-muted-foreground mt-1 text-sm">
-  Want early access? Let us know and we’ll notify you once Nexiloop Pro drops.
-</p>
-
-
-          <div className="mt-5 flex justify-center gap-3">
-            {submitted ? (
-              <Badge className="bg-green-600 text-white">
-                Thanks! We&apos;ll keep you updated
-              </Badge>
-            ) : (
-              <>
-               <Button
-  onClick={handleSubmitInterest}
-  className="flex-1"
-  variant="default"
->
-  I want this model
-</Button>
-<Button variant="outline" className="flex-1" asChild>
-  <a
-    href="https://www.nexiloop.com/docs/products/bignova"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    Stay tuned on Nexiloop
-  </a>
-</Button>
-
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-
-  if (isMobile) {
-    return (
-      <Drawer open={isOpen} onOpenChange={setIsOpen}>
-        <DrawerContent className="px-0">
-          <DrawerHeader className="sr-only">
-            <DrawerTitle>Pro Model Access Required</DrawerTitle>
-          </DrawerHeader>
-          {renderContent()}
-        </DrawerContent>
-      </Drawer>
-    )
-  }
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="[&>button:last-child]:bg-background gap-0 overflow-hidden rounded-3xl p-0 shadow-xs sm:max-w-md [&>button:last-child]:rounded-full [&>button:last-child]:p-1">
-        <DialogHeader className="sr-only">
-          <DialogTitle>Pro Model Access Required</DialogTitle>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Star className="size-5 text-yellow-500" />
+            Coming Soon
+          </DialogTitle>
+          <DialogDescription>
+            This model is coming soon! We're working hard to bring you access to the latest AI models.
+          </DialogDescription>
         </DialogHeader>
-        {renderContent()}
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            The model "{currentModel}" will be available in a future update. 
+            Stay tuned for more powerful AI capabilities!
+          </p>
+          <div className="flex justify-end">
+            <Button onClick={() => setIsOpen(false)}>
+              Got it
+            </Button>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   )

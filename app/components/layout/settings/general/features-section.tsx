@@ -2,11 +2,47 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useUserPreferences } from "@/lib/user-preference-store/provider"
-import { FilmStrip, Play, Star } from "@phosphor-icons/react"
+import { FilmStrip, Play, Star, Image } from "@phosphor-icons/react"
+
+const IMAGE_MODELS = [
+  {
+    id: "@cf/black-forest-labs/flux-1-schnell",
+    name: "FLUX.1 Schnell"
+  },
+  {
+    id: "@cf/bytedance/stable-diffusion-xl-lightning", 
+    name: "SDXL Lightning"
+  },
+  {
+    id: "@cf/ideogram-ai/ideogram-v2-turbo",
+    name: "Ideogram v2 Turbo"
+  },
+  {
+    id: "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+    name: "Stable Diffusion XL"
+  },
+  {
+    id: "@cf/lykon/dreamshaper-8-lcm",
+    name: "DreamShaper 8"
+  },
+  {
+    id: "@cf/prompthero/openjourney-v4",
+    name: "OpenJourney v4"
+  },
+  {
+    id: "@cf/tencent/hunyuan-dit",
+    name: "Hunyuan DiT"
+  },
+]
 
 export function FeaturesSection() {
-  const { preferences, setVideoStreamingEnabled } = useUserPreferences()
+  const { preferences, setVideoStreamingEnabled, setDefaultImageModel, setBackgroundRemovalEnabled } = useUserPreferences()
+
+  const handleImageModelSelection = (value: string) => {
+    setDefaultImageModel(value)
+  }
 
   return (
     <div className="space-y-6">
@@ -50,6 +86,47 @@ export function FeaturesSection() {
             </div>
           </div>
         )}
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium flex items-center gap-2">
+          <Image className="h-4 w-4" />
+          Image Generation
+          <Badge variant="secondary" className="text-xs">Beta</Badge>
+        </h3>
+        <Select value={preferences.defaultImageModel} onValueChange={handleImageModelSelection}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select image model" />
+          </SelectTrigger>
+          <SelectContent>
+            {IMAGE_MODELS.map((model) => (
+              <SelectItem key={model.id} value={model.id}>
+                <span className="font-medium">{model.name}</span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-muted-foreground mt-2 text-xs">
+          Model used for generating images from chat messages.
+        </p>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <h3 className="text-sm font-medium flex items-center gap-2">
+              Background Removal
+              <Badge variant="secondary" className="text-xs">Beta</Badge>
+            </h3>
+            <p className="text-muted-foreground text-xs">
+              Automatically detect and show "Remove BG" option when uploading images
+            </p>
+          </div>
+          <Switch
+            checked={preferences.backgroundRemovalEnabled}
+            onCheckedChange={setBackgroundRemovalEnabled}
+          />
+        </div>
       </div>
     </div>
   )
