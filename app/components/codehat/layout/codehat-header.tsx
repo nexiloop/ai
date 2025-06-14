@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { APP_NAME } from "@/lib/config"
 import { useUser } from "@/lib/user-store/provider"
 import { useCodeHatStore } from "@/lib/codehat-store/store"
-import { Code, Info, SidebarSimple, X } from "@phosphor-icons/react"
+import { Code, Info } from "@phosphor-icons/react"
 import Link from "next/link"
 
 interface CodeHatHeaderProps {
@@ -18,7 +18,7 @@ interface CodeHatHeaderProps {
 export function CodeHatHeader({ hasSidebar }: CodeHatHeaderProps) {
   const isMobile = useBreakpoint(768)
   const { user } = useUser()
-  const { isPanelOpen, togglePanel } = useCodeHatStore()
+  // Removed panel toggle functionality for cleaner header
 
   const isLoggedIn = !!user
 
@@ -67,19 +67,7 @@ export function CodeHatHeader({ hasSidebar }: CodeHatHeaderProps) {
             </div>
           ) : (
             <div className="pointer-events-auto flex flex-1 items-center justify-end gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={togglePanel}
-                className="bg-background hover:bg-muted text-muted-foreground h-8 w-8 rounded-full"
-                aria-label={isPanelOpen ? "Close panel" : "Open panel"}
-              >
-                {isPanelOpen ? (
-                  <X className="size-4" />
-                ) : (
-                  <SidebarSimple className="size-4" />
-                )}
-              </Button>
+              {/* Panel toggle removed for clean header */}
             </div>
           )}
         </div>

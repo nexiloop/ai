@@ -1,6 +1,6 @@
 "use client"
 
-import { CodeHatHeader, CodeHatSidebar, CodeHatRightPanel, CodeHatPanelToggle } from "@/app/components/codehat/layout"
+import { CodeHatHeader, CodeHatSidebar, CodeHatRightPanel } from "@/app/components/codehat/layout"
 import { useCodeHatStore } from "@/lib/codehat-store/store"
 import { useUserPreferences } from "@/lib/user-preference-store/provider"
 import { cn } from "@/lib/utils"
@@ -31,8 +31,7 @@ export function LayoutCodeHat({ children }: { children: React.ReactNode }) {
         {/* Right panel */}
         <CodeHatRightPanel />
         
-        {/* Panel toggle button when closed */}
-        <CodeHatPanelToggle />
+        {/* Panel toggle removed for cleaner UI */}
       </div>
     </div>
   )

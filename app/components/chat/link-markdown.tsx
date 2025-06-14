@@ -32,7 +32,7 @@ export function LinkMarkdown({
         className="size-3.5 rounded-full"
       />
       <span className="overflow-hidden font-normal text-ellipsis whitespace-nowrap">
-        {domain.replace("www.", "")}
+        {domain ? domain.replace("www.", "") : href}
       </span>
     </a>
   )

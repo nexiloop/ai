@@ -178,7 +178,7 @@ export function GeneratedImage({
       >
         <div className="text-sm font-medium line-clamp-2">{prompt}</div>
         <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>Model: {model.replace('@cf/', '').replace(/[_-]/g, ' ')}</span>
+          <span>Model: {model?.replace('@cf/', '').replace(/[_-]/g, ' ') || 'Unknown'}</span>
           {remainingGenerations !== undefined && (
             <span>{remainingGenerations} generations remaining today</span>
           )}

@@ -75,24 +75,7 @@ export function CodeHatRightPanel() {
         >
           <div className="flex items-center gap-2">
             <Code className="h-4 w-4" />
-            <span className="text-sm font-medium">CodeHat IDE</span>
-            {files.length > 1 && (
-              <Badge variant="secondary" className="text-xs">
-                {files.length} files
-              </Badge>
-            )}
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <DownloadProjectButton />
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={togglePanel}
-              className="h-6 w-6 p-0 hover:bg-muted"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+            <span className="text-sm font-medium">CodeHat</span>
           </div>
         </motion.div>
 
@@ -116,10 +99,10 @@ export function CodeHatRightPanel() {
             
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-foreground">Coming Soon</h3>
-              <p className="text-sm text-muted-foreground max-w-md">
-                CodeHat IDE features are currently in development. 
-                Stay tuned for code editing, terminal, and preview capabilities!
-              </p>
+     <p className="text-sm text-muted-foreground max-w-md">
+  CodeHat features are still cooking up. Code editor, terminal, and live preview are on the way. Stay tuned bestie
+</p>
+
             </div>
           </motion.div>
         </motion.div>

@@ -70,8 +70,8 @@ export const useCodeHatStore = create<CodeHatState>()(
   subscribeWithSelector((set, get) => ({
     // Initial state
     currentProject: null,
-    files: [defaultReadmeFile],
-    selectedFile: "README.md",
+    files: [], // Initialize with empty files array
+    selectedFile: null, // No selected file initially
     
     isPanelOpen: false,
     activeTab: "code",
@@ -124,8 +124,8 @@ export const useCodeHatStore = create<CodeHatState>()(
     // Reset
     reset: () => set({
       currentProject: null,
-      files: [defaultReadmeFile],
-      selectedFile: "README.md",
+      files: [], // Reset to empty files array
+      selectedFile: null, // No selected file after reset
       isPanelOpen: false,
       activeTab: "code",
       previewUrl: null

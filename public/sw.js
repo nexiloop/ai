@@ -4,11 +4,11 @@ const DYNAMIC_CACHE = 'nexiloop-dynamic-v1';
 
 const urlsToCache = [
   '/',
-  '/globals.css',
   '/favicon.ico',
   '/manifest.json',
-  '/icon-192x192.png',
   '/icon-512x512.png',
+  '/icon.png',
+  '/robots.txt',
   // Add other static assets here
 ];
 

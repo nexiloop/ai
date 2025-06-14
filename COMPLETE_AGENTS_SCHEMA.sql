@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS public.users (
 CREATE TABLE IF NOT EXISTS public.agents (
     id TEXT PRIMARY KEY DEFAULT 'agent_' || generate_random_uuid(),
     name TEXT NOT NULL,
+    slug TEXT NOT NULL,
     description TEXT NOT NULL,
     system_prompt TEXT NOT NULL,
     
@@ -39,6 +40,16 @@ CREATE TABLE IF NOT EXISTS public.agents (
     avatar_url TEXT,
     is_public BOOLEAN DEFAULT FALSE,
     is_curated BOOLEAN DEFAULT FALSE,
+    remixable BOOLEAN DEFAULT FALSE,
+    tools_enabled BOOLEAN DEFAULT FALSE,
+    
+    -- Additional agent metadata
+    example_inputs TEXT[],
+    tags TEXT[],
+    category TEXT,
+    model_preference TEXT,
+    max_steps INTEGER,
+    mcp_config JSONB,
     
     -- Tool configuration
     tools TEXT[] DEFAULT ARRAY[]::TEXT[],
@@ -50,7 +61,8 @@ CREATE TABLE IF NOT EXISTS public.agents (
     -- Constraints
     CONSTRAINT agents_name_length CHECK (length(name) >= 1 AND length(name) <= 100),
     CONSTRAINT agents_description_length CHECK (length(description) >= 1 AND length(description) <= 500),
-    CONSTRAINT agents_system_prompt_length CHECK (length(system_prompt) >= 1)
+    CONSTRAINT agents_system_prompt_length CHECK (length(system_prompt) >= 1),
+    CONSTRAINT agents_slug_unique UNIQUE (slug)
 );
 
 -- Create chats table
@@ -100,18 +112,20 @@ CREATE TABLE IF NOT EXISTS public.messages (
     CONSTRAINT messages_content_not_empty CHECK (length(content) > 0)
 );
 
--- Create indexes for better performance
+-- Indexes for better performance
+CREATE INDEX IF NOT EXISTS idx_agents_slug ON public.agents(slug);
 CREATE INDEX IF NOT EXISTS idx_agents_creator_id ON public.agents(creator_id);
 CREATE INDEX IF NOT EXISTS idx_agents_is_public ON public.agents(is_public);
 CREATE INDEX IF NOT EXISTS idx_agents_is_curated ON public.agents(is_curated);
-CREATE INDEX IF NOT EXISTS idx_agents_created_at ON public.agents(created_at);
-
 CREATE INDEX IF NOT EXISTS idx_chats_user_id ON public.chats(user_id);
 CREATE INDEX IF NOT EXISTS idx_chats_agent_id ON public.chats(agent_id);
-CREATE INDEX IF NOT EXISTS idx_chats_created_at ON public.chats(created_at);
-
 CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON public.messages(chat_id);
-CREATE INDEX IF NOT EXISTS idx_messages_created_at ON public.messages(created_at);
+
+-- Comments for documentation
+COMMENT ON TABLE public.agents IS 'AI agents created by users';
+COMMENT ON COLUMN public.agents.slug IS 'URL-friendly unique identifier for agent';
+COMMENT ON COLUMN public.agents.is_curated IS 'Whether this is a featured/official agent';
+COMMENT ON COLUMN public.agents.tools IS 'Array of enabled tool names for this agent';
 
 -- Create updated_at trigger function
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -235,51 +249,107 @@ CREATE POLICY "Users can delete messages from their chats" ON public.messages
         )
     );
 
--- Insert default curated agents
+-- Insert default curated agents including blog-draft
 INSERT INTO public.agents (
-    id, name, description, system_prompt, creator_id, creator_name, 
-    avatar_url, is_public, is_curated, tools
+    id, name, slug, description, system_prompt, creator_id, creator_name, 
+    avatar_url, is_public, is_curated, tools, example_inputs, tags, category, 
+    remixable, tools_enabled, max_steps, model_preference, mcp_config
 ) VALUES 
 (
     'agent_general',
     'General Assistant',
+    'general-assistant',
     'A helpful AI assistant for general tasks and questions',
     'You are a helpful, harmless, and honest AI assistant created by Nexiloop. You provide accurate, helpful responses while being friendly and professional.',
-    (SELECT id FROM public.users WHERE email = 'system@nexiloop.com' LIMIT 1),
+    'b8a5c8e4-7d6f-4c9b-a2e1-3f8b9c2d5e6f',
     'Nexiloop',
     null,
     true,
     true,
-    ARRAY[]::TEXT[]
+    ARRAY[]::TEXT[],
+    ARRAY[]::TEXT[],
+    ARRAY[]::TEXT[],
+    'General',
+    false,
+    true,
+    5,
+    null,
+    null
 ),
 (
     'agent_code',
     'Code Helper',
+    'code-helper',
     'Specialized AI assistant for programming and development tasks',
     'You are a programming assistant created by Nexiloop. You help with coding, debugging, code reviews, and technical questions. Provide clear, well-commented code examples and explanations.',
-    (SELECT id FROM public.users WHERE email = 'system@nexiloop.com' LIMIT 1),
+    'b8a5c8e4-7d6f-4c9b-a2e1-3f8b9c2d5e6f',
     'Nexiloop',
     null,
     true,
     true,
-    ARRAY['terminal', 'file_handling']::TEXT[]
+    ARRAY['terminal', 'file_handling']::TEXT[],
+    ARRAY['Debug my code', 'Review this function', 'Write a Python script']::TEXT[],
+    ARRAY['programming', 'development', 'coding']::TEXT[],
+    'Programming',
+    false,
+    true,
+    10,
+    null,
+    null
 ),
 (
     'agent_writing',
     'Writing Assistant',
+    'writing-assistant',
     'AI assistant specialized in writing, editing, and content creation',
     'You are a writing assistant created by Nexiloop. You help with writing, editing, proofreading, and content creation. Provide clear, engaging, and well-structured content.',
-    (SELECT id FROM public.users WHERE email = 'system@nexiloop.com' LIMIT 1),
+    'b8a5c8e4-7d6f-4c9b-a2e1-3f8b9c2d5e6f',
     'Nexiloop',
     null,
     true,
     true,
-    ARRAY[]::TEXT[]
+    ARRAY[]::TEXT[],
+    ARRAY['Write a blog post', 'Edit this text', 'Create marketing copy']::TEXT[],
+    ARRAY['writing', 'editing', 'content']::TEXT[],
+    'Writing',
+    false,
+    true,
+    5,
+    null,
+    null
+),
+(
+    'agent_blog_draft',
+    'Blog Draft Writer',
+    'blog-draft',
+    'Expert AI assistant for creating engaging blog drafts and content outlines',
+    'You are a professional blog writer and content strategist created by Nexiloop. You specialize in creating compelling blog drafts, content outlines, and engaging articles. Focus on SEO-friendly content, clear structure, and reader engagement.',
+    'b8a5c8e4-7d6f-4c9b-a2e1-3f8b9c2d5e6f',
+    'Nexiloop',
+    null,
+    true,
+    true,
+    ARRAY[]::TEXT[],
+    ARRAY['Write a blog about AI trends', 'Create content outline for tech blog', 'Draft article about productivity']::TEXT[],
+    ARRAY['blogging', 'content', 'writing', 'seo']::TEXT[],
+    'Writing',
+    false,
+    true,
+    8,
+    null,
+    null
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
+    slug = EXCLUDED.slug,
     description = EXCLUDED.description,
     system_prompt = EXCLUDED.system_prompt,
+    example_inputs = EXCLUDED.example_inputs,
+    tags = EXCLUDED.tags,
+    category = EXCLUDED.category,
+    remixable = EXCLUDED.remixable,
+    tools_enabled = EXCLUDED.tools_enabled,
+    max_steps = EXCLUDED.max_steps,
     updated_at = NOW();
 
 -- Create a system user for default agents if it doesn't exist
