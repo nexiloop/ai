@@ -110,19 +110,9 @@ export function CodeHatRightPanel() {
             transition={{ delay: 0.5, duration: 0.4 }}
             className="flex flex-col items-center justify-center text-center p-8 space-y-4"
           >
-            <motion.div
-              animate={{ 
-                rotate: 360,
-                scale: [1, 1.1, 1]
-              }}
-              transition={{ 
-                rotate: { duration: 8, repeat: Infinity, ease: "linear" },
-                scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-              }}
-              className="p-4 rounded-full bg-muted/50 border border-border"
-            >
+            <div className="p-4 rounded-full bg-muted/50 border border-border">
               <Code className="h-12 w-12 text-muted-foreground" />
-            </motion.div>
+            </div>
             
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-foreground">Coming Soon</h3>
@@ -131,30 +121,6 @@ export function CodeHatRightPanel() {
                 Stay tuned for code editing, terminal, and preview capabilities!
               </p>
             </div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.3 }}
-              className="flex gap-1"
-            >
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  animate={{
-                    scale: [1, 1.5, 1],
-                    opacity: [0.3, 1, 0.3],
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    delay: i * 0.2,
-                    ease: "easeInOut",
-                  }}
-                  className="w-2 h-2 bg-primary rounded-full"
-                />
-              ))}
-            </motion.div>
           </motion.div>
         </motion.div>
       </motion.div>

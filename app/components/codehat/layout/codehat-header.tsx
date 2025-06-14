@@ -1,11 +1,7 @@
 "use client"
 
-import { HistoryTrigger } from "@/app/components/history/history-trigger"
 import { AppInfoTrigger } from "@/app/components/layout/app-info/app-info-trigger"
-import { ButtonNewChat } from "@/app/components/layout/button-new-chat"
-import { UserMenu } from "@/app/components/layout/user-menu"
 import { HeaderSidebarTrigger } from "@/app/components/layout/header-sidebar-trigger"
-import { Logo } from "@/app/components/logo"
 import { useBreakpoint } from "@/app/hooks/use-breakpoint"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -84,9 +80,6 @@ export function CodeHatHeader({ hasSidebar }: CodeHatHeaderProps) {
                   <SidebarSimple className="size-4" />
                 )}
               </Button>
-              <ButtonNewChat />
-              {!hasSidebar && <HistoryTrigger hasSidebar={hasSidebar} />}
-              <UserMenu />
             </div>
           )}
         </div>
