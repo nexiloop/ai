@@ -68,11 +68,11 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
                 
                 {/* Model Selector - Left side for desktop on chat pages */}
                 {isChatPage && isLoggedIn && !isMobile && (
-                  <div className="pointer-events-auto ml-4 mt-1">
+                  <div className="pointer-events-auto ml-4 mt-2">
                     <ModelSelector
                       selectedModelId={selectedModelId}
                       setSelectedModelId={handleModelSelection}
-                      className="border-0 bg-transparent shadow-none hover:bg-transparent focus:bg-transparent"
+                      className="border-0 bg-transparent shadow-none hover:bg-transparent focus:bg-transparent px-2 py-1"
                       align="start"
                       side="bottom"
                     />
