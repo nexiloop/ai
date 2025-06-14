@@ -221,7 +221,14 @@ export function ModelSelector({
   // Handle input change without losing focus
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation()
+    e.preventDefault()
     setSearchQuery(e.target.value)
+    // Keep focus on the input
+    setTimeout(() => {
+      if (searchInputRef.current) {
+        searchInputRef.current.focus()
+      }
+    }, 0)
   }
 
   // If user is not authenticated, show the auth popover
@@ -324,12 +331,16 @@ export function ModelSelector({
         <DropdownMenu
           open={isDropdownOpen}
           onOpenChange={(open) => {
-            setIsDropdownOpen(open)
-            if (!open) {
+            // Only allow closing if explicitly requested or through escape key
+            if (!open && isDropdownOpen) {
+              setIsDropdownOpen(false)
               setHoveredModel(null)
               setSearchQuery("")
+            } else if (open) {
+              setIsDropdownOpen(true)
             }
           }}
+          modal={false}
         >
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
@@ -341,6 +352,17 @@ export function ModelSelector({
             sideOffset={4}
             forceMount
             side={side}
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onFocusOutside={(e) => e.preventDefault()}
+            onInteractOutside={(e) => {
+              // Only close if the interaction is truly outside and not on a related element
+              const target = e.target as Element
+              if (target && !target.closest('[data-radix-popper-content-wrapper]')) {
+                setIsDropdownOpen(false)
+              } else {
+                e.preventDefault()
+              }
+            }}
           >
             <div className="bg-background sticky top-0 z-10 rounded-t-md border-b px-0 pt-0 pb-0">
               <div className="relative">
@@ -351,9 +373,23 @@ export function ModelSelector({
                   className="dark:bg-popover rounded-b-none border border-none pl-8 shadow-none focus-visible:ring-0"
                   value={searchQuery}
                   onChange={handleSearchChange}
-                  onClick={(e) => e.stopPropagation()}
-                  onFocus={(e) => e.stopPropagation()}
-                  onKeyDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                  }}
+                  onFocus={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                  }}
+                  onKeyDown={(e) => {
+                    e.stopPropagation()
+                    // Allow escape to close dropdown
+                    if (e.key === 'Escape') {
+                      setIsDropdownOpen(false)
+                    }
+                  }}
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
                 />
               </div>
             </div>
@@ -377,13 +413,15 @@ export function ModelSelector({
                     <DropdownMenuItem
                       key={model.id}
                       className={cn(
-                        "flex w-full items-center justify-between px-3 py-2",
+                        "flex w-full items-center justify-between px-3 py-2 focus:bg-accent hover:bg-accent",
                         selectedModelId === model.id && "bg-accent"
                       )}
-                      onSelect={() => {
+                      onSelect={(e) => {
+                        e.preventDefault()
                         if (isPro) {
                           setSelectedProModel(model.id)
                           setIsProDialogOpen(true)
+                          setIsDropdownOpen(false)
                           return
                         }
 
@@ -400,6 +438,7 @@ export function ModelSelector({
                           setHoveredModel(model.id)
                         }
                       }}
+                      onPointerDown={(e) => e.stopPropagation()}
                     >
                       <div className="flex items-center gap-3">
                         {provider?.icon && <provider.icon className="size-5" />}

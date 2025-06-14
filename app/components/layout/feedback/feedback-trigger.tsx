@@ -35,7 +35,18 @@ export function FeedbackTrigger() {
       <>
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
           <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-          <DrawerContent className="bg-background border-border">
+          <DrawerContent 
+            className="bg-background border-border"
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onInteractOutside={(e) => {
+              // Allow closing by clicking the X button or pressing Escape
+              const target = e.target as Element
+              if (target && (target.closest('[data-drawer-close]') || e.type === 'escapeKeyDown')) {
+                return
+              }
+              e.preventDefault()
+            }}
+          >
             <FeedbackForm authUserId={user?.id} onClose={handleClose} />
           </DrawerContent>
         </Drawer>
@@ -47,7 +58,18 @@ export function FeedbackTrigger() {
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
-        <DialogContent className="[&>button:last-child]:bg-background overflow-hidden p-0 shadow-xs sm:max-w-md [&>button:last-child]:top-3.5 [&>button:last-child]:right-3 [&>button:last-child]:rounded-full [&>button:last-child]:p-1">
+        <DialogContent 
+          className="[&>button:last-child]:bg-background overflow-hidden p-0 shadow-xs sm:max-w-md [&>button:last-child]:top-3.5 [&>button:last-child]:right-3 [&>button:last-child]:rounded-full [&>button:last-child]:p-1"
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onInteractOutside={(e) => {
+            // Allow closing by clicking the X button or pressing Escape
+            const target = e.target as Element
+            if (target && (target.closest('[data-dialog-close]') || e.type === 'escapeKeyDown')) {
+              return
+            }
+            e.preventDefault()
+          }}
+        >
           <FeedbackForm authUserId={user?.id} onClose={handleClose} />
         </DialogContent>
       </Dialog>

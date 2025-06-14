@@ -1,11 +1,12 @@
 import { Markdown } from "@/components/prompt-kit/markdown"
 import { cn } from "@/lib/utils"
-import { CaretDown, Brain } from "@phosphor-icons/react"
+import { CaretDown, Brain, CheckCircle } from "@phosphor-icons/react"
 import { AnimatePresence, motion } from "framer-motion"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 type ReasoningProps = {
   reasoning: string
+  isStreaming?: boolean
 }
 
 const TRANSITION = {
@@ -14,18 +15,47 @@ const TRANSITION = {
   bounce: 0,
 }
 
-export function Reasoning({ reasoning }: ReasoningProps) {
+export function Reasoning({ reasoning, isStreaming = false }: ReasoningProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  
+  // Auto-expand when streaming (thinking), auto-collapse when done
+  useEffect(() => {
+    if (isStreaming) {
+      setIsExpanded(true)
+    } else {
+      // Auto-collapse after 2 seconds when done thinking
+      const timer = setTimeout(() => {
+        setIsExpanded(false)
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [isStreaming])
 
   return (
     <div className="mb-4">
       <button
-        className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors px-3 py-2 rounded-lg bg-muted/30 hover:bg-muted/50 border border-border/50"
+        className={cn(
+          "text-muted-foreground hover:text-foreground flex items-center gap-2 transition-all px-3 py-2 rounded-lg border border-border/50",
+          isStreaming 
+            ? "bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700 dark:bg-blue-950 dark:hover:bg-blue-900 dark:border-blue-800 dark:text-blue-300"
+            : "bg-muted/30 hover:bg-muted/50"
+        )}
         onClick={() => setIsExpanded(!isExpanded)}
         type="button"
       >
-        <Brain className="size-4 text-blue-500" />
-        <span className="font-medium">AI Thinking Process</span>
+        {isStreaming ? (
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          >
+            <Brain className="size-4 text-blue-500" />
+          </motion.div>
+        ) : (
+          <CheckCircle className="size-4 text-green-500" />
+        )}
+        <span className="font-medium">
+          {isStreaming ? "AI is thinking..." : "Thinking Complete"}
+        </span>
         <CaretDown
           className={cn(
             "size-3 transition-transform ml-auto",

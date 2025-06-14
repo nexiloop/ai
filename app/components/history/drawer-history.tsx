@@ -277,7 +277,17 @@ export function DrawerHistory({
         </TooltipTrigger>
         <TooltipContent>History</TooltipContent>
       </Tooltip>
-      <DrawerContent>
+      <DrawerContent
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => {
+          // Allow closing by clicking the X button or pressing Escape
+          const target = e.target as Element
+          if (target && (target.closest('[data-drawer-close]') || e.type === 'escapeKeyDown')) {
+            return
+          }
+          e.preventDefault()
+        }}
+      >
         <div className="flex h-dvh max-h-[80vh] flex-col">
           <div className="border-b p-4 pb-3">
             <div className="relative">

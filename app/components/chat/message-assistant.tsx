@@ -123,14 +123,17 @@ export function MessageAssistant({
       )}
     >
       <div className={cn("flex min-w-full flex-col gap-2", isLast && "pb-8")}>
-        {/* Show thinking animation for reasoning models when streaming */}
+        {/* Show thinking animation for reasoning models when streaming and no reasoning parts yet */}
         <ThinkingAnimation 
-          isVisible={Boolean(isLastStreaming && contentNullOrEmpty)}
+          isVisible={Boolean(isLastStreaming && contentNullOrEmpty && !reasoningParts?.reasoning)}
           modelId={modelId}
         />
 
         {reasoningParts && reasoningParts.reasoning && (
-          <Reasoning reasoning={reasoningParts.reasoning} />
+          <Reasoning 
+            reasoning={reasoningParts.reasoning} 
+            isStreaming={isLastStreaming}
+          />
         )}
 
         {toolInvocationParts &&

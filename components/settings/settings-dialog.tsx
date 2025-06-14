@@ -63,7 +63,18 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-h-[80vh] max-w-2xl overflow-y-auto">
+      <DialogContent 
+        className="max-h-[80vh] max-w-2xl overflow-y-auto"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => {
+          // Allow closing by clicking the X button or pressing Escape
+          const target = e.target as Element
+          if (target && (target.closest('[data-dialog-close]') || e.type === 'escapeKeyDown')) {
+            return
+          }
+          e.preventDefault()
+        }}
+      >
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>
