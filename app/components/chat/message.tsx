@@ -16,6 +16,7 @@ type MessageProps = {
   parts?: MessageType["parts"]
   status?: "streaming" | "ready" | "submitted" | "error"
   imageGenerationData?: any
+  modelId?: string
 }
 
 export function Message({
@@ -31,6 +32,7 @@ export function Message({
   parts,
   status,
   imageGenerationData,
+  modelId,
 }: MessageProps) {
   const [copied, setCopied] = useState(false)
 
@@ -62,6 +64,7 @@ export function Message({
         parts={parts}
         status={status}
         imageGenerationData={imageGenerationData}
+        modelId={modelId}
       >
         {children}
       </MessageAssistant>

@@ -473,6 +473,7 @@ How can I help you today?
             onEdit={handleEdit}
             onReload={handleReload}
             imageGenerationData={imageGenerationData}
+            modelId={selectedModel}
           />
         )}
       </AnimatePresence>

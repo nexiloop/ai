@@ -15,6 +15,7 @@ type ConversationProps = {
   onEdit: (id: string, newText: string) => void
   onReload: () => void
   imageGenerationData?: Record<string, any>
+  modelId?: string
 }
 
 export function Conversation({
@@ -24,6 +25,7 @@ export function Conversation({
   onEdit,
   onReload,
   imageGenerationData,
+  modelId,
 }: ConversationProps) {
   const initialMessageCount = useRef(messages.length)
 
@@ -65,6 +67,7 @@ export function Conversation({
                 parts={message.parts}
                 status={status}
                 imageGenerationData={imageGenerationData?.[message.id]}
+                modelId={modelId}
               >
                 {message.content}
               </Message>

@@ -73,7 +73,7 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
                     <ModelSelector
                       selectedModelId={selectedModelId}
                       setSelectedModelId={handleModelSelection}
-                      className="w-full border-0 bg-transparent shadow-none"
+                      className="w-full border-0 bg-transparent shadow-none hover:bg-transparent focus:bg-transparent"
                     />
                   </div>
                 )}
@@ -110,7 +110,7 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
                   <ModelSelector
                     selectedModelId={selectedModelId}
                     setSelectedModelId={handleModelSelection}
-                    className="border-0 bg-transparent shadow-none"
+                    className="border-0 bg-transparent shadow-none hover:bg-transparent focus:bg-transparent"
                   />
                 </div>
               )}

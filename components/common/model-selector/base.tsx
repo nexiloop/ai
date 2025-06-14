@@ -198,7 +198,12 @@ export function ModelSelector({
   const trigger = (
     <Button
       variant="outline"
-      className={cn("dark:bg-secondary justify-between", className)}
+      className={cn(
+        "justify-between", 
+        className?.includes('bg-transparent') 
+          ? className 
+          : cn("dark:bg-secondary", className)
+      )}
       disabled={isLoadingModels}
     >
       <div className="flex items-center gap-2">

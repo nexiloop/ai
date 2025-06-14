@@ -17,6 +17,7 @@ import { SourcesList } from "./sources-list"
 import { ToolInvocation } from "./tool-invocation"
 import { GeneratedImage } from "./generated-image"
 import { MovieSearchResults } from "./movie-search-results"
+import { ThinkingAnimation } from "./thinking-animation"
 
 type MessageAssistantProps = {
   children: string
@@ -28,6 +29,7 @@ type MessageAssistantProps = {
   parts?: MessageAISDK["parts"]
   status?: "streaming" | "ready" | "submitted" | "error"
   imageGenerationData?: any
+  modelId?: string
 }
 
 export function MessageAssistant({
@@ -40,6 +42,7 @@ export function MessageAssistant({
   parts,
   status,
   imageGenerationData,
+  modelId = "",
 }: MessageAssistantProps) {
   const { preferences } = useUserPreferences()
   const [feedbackGiven, setFeedbackGiven] = useState<'up' | 'down' | null>(null)
@@ -120,6 +123,12 @@ export function MessageAssistant({
       )}
     >
       <div className={cn("flex min-w-full flex-col gap-2", isLast && "pb-8")}>
+        {/* Show thinking animation for reasoning models when streaming */}
+        <ThinkingAnimation 
+          isVisible={Boolean(isLastStreaming && contentNullOrEmpty)}
+          modelId={modelId}
+        />
+
         {reasoningParts && reasoningParts.reasoning && (
           <Reasoning reasoning={reasoningParts.reasoning} />
         )}
@@ -170,8 +179,8 @@ export function MessageAssistant({
           <MessageActions
             className={cn(
               "-ml-2 flex gap-0 transition-opacity duration-200",
-              // Show on hover for larger screens, always visible on smaller screens
-              "opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+              // Always visible on all screen sizes for better UX
+              "opacity-100"
             )}
           >
             <MessageAction
