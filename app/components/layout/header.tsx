@@ -61,15 +61,14 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
                   href="/"
                   className="pointer-events-auto flex items-center gap-2 text-xl font-medium tracking-tight"
                 >
-                  <Logo className="h-6 w-6" />
-                  nexiloop
+                  <Logo className="h-8 w-8" />
                 </Link>
                 
                 {/* Navigation Tabs */}
                 
                 {/* Model Selector - Left side for desktop on chat pages */}
                 {isChatPage && isLoggedIn && !isMobile && (
-                  <div className="ml-4">
+                  <div className="pointer-events-auto ml-4">
                     <ModelSelector
                       selectedModelId={selectedModelId}
                       setSelectedModelId={handleModelSelection}
@@ -82,7 +81,7 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
                 
                 {/* Model Selector - Center for mobile on chat pages */}
                 {isChatPage && isLoggedIn && isMobile && (
-                  <div className="flex-1 flex justify-center max-w-xs">
+                  <div className="pointer-events-auto flex-1 flex justify-center max-w-xs">
                     <ModelSelector
                       selectedModelId={selectedModelId}
                       setSelectedModelId={handleModelSelection}
