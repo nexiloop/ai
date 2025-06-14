@@ -195,7 +195,10 @@ export function ChatInput({
       )}
       <div className="relative order-2 px-2 pb-6 sm:pb-4 md:order-1">
         <PromptInput
-          className="bg-popover relative z-10 p-0 pt-1 shadow-xs backdrop-blur-xl"
+          className={cn(
+            "bg-popover relative z-10 p-0 pt-1 shadow-xs backdrop-blur-xl transition-all duration-300",
+            isThinkMode && "ring-2 ring-pink-500/30 bg-pink-50/20 dark:bg-pink-500/5"
+          )}
           maxHeight={200}
           value={value}
           onValueChange={agentCommand.handleValueChange}
@@ -226,7 +229,10 @@ export function ChatInput({
           <PromptInputTextarea
             placeholder="Ask nexiloop anything..."
             onKeyDown={handleKeyDown}
-            className="min-h-[44px] pt-3 pl-4 text-base leading-[1.3] sm:text-base md:text-base"
+            className={cn(
+              "min-h-[44px] pt-3 pl-4 text-base leading-[1.3] sm:text-base md:text-base transition-all duration-300",
+              isThinkMode && "placeholder:text-pink-600 dark:placeholder:text-pink-400"
+            )}
             ref={agentCommand.textareaRef}
           />
           <PromptInputActions className="mt-5 w-full justify-between px-3 pb-3">
