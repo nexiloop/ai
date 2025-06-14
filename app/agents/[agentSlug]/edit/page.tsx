@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic"
 export default async function Page({
   params,
 }: {
-  params: { agentSlug: string[] }
+  params: Promise<{ agentSlug: string }>
 }) {
   if (!isSupabaseEnabled) {
     notFound()
@@ -24,31 +24,26 @@ export default async function Page({
 
   const { data: userData } = await supabase.auth.getUser()
 
-  if (!userData?.user) {
-    redirect("/auth")
+  if (!userData?.user?.id) {
+    redirect("/auth/login")
   }
 
-  const agentId = params.agentSlug?.[0]
-  const action = params.agentSlug?.[1]
-
-  if (!agentId || action !== "edit") {
-    notFound()
-  }
+  const { agentSlug } = await params
 
   // Get the agent
-  const { data: agent, error: agentError } = await supabase
+  const { data: agent, error } = await supabase
     .from("agents")
     .select("*")
-    .eq("id", agentId)
+    .eq("slug", agentSlug)
     .single()
 
-  if (agentError || !agent) {
+  if (error || !agent) {
     notFound()
   }
 
   // Check if user owns this agent
   if (agent.creator_id !== userData.user.id) {
-    redirect(`/agents/${agentId}`)
+    notFound()
   }
 
   return (

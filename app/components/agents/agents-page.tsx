@@ -56,7 +56,7 @@ export function AgentsPage({
                 </Button>
               }
             />
-            <Link href="/agents/browse">
+            <Link href="/browse">
               <Button variant="ghost" className="rounded-full">
                 Browse all agents
               </Button>
