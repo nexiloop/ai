@@ -24,8 +24,9 @@ import { AgentsSection } from "./agents/agents-section"
 import { ModelsSection } from "./models/models-section"
 
 type SettingsContentProps = {
-  onClose: () => void
+  onClose?: () => void
   isDrawer?: boolean
+  isStandalonePage?: boolean
 }
 
 type TabType = "general" | "agents" | "models" | "features" | "appearance" | "connections"
@@ -33,6 +34,7 @@ type TabType = "general" | "agents" | "models" | "features" | "appearance" | "co
 export function SettingsContent({
   onClose,
   isDrawer = false,
+  isStandalonePage = false,
 }: SettingsContentProps) {
   const [activeTab, setActiveTab] = useState<TabType>("general")
 
@@ -43,7 +45,7 @@ export function SettingsContent({
         isDrawer ? "h-full min-h-screen overflow-y-auto p-0" : "py-0 overflow-y-auto"
       )}
     >
-      {isDrawer && (
+      {isDrawer && !isStandalonePage && (
         <div className="border-border mb-4 flex items-center justify-between border-b bg-background px-4 py-4 sticky top-0 z-10 shadow-sm">
           <h2 className="text-xl font-semibold">Settings</h2>
           <Button variant="ghost" size="icon" onClick={onClose} className="h-10 w-10">
