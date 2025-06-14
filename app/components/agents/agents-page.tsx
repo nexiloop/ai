@@ -2,6 +2,7 @@
 
 import { Agent } from "@/app/types/agent"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import { useMemo, useState } from "react"
 import { AgentFeaturedSection } from "./agent-featured-section"
 import { DialogCreateAgentTrigger } from "./dialog-create-agent/dialog-trigger-create-agent"
@@ -10,12 +11,14 @@ import { UserAgentsSection } from "./user-agent-section"
 type AgentsPageProps = {
   curatedAgents: Agent[]
   userAgents: Agent[] | null
+  publicAgents: Agent[] | null
   userId: string | null
 }
 
 export function AgentsPage({
   curatedAgents,
   userAgents,
+  publicAgents,
   userId,
 }: AgentsPageProps) {
   const [openAgentId, setOpenAgentId] = useState<string | null>(null)
@@ -45,13 +48,20 @@ export function AgentsPage({
             a growing set of personal AI agents, built for ideas, writing, and
             product work.
           </p>
-          <DialogCreateAgentTrigger
-            trigger={
-              <Button variant="outline" className="rounded-full">
-                Create an agent
+          <div className="flex gap-3 justify-center">
+            <DialogCreateAgentTrigger
+              trigger={
+                <Button variant="outline" className="rounded-full">
+                  Create an agent
+                </Button>
+              }
+            />
+            <Link href="/agents/browse">
+              <Button variant="ghost" className="rounded-full">
+                Browse all agents
               </Button>
-            }
-          />
+            </Link>
+          </div>
         </div>
 
         <AgentFeaturedSection
@@ -69,6 +79,37 @@ export function AgentsPage({
           openAgentId={openAgentId}
           setOpenAgentId={setOpenAgentId}
         />
+        
+        {publicAgents && publicAgents.length > 0 && (
+          <div className="mt-16">
+            <h2 className="text-foreground mb-6 text-xl font-medium">
+              Community Agents
+            </h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              {publicAgents.map((agent) => (
+                <div
+                  key={agent.id}
+                  className="border-border bg-card hover:bg-accent/50 cursor-pointer rounded-lg border p-4 transition-colors"
+                  onClick={() => handleAgentClick(agent.id)}
+                >
+                  <div className="flex items-start gap-3">
+                    {agent.avatar_url && (
+                      <img
+                        src={agent.avatar_url}
+                        alt={agent.name}
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-foreground font-medium">{agent.name}</h3>
+                      <p className="text-muted-foreground text-sm">{agent.description}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

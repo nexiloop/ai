@@ -35,6 +35,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Default Nexiloop branding with option for user attribution
   - Clean, user-friendly interface for agent customization
 
+- **Agent Editing System**: Full-featured agent editing capabilities
+  - Edit agent properties (name, description, system prompt, tools)
+  - Update agent visibility settings (public/private)
+  - Delete agents with confirmation
+  - Individual edit pages for each agent at `/agents/{id}/edit`
+  - Real-time form validation and error handling
+
+- **Public Agents Directory**: Comprehensive agent browsing system
+  - Browse all public agents at `/agents/browse`
+  - Search and filter agents by name and description  
+  - Categorize agents as "Curated" or "Community"
+  - Agent statistics and usage counters
+  - Enhanced agent cards with creator information
+
+- **Complete Database Schema**: Production-ready database structure
+  - Full PostgreSQL schema with proper constraints
+  - Row Level Security (RLS) policies for data protection
+  - Optimized indexes for performance
+  - Foreign key relationships and data integrity
+  - Support for agent avatars and metadata
+
+- **Agent Avatar Support**: Visual customization for agents
+  - Custom avatar URLs for each agent
+  - Avatar display in agent listings and chat interface
+  - Fallback avatar generation based on agent name
+  - Avatar preview in creation and editing forms
+
+- **Enhanced Agent URLs**: Clean, SEO-friendly URLs
+  - Consistent `/agents/{id}` URL structure throughout the app
+  - Direct agent access via shareable links
+  - Proper routing for agent pages and edit functionality
+
 ### Enhanced
 - **Settings Organization**: Improved settings layout and navigation
   - Better categorization of features and preferences
@@ -45,6 +77,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Removed MCP dependencies for simplified management
   - Enhanced agent storage and retrieval system
   - Improved agent discovery and selection
+
+- **PWA Installation**: Improved Progressive Web App experience
+  - Fixed PWA install banner functionality
+  - Custom install button with proper event handling
+  - Better service worker registration and management
+  - Removed unused schema.json preload warnings
 
 ### Fixed
 - **Database Schema**: Updated database structure for better performance

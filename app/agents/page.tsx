@@ -33,6 +33,15 @@ export default async function Page() {
         .eq("creator_id", userData?.user?.id)
     : { data: [], error: null }
 
+  // Get all public agents
+  const { data: publicAgents, error: publicAgentsError } = await supabase
+    .from("agents")
+    .select("*")
+    .eq("is_public", true)
+    .neq("slug", "IN")
+    .not("slug", "in", `(${CURATED_AGENTS_SLUGS.map(s => `"${s}"`).join(",")})`)
+    .order("created_at", { ascending: false })
+
   if (agentsError) {
     console.error(agentsError)
     return <div>Error loading agents</div>
@@ -43,12 +52,18 @@ export default async function Page() {
     return <div>Error loading user agents</div>
   }
 
+  if (publicAgentsError) {
+    console.error(publicAgentsError)
+    return <div>Error loading public agents</div>
+  }
+
   return (
     <MessagesProvider>
       <LayoutApp>
         <AgentsPage
           curatedAgents={curatedAgents}
           userAgents={userAgents || null}
+          publicAgents={publicAgents || null}
           userId={userData?.user?.id || null}
         />
       </LayoutApp>

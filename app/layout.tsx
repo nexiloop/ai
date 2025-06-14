@@ -182,9 +182,6 @@ export default async function RootLayout({
         <meta name="pagename" content="nexiloop AI - Advanced AI Chat App" />
         <meta name="subtitle" content="Multi-Model AI Support with Image Generation and Background Removal" />
         
-        {/* Rich Snippets & Structured Data */}
-        <link rel="preload" href="/schema.json" as="fetch" crossOrigin="anonymous" />
-        
         {/* PWA Meta Tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />

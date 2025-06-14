@@ -110,12 +110,26 @@ export function MyAgentsSection() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8"
-                        onClick={() => window.open(`/agents/${agent.slug}`, '_blank')}
+                        onClick={() => window.open(`/agents/${agent.id}`, '_blank')}
                       >
                         <ArrowSquareOut className="h-3 w-3" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>View Agent</TooltipContent>
+                  </Tooltip>
+                  
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => window.open(`/agents/${agent.id}/edit`, '_blank')}
+                      >
+                        <PencilSimple className="h-3 w-3" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Edit Agent</TooltipContent>
                   </Tooltip>
                   
                   <Tooltip>

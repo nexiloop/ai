@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { AlertCircle, X } from "lucide-react"
+import { AlertCircle, X, Upload } from "lucide-react"
 import type React from "react"
 import { ToolsSection } from "./tools-section"
 
@@ -15,6 +16,8 @@ type AgentFormData = {
   systemPrompt: string
   tools: string[]
   useNexiloopAsCreator: boolean
+  avatarUrl: string
+  isPublic: boolean
 }
 
 type CreateAgentFormProps = {
@@ -104,6 +107,86 @@ export function CreateAgentForm({
                 <span>{error.description}</span>
               </div>
             )}
+          </div>
+
+          {/* Avatar URL or Upload */}
+          <div className="space-y-2">
+            <Label htmlFor="avatarUrl">Avatar</Label>
+            <div className="space-y-2">
+              <Input
+                id="avatarUrl"
+                name="avatarUrl"
+                placeholder="https://example.com/avatar.jpg or upload below"
+                value={formData.avatarUrl}
+                onChange={handleInputChange}
+                className={error.avatarUrl ? "border-red-500" : ""}
+              />
+              <div className="flex items-center gap-2">
+                <Input
+                  id="avatarFile"
+                  name="avatarFile"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file && file.size <= 2 * 1024 * 1024) { // 2MB limit
+                      const reader = new FileReader()
+                      reader.onload = (event) => {
+                        const result = event.target?.result as string
+                        handleFormDataChange({ avatarUrl: result })
+                      }
+                      reader.readAsDataURL(file)
+                    } else if (file) {
+                      alert('File size must be less than 2MB')
+                    }
+                  }}
+                  className="hidden"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => document.getElementById('avatarFile')?.click()}
+                  className="gap-2"
+                >
+                  <Upload className="h-4 w-4" />
+                  Upload Image
+                </Button>
+              </div>
+            </div>
+            <p className="text-muted-foreground text-xs">
+              Provide a URL or upload an image (max 2MB). Uploaded images are stored as base64 data.
+            </p>
+            {error.avatarUrl && (
+              <div className="mt-1 flex items-center text-sm text-red-500">
+                <AlertCircle className="mr-1 h-4 w-4" />
+                <span>{error.avatarUrl}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Public/Private Toggle */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="isPublic">Visibility</Label>
+                <p className="text-muted-foreground text-xs">
+                  Make this agent discoverable by other users
+                </p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Label htmlFor="isPublic" className="text-sm font-normal">
+                  {formData.isPublic ? "Public" : "Private"}
+                </Label>
+                <Switch
+                  id="isPublic"
+                  checked={formData.isPublic}
+                  onCheckedChange={(checked) =>
+                    handleFormDataChange({ isPublic: checked })
+                  }
+                />
+              </div>
+            </div>
           </div>
 
           <ToolsSection onSelectTools={handleToolsChange} />

@@ -29,6 +29,8 @@ type AgentFormData = {
   systemPrompt: string
   tools: string[]
   useNexiloopAsCreator: boolean
+  avatarUrl: string
+  isPublic: boolean
 }
 
 type DialogCreateAgentTrigger = {
@@ -48,6 +50,8 @@ export function DialogCreateAgentTrigger({
     systemPrompt: "You are a helpful assistant created by Nexiloop. You help users with their questions and tasks. Be friendly, helpful, and informative in your responses.",
     tools: [],
     useNexiloopAsCreator: true,
+    avatarUrl: "",
+    isPublic: true,
   })
   const [error, setError] = useState<{ [key: string]: string }>({})
   const [isLoading, setIsLoading] = useState(false)
@@ -110,7 +114,7 @@ export function DialogCreateAgentTrigger({
           name: formData.name,
           description: formData.description,
           systemPrompt: formData.systemPrompt,
-          avatar_url: null,
+          avatar_url: formData.avatarUrl || null,
           mcp_config: null,
           example_inputs: [
             `How can you help me with ${formData.name.toLowerCase()}?`,
@@ -119,7 +123,7 @@ export function DialogCreateAgentTrigger({
           ],
           tools: formData.tools,
           remixable: false,
-          is_public: true,
+          is_public: formData.isPublic,
           max_steps: 5,
           useNexiloopAsCreator: formData.useNexiloopAsCreator,
         }),
