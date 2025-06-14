@@ -54,7 +54,7 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
       <div className="relative mx-auto flex h-full max-w-full items-center justify-between bg-transparent px-4 sm:px-6 lg:bg-transparent lg:px-8">
         <div className="flex flex-1 items-center justify-between">
           <div className="flex flex-1 items-center gap-2 pl-0 md:pl-0.5">
-            {hasSidebar && <HeaderSidebarTrigger />}
+            {hasSidebar && !isCodeHatActive && <HeaderSidebarTrigger />}
             {Boolean(!currentAgent || !isMobile) && (
               <div className="flex flex-1 items-center gap-6">
                 <Link
@@ -119,9 +119,9 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
           ) : (
             <div className="pointer-events-auto flex flex-1 items-center justify-end gap-2">
               {currentAgent && <DialogPublish />}
-              <ButtonNewChat />
-              {!hasSidebar && <HistoryTrigger hasSidebar={hasSidebar} />}
-              <UserMenu />
+              {!isCodeHatActive && <ButtonNewChat />}
+              {!hasSidebar && !isCodeHatActive && <HistoryTrigger hasSidebar={hasSidebar} />}
+              {!isCodeHatActive && <UserMenu />}
             </div>
           )}
         </div>
