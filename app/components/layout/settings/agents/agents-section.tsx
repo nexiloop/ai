@@ -8,7 +8,7 @@ import { Robot, Plus, Trash, PencilSimple, ArrowSquareOut } from "@phosphor-icon
 import { useState } from "react"
 import { DialogCreateAgentTrigger } from "../../../agents/dialog-create-agent/dialog-trigger-create-agent"
 
-export function MyAgentsSection() {
+export function AgentsSection() {
   const { user } = useUser()
   const { userAgents, curatedAgents } = useAgent()
   const [deletingAgentId, setDeletingAgentId] = useState<string | null>(null)
