@@ -11,6 +11,7 @@
 ## Features
 
 - **Multi-model support**: OpenAI, Mistral, Claude, Gemini, **Ollama (local models)**, **Cloudflare Workers AI**
+- **🧠 Think Mode**: Enhanced reasoning with AI thinking animation for supported models
 - **🎨 Integrated Image Generation**: 
   - Natural language image generation directly in chat
   - Simply type "generate image of a sunset" or "create a picture of a cat"
@@ -130,6 +131,61 @@ Add your Cloudflare credentials to enable image generation:
 ```bash
 CLOUDFLARE_ACCOUNT_ID=your_account_id
 CLOUDFLARE_API_TOKEN=your_api_token
+```
+
+## Think Mode
+
+nexiloop includes an enhanced **Think Mode** that triggers deeper reasoning for compatible AI models with visual thinking animations.
+
+### Features
+- **Enhanced Reasoning**: Prompts AI models to think step by step through complex problems
+- **Visual Feedback**: Beautiful animated thinking indicators while the AI processes
+- **Model Detection**: Automatically works with reasoning-capable models (o1, o3, DeepSeek R1, etc.)
+- **One-Click Toggle**: Simply click the "Think" button in the chat input
+- **Reasoning Display**: Shows collapsible AI reasoning steps when available
+
+### Supported Models
+- **OpenAI o1** - Advanced reasoning model for complex problems
+- **OpenAI o3-mini** - Efficient reasoning model
+- **OpenAI o1-mini** - Compact reasoning model
+- **DeepSeek R1** - Open-source reasoning model
+- **DeepSeek V3** - Advanced reasoning capabilities
+- Any model with "reasoning" in its description
+
+### How to Use Think Mode
+
+#### Enable Think Mode
+1. Start typing your message in the chat input
+2. Click the **"Think"** button (🧠 icon) next to the send button
+3. The button will turn pink/highlighted when active
+4. Send your message - the AI will engage enhanced reasoning mode
+
+#### What Happens in Think Mode
+- AI receives enhanced system prompt encouraging step-by-step thinking
+- Visual thinking animation appears while processing (for reasoning models)
+- AI provides more thorough, well-reasoned responses
+- Reasoning steps may be displayed in a collapsible section
+
+#### Best Use Cases
+- **Complex Problem Solving**: Math problems, logic puzzles, multi-step analysis
+- **Research Questions**: Thorough investigation of topics requiring deep thinking
+- **Code Analysis**: Detailed code review and optimization suggestions
+- **Decision Making**: Weighing pros and cons of different options
+- **Creative Writing**: Thoughtful plot development and character analysis
+
+### Example Usage
+```
+User: [Clicks Think button] How should I approach learning machine learning as a beginner?
+
+AI: [Thinking animation appears] 
+Let me think through this step by step...
+
+[Reasoning steps shown in collapsible section]
+1. First, I should consider the user's background...
+2. Then evaluate different learning paths...
+3. Consider practical vs theoretical approaches...
+
+[Final comprehensive response with structured learning plan]
 ```
 
 ## Background Removal (Beta)

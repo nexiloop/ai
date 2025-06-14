@@ -67,6 +67,19 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
                 
                 {/* Navigation Tabs */}
                 
+                {/* Model Selector - Left side for desktop on chat pages */}
+                {isChatPage && isLoggedIn && !isMobile && (
+                  <div className="ml-4">
+                    <ModelSelector
+                      selectedModelId={selectedModelId}
+                      setSelectedModelId={handleModelSelection}
+                      className="border-0 bg-transparent shadow-none hover:bg-transparent focus:bg-transparent"
+                      align="start"
+                      side="bottom"
+                    />
+                  </div>
+                )}
+                
                 {/* Model Selector - Center for mobile on chat pages */}
                 {isChatPage && isLoggedIn && isMobile && (
                   <div className="flex-1 flex justify-center max-w-xs">
@@ -106,18 +119,6 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
             </div>
           ) : (
             <div className="pointer-events-auto flex flex-1 items-center justify-end gap-2">
-              {/* Model Selector - Right side for desktop on chat pages */}
-              {isChatPage && !isMobile && (
-                <div className="mr-2">
-                  <ModelSelector
-                    selectedModelId={selectedModelId}
-                    setSelectedModelId={handleModelSelection}
-                    className="border-0 bg-transparent shadow-none hover:bg-transparent focus:bg-transparent"
-                    align="end"
-                    side="bottom"
-                  />
-                </div>
-              )}
               {currentAgent && <DialogPublish />}
               <ButtonNewChat />
               {!hasSidebar && <HistoryTrigger hasSidebar={hasSidebar} />}

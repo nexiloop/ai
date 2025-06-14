@@ -22,8 +22,11 @@ export function ThinkingAnimation({ isVisible, modelId }: ThinkingAnimationProps
   
   // Only show thinking animation for reasoning models
   const isReasoningModel = modelId.includes('o1') || 
+                          modelId.includes('o3') || 
+                          modelId.includes('o4') || 
                           modelId.includes('deepseek') || 
-                          modelId.includes('reasoning')
+                          modelId.toLowerCase().includes('reasoning') ||
+                          modelId.includes('r1')
 
   useEffect(() => {
     if (!isVisible || !isReasoningModel) return
