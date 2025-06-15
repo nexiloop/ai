@@ -1,152 +1,222 @@
-# Nexiloop AI - Changelog
+# 📝 Changelog - The Journey So Far
 
-All notable changes to this project will be documented in this file.
+> **All the exciting updates, fixes, and new features that make this app amazing!**
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## 🚀 Latest & Greatest
 
-## [Unreleased]
+### 🎉 v2.2.0 - "The Auth Simplification" (June 15, 2025)
 
-### Added
-- **My Agents Management**: Added comprehensive agent management system
-  - New "My Agents" section in settings for viewing and managing created agents
-  - "My Agents" option in user profile dropdown for quick access
-  - Agent creation, editing, and deletion capabilities
-  - Display of agent tools and descriptions in management interface
+**🔥 What's Fresh:**
+- **Simplified Auth Setup** - Removed unnecessary OAuth environment variables
+- **Supabase Does Everything** - No more manual OAuth config, Supabase handles it all
+- **Human-Friendly Docs** - Rewrote auth guides to be actually understandable
+- **Better Organization** - All files now live in proper folders
+- **GitHub Issues Ready** - Templates set up for bug reports and feature requests
 
-- **Agent Mentions (@) System**: Enhanced chat input with agent mention functionality
-  - Type `@` in chat to see available agents
-  - Search and filter agents by name
-  - Seamless switching between agents during conversations
-  - Support for both curated and user-created agents
+**🧹 Cleanup Party:**
+- Removed useless OAuth client ID/secret environment variables
+- Updated documentation to reflect Supabase's internal OAuth handling
+- Made README actually sound like a human wrote it
+- Organized project structure properly
 
-- **vlop.fun Movie Streaming Integration**: Complete movie discovery and streaming platform
-  - AI-powered movie and TV show search using TMDB integration
-  - Smart movie recommendation engine
-  - One-click streaming through vlop.fun platform
-  - Movie search only appears when users mention movies in their queries
-  - User preference toggle for enabling/disabling vlop.fun streaming
-  - Search history and user favorites tracking
-  - Advanced filtering by genre, language, and content ratings
-
-- **Simplified Agent Creation**: Streamlined agent creation process
-  - Removed complex MCP (Model Context Protocol) configurations
-  - Focus on custom system prompts and tool selection
-  - Default Nexiloop branding with option for user attribution
-  - Clean, user-friendly interface for agent customization
-
-- **Agent Editing System**: Full-featured agent editing capabilities
-  - Edit agent properties (name, description, system prompt, tools)
-  - Update agent visibility settings (public/private)
-  - Delete agents with confirmation
-  - Individual edit pages for each agent at `/agents/{id}/edit`
-  - Real-time form validation and error handling
-
-- **Public Agents Directory**: Comprehensive agent browsing system
-  - Browse all public agents at `/agents/browse`
-  - Search and filter agents by name and description  
-  - Categorize agents as "Curated" or "Community"
-  - Agent statistics and usage counters
-  - Enhanced agent cards with creator information
-
-- **Complete Database Schema**: Production-ready database structure
-  - Full PostgreSQL schema with proper constraints
-  - Row Level Security (RLS) policies for data protection
-  - Optimized indexes for performance
-  - Foreign key relationships and data integrity
-  - Support for agent avatars and metadata
-
-- **Agent Avatar Support**: Visual customization for agents
-  - Custom avatar URLs for each agent
-  - Avatar display in agent listings and chat interface
-  - Fallback avatar generation based on agent name
-  - Avatar preview in creation and editing forms
-
-- **Enhanced Agent URLs**: Clean, SEO-friendly URLs
-  - Consistent `/agents/{id}` URL structure throughout the app
-  - Direct agent access via shareable links
-  - Proper routing for agent pages and edit functionality
-
-### Enhanced
-- **Settings Organization**: Improved settings layout and navigation
-  - Better categorization of features and preferences
-  - Enhanced user experience with intuitive grouping
-  - Quick access to frequently used settings
-
-- **Agent System**: Complete overhaul of agent architecture
-  - Removed MCP dependencies for simplified management
-  - Enhanced agent storage and retrieval system
-  - Improved agent discovery and selection
-
-- **PWA Installation**: Improved Progressive Web App experience
-  - Fixed PWA install banner functionality
-  - Custom install button with proper event handling
-  - Better service worker registration and management
-  - Removed unused schema.json preload warnings
-
-### Fixed
-- **Database Schema**: Updated database structure for better performance
-  - Added proper indexing for agent queries
-  - Enhanced Row Level Security (RLS) policies
-  - Optimized agent filtering and search capabilities
-
-### Security
-- **Row Level Security**: Implemented comprehensive RLS policies
-  - Users can only access their own agents and preferences
-  - Secure agent creation and modification workflows
-  - Protected movie search history and favorites
-
-### Technical Improvements
-- **SQL Schema Updates**: Added comprehensive database schemas
-  - `AGENTS_SCHEMA.sql`: Updated agents table with new fields
-  - `MOVIE_TMDB_SCHEMA.sql`: Complete movie functionality schema
-  - Proper PostgreSQL syntax and optimization
-
-- **Code Quality**: Improved codebase organization
-  - Better TypeScript typing and error handling
-  - Enhanced component modularity and reusability
-  - Optimized API endpoints and data fetching
-
-## [Previous Versions]
-
-### Key Features Already Available
-- **Multi-Model AI Support**: OpenAI, Anthropic, Google, Ollama, and more
-- **Real-time Chat**: Fast, responsive AI conversations
-- **Image Generation**: AI-powered image creation capabilities
-- **Background Removal**: Advanced image editing tools
-- **User Authentication**: Secure user accounts and data management
-- **Responsive Design**: Mobile-friendly interface
-- **Dark/Light Themes**: Customizable appearance options
+**💡 Why This Matters:**
+Auth setup went from confusing to "just works". Supabase handles all the OAuth complexity internally, so you only need basic Supabase credentials. Way less configuration, way less headaches!
 
 ---
 
-## How to Use New Features
+### 🔥 v2.1.0 - "The Organization Update" (June 2025)
 
-### Managing Your Agents
-1. Go to **Settings** → **General** → **My Agents**
-2. Click **Create Agent** to make a new custom agent
-3. Configure system prompt and select tools
-4. Choose whether to credit yourself or use Nexiloop branding
+**🎉 What's New:**
+- ✨ **GitHub OAuth Support** - Now you can sign in with GitHub too! 
+- 🗂️ **Better File Organization** - Everything has its place now
+- 🐛 **Database Fixes** - No more SQL syntax errors (finally!)
+- 📚 **Amazing Documentation** - Guides that actually make sense
+- 🎨 **UI Polish** - Everything looks and feels better
 
-### Using Agent Mentions
-1. In any chat, type `@` to see available agents
-2. Search by name or scroll through the list
-3. Select an agent to switch to it for the conversation
-4. The selected agent will handle subsequent messages
+**🔧 Technical Improvements:**
+- Fixed PostgreSQL constraint syntax errors
+- Added proper GitHub authentication flow
+- Organized project structure (docker/, docs/, sql/, scripts/)
+- Created comprehensive setup guides
+- Added GitHub issue templates
 
-### Movie Discovery with vlop.fun
-1. Enable **Video Streaming & Movie Search** in **Settings** → **Features**
-2. Ask about movies: "What are some good sci-fi movies?"
-3. Get recommendations: "Show me popular thriller series"
-4. Click "Watch on vlop.fun" to stream content instantly
-5. Browse your search history and favorites in the interface
-
-### Getting Started
-1. Create your first custom agent in Settings
-2. Try the @ mention system in chat
-3. Ask about movies to test vlop.fun integration
-4. Explore the enhanced settings for personalization
+**🏗️ Infrastructure:**
+- Moved all Docker files to `docker/` folder
+- Organized documentation in `docs/` folder  
+- Created dedicated `sql/` folder for database files
+- Added `scripts/` folder for shell scripts
+- Set up proper GitHub issue templates
 
 ---
 
-*For technical support or feature requests, please visit our [GitHub repository](https://github.com/nexiloop/agentai) or contact our support team.*
+### 💫 v2.0.0 - "The Big Refresh" (June 2025)
+
+**🌟 Major Features:**
+- 🧠 **Think Mode** - Watch AI models reason through problems step by step
+- 🎨 **Enhanced UI/UX** - Complete settings redesign with dedicated tabs
+- 🤖 **Improved Agent System** - Better agent management and creation
+- 💬 **Better Chat Experience** - Smoother conversations with AI
+- 🔧 **CodeHat Improvements** - Better coding experience (coming soon!)
+
+**🎯 Key Improvements:**
+- **Settings Overhaul** - Separated Models, Agents, and General settings
+- **Model Selector** - Better alignment, free/pro indicators, mobile optimization  
+- **Reasoning Component** - Collapsible AI thinking process viewer
+- **Message Actions** - Always visible action buttons on desktop
+- **Dialog Fixes** - No more auto-closing issues in Firefox
+
+**🛠️ Under the Hood:**
+- Refactored chat input and conversation components
+- Updated model configurations for OpenAI and Gemini
+- Fixed popover/dialog event handling
+- Enhanced service worker caching
+- Added safety checks for undefined values
+
+---
+
+### 🎨 v1.9.0 - "UI Polish Party" (May 2025)
+
+**✨ Visual Improvements:**
+- 🎭 **New Animations** - Smooth transitions everywhere
+- 🌈 **Color Refinements** - Better contrast and accessibility
+- 📱 **Mobile Optimization** - Looks great on all devices
+- 🔄 **Loading States** - Beautiful loading animations
+
+**🔧 Feature Updates:**
+- Enhanced image generation UI
+- Better file upload experience  
+- Improved error handling and messaging
+- More responsive design patterns
+
+---
+
+### 🚀 v1.8.0 - "Agent Revolution" (May 2025)
+
+**🤖 Agent System Overhaul:**
+- Create custom AI agents with unique personalities
+- Public and private agent visibility
+- Agent categories and tagging system
+- Rich agent profiles with avatars and examples
+
+**💬 Chat Enhancements:**
+- Multi-model conversation support
+- Better message threading
+- Enhanced file attachment handling
+- Real-time typing indicators
+
+---
+
+### 🔐 v1.7.0 - "Auth & Security" (April 2025)
+
+**🛡️ Security First:**
+- Row Level Security (RLS) implementation
+- CSRF protection for all forms
+- Secure API key management
+- OAuth improvements
+
+**👥 User Experience:**
+- Streamlined signup/signin flow
+- Better user profile management
+- Usage tracking and limits
+- Guest mode improvements
+
+---
+
+### 🎬 v1.6.0 - "Entertainment Update" (April 2025)
+
+**🍿 New Features:**
+- TMDB movie/TV search integration
+- Entertainment recommendations
+- Watchlist management
+- Review and rating system
+
+---
+
+### 💻 v1.5.0 - "Developer Edition" (March 2025)
+
+**🔧 CodeHat Features:**
+- In-browser code editor
+- Terminal access
+- File system operations
+- Project management
+- Multi-language support
+
+---
+
+### 🎨 v1.4.0 - "Creative Studio" (March 2025)
+
+**🖼️ Image Generation:**
+- Multiple AI model support
+- Custom prompt engineering
+- Batch generation capabilities
+- Gallery and organization
+
+---
+
+### 🧠 v1.3.0 - "Multi-Model Madness" (February 2025)
+
+**🤖 AI Model Support:**
+- OpenAI GPT-4 & GPT-3.5
+- Anthropic Claude
+- Google Gemini
+- Local Ollama models
+- Model switching mid-conversation
+
+---
+
+### 💬 v1.2.0 - "Chat Revolution" (February 2025)
+
+**📱 Core Chat Features:**
+- Real-time messaging
+- Message history
+- Conversation management
+- Export capabilities
+
+---
+
+### 🎯 v1.1.0 - "Foundation" (January 2025)
+
+**🏗️ Core Infrastructure:**
+- Next.js 14 App Router setup
+- Supabase integration
+- TypeScript configuration
+- UI component library
+- Authentication system
+
+---
+
+### 🌟 v1.0.0 - "The Beginning" (January 2025)
+
+**🎉 Initial Release:**
+- Basic AI chat functionality
+- User authentication
+- Simple UI/UX
+- Database setup
+- Core API endpoints
+
+---
+
+## 🔮 What's Coming Next?
+
+**🚧 In Development:**
+- 🔊 **Voice Chat** - Talk to AI naturally
+- 📊 **Analytics Dashboard** - Usage insights and statistics  
+- 🌍 **Multi-language Support** - AI in your language
+- 🔌 **Plugin System** - Extend functionality with custom plugins
+- 🤝 **Team Collaboration** - Share agents and chats with your team
+
+**💭 Ideas We're Exploring:**
+- 🎥 **Video Generation** - Create videos with AI
+- 🎵 **Music Creation** - AI-powered music composition
+- 📚 **Document Analysis** - Upload and analyze documents
+- 🎮 **AI Gaming** - Interactive AI-powered games
+
+---
+
+**Want to contribute to these features?** Check out our [contributing guide](docs/CONTRIBUTING.md)!
+
+**Found a bug?** [Report it here](https://github.com/mohameodo/agentai/issues) and we'll fix it ASAP!
+
+---
+
+*Keep building amazing things! 🚀*

@@ -4,7 +4,7 @@
 
 -- Enable required extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pg_crypto";
+-- Note: gen_random_bytes() is available in PostgreSQL 13+ without pg_crypto extension
 
 -- Drop existing tables if they exist (careful - this will delete data!)
 -- Uncomment the lines below only if you want to start fresh
