@@ -112,23 +112,47 @@ CREATE TABLE IF NOT EXISTS public.messages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Add constraints
-ALTER TABLE public.agents ADD CONSTRAINT IF NOT EXISTS agents_name_length 
-    CHECK (length(name) >= 1 AND length(name) <= 100);
-ALTER TABLE public.agents ADD CONSTRAINT IF NOT EXISTS agents_description_length 
-    CHECK (length(description) >= 1 AND length(description) <= 500);
-ALTER TABLE public.agents ADD CONSTRAINT IF NOT EXISTS agents_system_prompt_length 
-    CHECK (length(system_prompt) >= 1);
+-- Add constraints (with safe handling for existing constraints)
+DO $$ 
+BEGIN
+    -- Add agents constraints
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'agents_name_length') THEN
+        ALTER TABLE public.agents ADD CONSTRAINT agents_name_length 
+            CHECK (length(name) >= 1 AND length(name) <= 100);
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'agents_description_length') THEN
+        ALTER TABLE public.agents ADD CONSTRAINT agents_description_length 
+            CHECK (length(description) >= 1 AND length(description) <= 500);
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'agents_system_prompt_length') THEN
+        ALTER TABLE public.agents ADD CONSTRAINT agents_system_prompt_length 
+            CHECK (length(system_prompt) >= 1);
+    END IF;
 
-ALTER TABLE public.chats ADD CONSTRAINT IF NOT EXISTS chats_title_length 
-    CHECK (title IS NULL OR length(title) <= 200);
-ALTER TABLE public.chats ADD CONSTRAINT IF NOT EXISTS chats_temperature_range 
-    CHECK (temperature >= 0 AND temperature <= 2);
-ALTER TABLE public.chats ADD CONSTRAINT IF NOT EXISTS chats_max_tokens_range 
-    CHECK (max_tokens > 0 AND max_tokens <= 200000);
+    -- Add chats constraints
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'chats_title_length') THEN
+        ALTER TABLE public.chats ADD CONSTRAINT chats_title_length 
+            CHECK (title IS NULL OR length(title) <= 200);
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'chats_temperature_range') THEN
+        ALTER TABLE public.chats ADD CONSTRAINT chats_temperature_range 
+            CHECK (temperature >= 0 AND temperature <= 2);
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'chats_max_tokens_range') THEN
+        ALTER TABLE public.chats ADD CONSTRAINT chats_max_tokens_range 
+            CHECK (max_tokens > 0 AND max_tokens <= 200000);
+    END IF;
 
-ALTER TABLE public.messages ADD CONSTRAINT IF NOT EXISTS messages_content_not_empty 
-    CHECK (length(content) > 0);
+    -- Add messages constraints
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'messages_content_not_empty') THEN
+        ALTER TABLE public.messages ADD CONSTRAINT messages_content_not_empty 
+            CHECK (length(content) > 0);
+    END IF;
+END $$;
 
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_agents_slug ON public.agents(slug);

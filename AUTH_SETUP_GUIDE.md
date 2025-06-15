@@ -1,218 +1,176 @@
-# 🔐 Enhanced Authentication & Security Guide
+# 🔐 Authentication Setup Guide
+
+This guide explains how to set up GitHub and Google OAuth authentication for your Nexiloop AI application.
 
 ## 🎯 Overview
 
-This implementation follows the official Cloudflare Turnstile documentation to provide enterprise-grade bot protection with proper server-side validation.
+The application supports multiple authentication methods:
+- ✅ **Google OAuth** - Sign in with Google account
+- ✅ **GitHub OAuth** - Sign in with GitHub account  
+- ✅ **Email/Password** - Traditional email signup/signin
+- ✅ **Guest Mode** - Limited functionality without signup
 
-## 🚀 Quick Setup
+## 🚀 Quick Setup (Supabase Dashboard)
 
-### 1. Environment Variables
+### Step 1: Access Supabase Authentication Settings
+1. Go to your **Supabase Dashboard**
+2. Select your project
+3. Navigate to **Authentication** → **Providers**
+
+### Step 2: Configure Google OAuth
+
+1. **Enable Google Provider**:
+   - Toggle **Google** to enabled
+   
+2. **Get Google OAuth Credentials**:
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select existing one
+   - Enable the **Google+ API**
+   - Go to **Credentials** → **Create Credentials** → **OAuth 2.0 Client IDs**
+   - Application type: **Web application**
+   - Add authorized redirect URIs:
+     ```
+     https://your-project-ref.supabase.co/auth/v1/callback
+     ```
+   - Copy the **Client ID** and **Client Secret**
+
+3. **Configure in Supabase**:
+   - Paste **Client ID** and **Client Secret** in Supabase Google provider settings
+   - Save the configuration
+
+### Step 3: Configure GitHub OAuth
+
+1. **Enable GitHub Provider**:
+   - Toggle **GitHub** to enabled
+   
+2. **Get GitHub OAuth Credentials**:
+   - Go to [GitHub Developer Settings](https://github.com/settings/developers)
+   - Click **New OAuth App**
+   - Fill out the form:
+     - **Application name**: `Nexiloop AI`
+     - **Homepage URL**: `https://your-domain.com`
+     - **Authorization callback URL**: 
+       ```
+       https://your-project-ref.supabase.co/auth/v1/callback
+       ```
+   - Click **Register application**
+   - Copy the **Client ID** and generate a **Client Secret**
+
+3. **Configure in Supabase**:
+   - Paste **Client ID** and **Client Secret** in Supabase GitHub provider settings
+   - Save the configuration
+
+## 🔧 Environment Variables
+
+Add these to your `.env.local` file:
+
 ```bash
-# Add to your .env.local file
-NEXT_PUBLIC_TURNSTILE_SITE_KEY=your_turnstile_site_key_here
-TURNSTILE_SECRET_KEY=your_turnstile_secret_key_here
+# Supabase Configuration (required)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+
+# OAuth Configuration (optional - handled by Supabase)
+# These are automatically configured through Supabase dashboard
+NEXT_PUBLIC_SUPABASE_GITHUB_CLIENT_ID=your_github_client_id
+SUPABASE_GITHUB_CLIENT_SECRET=your_github_client_secret
+NEXT_PUBLIC_SUPABASE_GOOGLE_CLIENT_ID=your_google_client_id  
+SUPABASE_GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 
-### 2. Get Turnstile Keys
-1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. Navigate to "Turnstile" 
-3. Create a new site
-4. Copy the Site Key (public) and Secret Key (private)
+## 🧪 Testing Authentication
 
-### 3. OAuth Setup
+### Test Google OAuth:
+1. Go to `/auth` in your application
+2. Click **"Continue with Google"**
+3. Complete Google OAuth flow
+4. Should redirect back to your app and be logged in
 
-#### GitHub OAuth
-1. Go to GitHub → Settings → Developer settings → OAuth Apps
-2. Create new OAuth App
-3. Set callback URL: `https://your-project.supabase.co/auth/v1/callback`
-4. Add credentials to Supabase Dashboard → Authentication → Providers
+### Test GitHub OAuth:
+1. Go to `/auth` in your application  
+2. Click **"Continue with GitHub"**
+3. Complete GitHub OAuth flow
+4. Should redirect back to your app and be logged in
 
-#### Google OAuth
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create OAuth 2.0 Client ID
-3. Add redirect URI: `https://your-project.supabase.co/auth/v1/callback`
-4. Add credentials to Supabase
+### Test Email/Password:
+1. Go to `/auth` in your application
+2. Enter email and password
+3. Click **"Sign Up"** for new accounts or **"Sign In"** for existing
+4. For signup, check email for confirmation link
 
-## 🔧 Implementation Features
+## 🔐 Security Features
 
-### ✅ Client-Side (Following Cloudflare Docs)
-- **Implicit rendering** with `cf-turnstile` class
-- **Automatic retry** on failure (`retry="auto"`)
-- **Token refresh** before expiration (`refreshExpired="auto"`)
-- **Interactive challenge timeout** handling (`refreshTimeout="auto"`)
-- **Accessibility support** with proper `tabIndex`
-- **Theme support** (auto, light, dark)
-- **Size options** (normal, compact, flexible)
+### Row Level Security (RLS)
+- Users can only access their own data
+- Agents can be public or private
+- Chats and messages are private to the user
 
-### ✅ Server-Side Validation
-- **siteverify API** calls to Cloudflare
-- **IP address validation** for additional security
-- **Idempotency keys** for safe retry functionality
-- **Proper error handling** with user-friendly messages
-- **Token expiration** checks (300-second validity)
-- **Replay attack** prevention
+### CSRF Protection
+- All forms include CSRF tokens
+- API routes validate CSRF headers
+- Set `CSRF_SECRET` in environment variables
 
-### ✅ Security Features
-- **Bot protection** on all authentication forms
-- **CSRF protection** via Turnstile tokens
-- **Rate limiting** through Cloudflare infrastructure
-- **Invalid token detection** and handling
-- **Expired token** automatic refresh
-
-## 📋 API Integration
-
-### Basic Usage
-```typescript
-import { verifyTurnstileToken, getClientIP } from '@/lib/turnstile'
-
-export async function POST(request: Request) {
-  const body = await request.json()
-  const clientIP = getClientIP(request)
-  
-  const verification = await verifyTurnstileToken(
-    body.turnstileToken, 
-    clientIP,
-    crypto.randomUUID() // idempotency key
-  )
-  
-  if (!verification.success) {
-    return Response.json({ error: 'Verification failed' }, { status: 400 })
-  }
-  
-  // Proceed with protected operation
-}
+### Authentication Flow
+```mermaid
+graph TD
+    A[User clicks Sign In] --> B{Auth Method?}
+    B -->|Google| C[Google OAuth Flow]
+    B -->|GitHub| D[GitHub OAuth Flow] 
+    B -->|Email| E[Email/Password Form]
+    C --> F[Supabase Auth]
+    D --> F[Supabase Auth]
+    E --> F[Supabase Auth]
+    F --> G[JWT Token Generated]
+    G --> H[User Logged In]
 ```
 
-### Middleware Usage
-```typescript
-import { withTurnstileVerification } from '@/lib/turnstile'
+## 🐛 Troubleshooting
 
-const protectedHandler = async (request: Request) => {
-  // Your protected logic here
-  return Response.json({ success: true })
-}
+### Common Issues:
 
-export const POST = withTurnstileVerification(protectedHandler)
-```
+1. **"Invalid redirect URI"**
+   - Check that callback URLs match exactly in OAuth provider settings
+   - Ensure no trailing slashes
+   - Use the exact Supabase URL format
 
-## 🎨 UI Components
+2. **"OAuth provider not configured"**
+   - Verify provider is enabled in Supabase dashboard
+   - Check Client ID and Secret are correctly entered
+   - Ensure secrets are not exposed in client-side code
 
-### Turnstile Widget Configuration
-```tsx
-<Turnstile
-  siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-  onSuccess={(token) => setToken(token)}
-  onError={(error) => handleError(error)}
-  onExpire={() => setToken(null)}
-  theme="auto"
-  size="normal"
-  retry="auto"
-  retryInterval={8000}
-  refreshExpired="auto"
-  refreshTimeout="auto"
-  appearance="always"
-  responseField={true}
-  responseFieldName="cf-turnstile-response"
-/>
-```
+3. **"Failed to authenticate"**
+   - Check Supabase project is active
+   - Verify environment variables are loaded
+   - Check browser console for detailed errors
 
-## 🔍 Error Handling
+4. **Email confirmation not working**
+   - Check Supabase email templates
+   - Verify SMTP settings (if using custom SMTP)
+   - Check spam folder
 
-### Client-Side Errors
-- **Loading failures** → Automatic retry
-- **Network issues** → User-friendly messages
-- **Token expiration** → Automatic refresh
-- **Interactive timeouts** → Manual refresh prompt
-
-### Server-Side Validation
-```typescript
-const errorMessages = {
-  'missing-input-secret': 'Server configuration error',
-  'invalid-input-secret': 'Server configuration error', 
-  'missing-input-response': 'Security verification required',
-  'invalid-input-response': 'Security verification failed',
-  'bad-request': 'Invalid request format',
-  'timeout-or-duplicate': 'Token expired or already used',
-  'internal-error': 'Service temporarily unavailable'
-}
-```
-
-## 🧪 Testing
-
-### Development Mode
+### Debug Mode:
+Enable debug logging by setting:
 ```bash
-# Test keys that always pass (for development only)
-NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
-TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+NODE_ENV=development
 ```
 
-### Production Testing
-1. Use real Turnstile keys
-2. Test with different browsers
-3. Verify mobile compatibility
-4. Check accessibility features
-5. Test network failure scenarios
+## 📚 Additional Resources
 
-## 📊 Analytics & Monitoring
+- [Supabase Auth Documentation](https://supabase.com/docs/guides/auth)
+- [Google OAuth Setup](https://developers.google.com/identity/protocols/oauth2)
+- [GitHub OAuth Apps](https://docs.github.com/en/developers/apps/building-oauth-apps)
+- [Next.js Authentication](https://nextjs.org/docs/authentication)
 
-### Cloudflare Dashboard
-- View challenge solve rates
-- Monitor bot detection
-- Track error rates
-- Analyze visitor patterns
+## 🚀 Production Deployment
 
-### Application Logging
-```typescript
-// Log successful verifications
-console.log('Turnstile verification:', {
-  success: verification.success,
-  hostname: verification.hostname,
-  challenge_ts: verification.challenge_ts,
-  action: verification.action
-})
-```
-
-## 🔒 Security Best Practices
-
-### ✅ Do's
-- Always verify tokens server-side
-- Use idempotency keys for retries
-- Include IP address validation
-- Log verification attempts
-- Handle all error cases gracefully
-- Use HTTPS in production
-
-### ❌ Don'ts
-- Never trust client-side validation alone
-- Don't reuse tokens
-- Don't ignore expired tokens
-- Don't skip error handling
-- Don't expose secret keys client-side
-
-## 🚀 Advanced Features
-
-### Custom Actions
-```tsx
-<Turnstile
-  siteKey="your-site-key"
-  action="login-form"
-  cData="user-session-123"
-/>
-```
-
-### Enterprise Features
-- **Ephemeral IDs** for advanced analytics
-- **Custom challenge parameters**
-- **Webhook notifications**
-- **Advanced metrics** and reporting
-
-## 📚 Documentation References
-
-- [Cloudflare Turnstile Docs](https://developers.cloudflare.com/turnstile/)
-- [Client-side Rendering](https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/)
-- [Server-side Validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/)
-- [React Turnstile Package](https://github.com/marsidev/react-turnstile)
+### Before going live:
+1. ✅ Set up proper domain and SSL certificate
+2. ✅ Update OAuth redirect URLs to production domain
+3. ✅ Set production environment variables
+4. ✅ Test all authentication flows
+5. ✅ Enable Supabase RLS policies
+6. ✅ Set strong CSRF secret
+7. ✅ Configure email templates
 
 ---
 
-**🎉 Your authentication is now enterprise-ready with comprehensive bot protection!**
+**Need help?** Check the [troubleshooting section](#-troubleshooting) or open an issue on GitHub.
