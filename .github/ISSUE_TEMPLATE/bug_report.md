@@ -1,8 +1,8 @@
 ---
-name: Bug Report 🐛
+name: "Bug Report \U0001F41B"
 about: Something's not working? Let's fix it together!
-title: '[BUG] '
-labels: ['bug', 'needs-triage']
+title: "[BUG] "
+labels: bug
 assignees: ''
 
 ---

@@ -1,8 +1,8 @@
 ---
-name: Question/Help 🤔
+name: "Question/Help \U0001F914"
 about: Need help or have questions? We're here for you!
-title: '[QUESTION] '
-labels: ['question', 'help wanted']
+title: "[QUESTION] "
+labels: help wanted, question
 assignees: ''
 
 ---

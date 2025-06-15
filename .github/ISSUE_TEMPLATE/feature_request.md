@@ -1,8 +1,8 @@
 ---
 name: Feature Request ✨
 about: Got a cool idea? We'd love to hear it!
-title: '[FEATURE] '
-labels: ['enhancement', 'feature-request']
+title: "[FEATURE] "
+labels: enhancement
 assignees: ''
 
 ---
